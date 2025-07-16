@@ -54,19 +54,6 @@ export const DrumMachine = () => {
       intervalRef.current = setInterval(() => {
         setCurrentStep((prev) => {
           const nextStep = (prev + 1) % 16;
-          
-          // Play sounds for active notes
-          Object.entries(pattern).forEach(([drum, steps]) => {
-            if (steps[nextStep]) {
-              playDrumSound(drum);
-            }
-          });
-
-          // Play metronome on beat 1
-          if (metronomeEnabled && nextStep % 4 === 0) {
-            playMetronome();
-          }
-
           return nextStep;
         });
       }, stepDuration);
@@ -82,7 +69,24 @@ export const DrumMachine = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPlaying, stepDuration, pattern, metronomeEnabled]);
+  }, [isPlaying, stepDuration]);
+
+  // Separate effect for playing sounds based on currentStep
+  useEffect(() => {
+    if (isPlaying) {
+      // Play sounds for active notes at current step
+      Object.entries(pattern).forEach(([drum, steps]) => {
+        if (steps[currentStep]) {
+          playDrumSound(drum);
+        }
+      });
+
+      // Play metronome on beat 1
+      if (metronomeEnabled && currentStep % 4 === 0) {
+        playMetronome();
+      }
+    }
+  }, [currentStep, isPlaying, pattern, metronomeEnabled]);
 
   const playDrumSound = (drum: string) => {
     if (!audioContextRef.current) return;
