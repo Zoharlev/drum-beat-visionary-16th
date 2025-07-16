@@ -107,34 +107,72 @@ export const DrumMachine = () => {
       const noise = context.createBufferSource();
       noise.buffer = buffer;
       
-      // High-pass filter for metallic sound
-      const highpassFilter = context.createBiquadFilter();
-      highpassFilter.type = 'highpass';
-      highpassFilter.frequency.setValueAtTime(8000, context.currentTime);
-      highpassFilter.Q.setValueAtTime(1, context.currentTime);
-      
-      // Additional filter for shaping
-      const bandpassFilter = context.createBiquadFilter();
-      bandpassFilter.type = 'bandpass';
-      bandpassFilter.frequency.setValueAtTime(12000, context.currentTime);
-      bandpassFilter.Q.setValueAtTime(2, context.currentTime);
-      
-      const gainNode = context.createGain();
-      
-      // Connect the chain
-      noise.connect(highpassFilter);
-      highpassFilter.connect(bandpassFilter);
-      bandpassFilter.connect(gainNode);
-      gainNode.connect(context.destination);
-      
-      // Envelope for hi-hat
-      const duration = drum === 'openhat' ? 0.3 : 0.08;
-      gainNode.gain.setValueAtTime(0, context.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
-      
-      noise.start(context.currentTime);
-      noise.stop(context.currentTime + duration);
+      if (drum === 'openhat') {
+        // Open hat: Lower frequency, more resonant, longer decay
+        const highpassFilter = context.createBiquadFilter();
+        highpassFilter.type = 'highpass';
+        highpassFilter.frequency.setValueAtTime(6000, context.currentTime);
+        highpassFilter.Q.setValueAtTime(0.5, context.currentTime);
+        
+        // Resonant bandpass for more metallic ring
+        const resonantFilter = context.createBiquadFilter();
+        resonantFilter.type = 'bandpass';
+        resonantFilter.frequency.setValueAtTime(9000, context.currentTime);
+        resonantFilter.Q.setValueAtTime(4, context.currentTime);
+        
+        // Additional high shelf for brightness
+        const shelfFilter = context.createBiquadFilter();
+        shelfFilter.type = 'highshelf';
+        shelfFilter.frequency.setValueAtTime(10000, context.currentTime);
+        shelfFilter.gain.setValueAtTime(6, context.currentTime);
+        
+        const gainNode = context.createGain();
+        
+        // Connect the chain for open hat
+        noise.connect(highpassFilter);
+        highpassFilter.connect(resonantFilter);
+        resonantFilter.connect(shelfFilter);
+        shelfFilter.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Open hat envelope: quick attack, slower decay with sustain
+        const duration = 0.4;
+        gainNode.gain.setValueAtTime(0, context.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.35, context.currentTime + 0.002);
+        gainNode.gain.linearRampToValueAtTime(0.15, context.currentTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+        
+        noise.start(context.currentTime);
+        noise.stop(context.currentTime + duration);
+      } else {
+        // Closed hi-hat: Original tighter sound
+        const highpassFilter = context.createBiquadFilter();
+        highpassFilter.type = 'highpass';
+        highpassFilter.frequency.setValueAtTime(8000, context.currentTime);
+        highpassFilter.Q.setValueAtTime(1, context.currentTime);
+        
+        const bandpassFilter = context.createBiquadFilter();
+        bandpassFilter.type = 'bandpass';
+        bandpassFilter.frequency.setValueAtTime(12000, context.currentTime);
+        bandpassFilter.Q.setValueAtTime(2, context.currentTime);
+        
+        const gainNode = context.createGain();
+        
+        // Connect the chain for closed hi-hat
+        noise.connect(highpassFilter);
+        highpassFilter.connect(bandpassFilter);
+        bandpassFilter.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Closed hi-hat envelope: tight and short
+        const duration = 0.08;
+        gainNode.gain.setValueAtTime(0, context.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+        
+        noise.start(context.currentTime);
+        noise.stop(context.currentTime + duration);
+      }
     } else {
       // Original oscillator-based sounds for kick and snare
       const oscillator = context.createOscillator();
