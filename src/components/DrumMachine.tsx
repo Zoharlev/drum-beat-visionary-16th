@@ -126,7 +126,7 @@ export const DrumMachine = () => {
       // Envelope for hi-hat
       const duration = drum === 'openhat' ? 0.3 : 0.08;
       gainNode.gain.setValueAtTime(0, context.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.15, context.currentTime + 0.001);
+      gainNode.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
       gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
       noise.start(context.currentTime);
