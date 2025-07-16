@@ -88,28 +88,72 @@ export const DrumMachine = () => {
     if (!audioContextRef.current) return;
 
     const context = audioContextRef.current;
-    const oscillator = context.createOscillator();
-    const gainNode = context.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(context.destination);
+    if (drum === 'hihat' || drum === 'openhat') {
+      // Create white noise for hi-hat sounds
+      const bufferSize = context.sampleRate * 0.1; // 100ms of noise
+      const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+      const data = buffer.getChannelData(0);
+      
+      // Generate white noise
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      
+      const noise = context.createBufferSource();
+      noise.buffer = buffer;
+      
+      // High-pass filter for metallic sound
+      const highpassFilter = context.createBiquadFilter();
+      highpassFilter.type = 'highpass';
+      highpassFilter.frequency.setValueAtTime(8000, context.currentTime);
+      highpassFilter.Q.setValueAtTime(1, context.currentTime);
+      
+      // Additional filter for shaping
+      const bandpassFilter = context.createBiquadFilter();
+      bandpassFilter.type = 'bandpass';
+      bandpassFilter.frequency.setValueAtTime(12000, context.currentTime);
+      bandpassFilter.Q.setValueAtTime(2, context.currentTime);
+      
+      const gainNode = context.createGain();
+      
+      // Connect the chain
+      noise.connect(highpassFilter);
+      highpassFilter.connect(bandpassFilter);
+      bandpassFilter.connect(gainNode);
+      gainNode.connect(context.destination);
+      
+      // Envelope for hi-hat
+      const duration = drum === 'openhat' ? 0.3 : 0.08;
+      gainNode.gain.setValueAtTime(0, context.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.15, context.currentTime + 0.001);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      noise.start(context.currentTime);
+      noise.stop(context.currentTime + duration);
+    } else {
+      // Original oscillator-based sounds for kick and snare
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
 
-    // Different frequencies for different drums
-    const frequencies: { [key: string]: number } = {
-      kick: 60,
-      snare: 200,
-      hihat: 8000,
-      openhat: 6000,
-    };
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
 
-    oscillator.frequency.setValueAtTime(frequencies[drum], context.currentTime);
-    oscillator.type = drum === 'kick' ? 'sine' : 'square';
+      // Different frequencies for different drums
+      const frequencies: { [key: string]: number } = {
+        kick: 60,
+        snare: 200,
+      };
 
-    gainNode.gain.setValueAtTime(0.3, context.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.1);
+      oscillator.frequency.setValueAtTime(frequencies[drum], context.currentTime);
+      oscillator.type = drum === 'kick' ? 'sine' : 'square';
 
-    oscillator.start(context.currentTime);
-    oscillator.stop(context.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.3, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.1);
+
+      oscillator.start(context.currentTime);
+      oscillator.stop(context.currentTime + 0.1);
+    }
   };
 
   const playMetronome = () => {
