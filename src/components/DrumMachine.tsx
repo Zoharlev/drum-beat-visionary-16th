@@ -242,21 +242,74 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else {
-      // Kick drum - original simple oscillator
-      const oscillator = context.createOscillator();
-      const gainNode = context.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(context.destination);
-
-      oscillator.frequency.setValueAtTime(60, context.currentTime);
-      oscillator.type = 'sine';
-
-      gainNode.gain.setValueAtTime(0.3, context.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.1);
-
-      oscillator.start(context.currentTime);
-      oscillator.stop(context.currentTime + 0.1);
+      // Improved kick drum with sub-bass and attack click
+      
+      // Main kick oscillator (fundamental)
+      const kickOsc = context.createOscillator();
+      const kickGain = context.createGain();
+      
+      kickOsc.frequency.setValueAtTime(60, context.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(35, context.currentTime + 0.05);
+      kickOsc.type = 'sine';
+      
+      // Sub-bass oscillator for weight
+      const subOsc = context.createOscillator();
+      const subGain = context.createGain();
+      
+      subOsc.frequency.setValueAtTime(30, context.currentTime);
+      subOsc.frequency.exponentialRampToValueAtTime(20, context.currentTime + 0.08);
+      subOsc.type = 'sine';
+      
+      // Attack click for punch
+      const clickOsc = context.createOscillator();
+      const clickGain = context.createGain();
+      
+      clickOsc.frequency.setValueAtTime(1000, context.currentTime);
+      clickOsc.frequency.exponentialRampToValueAtTime(100, context.currentTime + 0.005);
+      clickOsc.type = 'square';
+      
+      // Low-pass filter for warmth
+      const lowPassFilter = context.createBiquadFilter();
+      lowPassFilter.type = 'lowpass';
+      lowPassFilter.frequency.setValueAtTime(120, context.currentTime);
+      lowPassFilter.Q.setValueAtTime(1, context.currentTime);
+      
+      // Mix all components
+      const mixGain = context.createGain();
+      
+      kickOsc.connect(kickGain);
+      subOsc.connect(subGain);
+      clickOsc.connect(clickGain);
+      
+      kickGain.connect(lowPassFilter);
+      subGain.connect(lowPassFilter);
+      clickGain.connect(mixGain);
+      lowPassFilter.connect(mixGain);
+      mixGain.connect(context.destination);
+      
+      // Envelope for main kick
+      const duration = 0.3;
+      kickGain.gain.setValueAtTime(0.6, context.currentTime);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Sub-bass envelope
+      subGain.gain.setValueAtTime(0.4, context.currentTime);
+      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.8);
+      
+      // Click envelope (very short)
+      clickGain.gain.setValueAtTime(0.3, context.currentTime);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.01);
+      
+      // Overall mix envelope
+      mixGain.gain.setValueAtTime(0.5, context.currentTime);
+      mixGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      kickOsc.start(context.currentTime);
+      kickOsc.stop(context.currentTime + duration);
+      subOsc.start(context.currentTime);
+      subOsc.stop(context.currentTime + duration);
+      clickOsc.start(context.currentTime);
+      clickOsc.stop(context.currentTime + 0.01);
     }
   };
 
