@@ -113,7 +113,8 @@ export const DrumGrid = ({
                         className={cn(
                           "w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent",
                           "shadow-note transition-transform duration-200 hover:scale-110",
-                          "flex items-center justify-center text-xs font-bold text-background"
+                          "flex items-center justify-center text-xs font-bold text-background",
+                          stepIndex === currentStep && active && "animate-bounce"
                         )}
                       >
                         {symbol}
