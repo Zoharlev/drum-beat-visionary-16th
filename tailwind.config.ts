@@ -52,6 +52,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Music app specific colors
+				playhead: 'hsl(var(--playhead))',
+				'note-active': 'hsl(var(--note-active))',
+				'note-inactive': 'hsl(var(--note-inactive))',
+				'grid-line': 'hsl(var(--grid-line))',
+				'tempo-accent': 'hsl(var(--tempo-accent))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
