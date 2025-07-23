@@ -13,7 +13,6 @@ export const DrumMachine = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
-  const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
   const [pattern, setPattern] = useState<DrumPattern>(() => {
     // Initialize with your specific Hi-Hat pattern
     // Times: 0.25s, 0.73s, 1.22s, 1.7s
@@ -36,7 +35,6 @@ export const DrumMachine = () => {
   });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const { toast } = useToast();
 
@@ -89,36 +87,6 @@ export const DrumMachine = () => {
       }
     }
   }, [currentStep, isPlaying, pattern, metronomeEnabled]);
-
-  // Countdown timer effect
-  useEffect(() => {
-    if (isPlaying) {
-      timerRef.current = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            setIsPlaying(false);
-            toast({
-              title: "Time's up!",
-              description: "2-minute practice session completed",
-            });
-            return 120; // Reset to 2:00
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [isPlaying, toast]);
 
   const playDrumSound = (drum: string) => {
     if (!audioContextRef.current) return;
@@ -378,7 +346,6 @@ export const DrumMachine = () => {
   const reset = () => {
     setIsPlaying(false);
     setCurrentStep(0);
-    setTimeRemaining(120); // Reset timer to 2:00
     toast({
       title: "Reset",
       description: "Pattern reset to beginning",
@@ -387,12 +354,6 @@ export const DrumMachine = () => {
 
   const changeBpm = (delta: number) => {
     setBpm(prev => Math.max(60, Math.min(200, prev + delta)));
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const toggleStep = (drum: string, step: number) => {
@@ -454,13 +415,6 @@ export const DrumMachine = () => {
               >
                 <Plus className="h-4 w-4" />
               </Button>
-            </div>
-
-            {/* Timer Display */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-              <div className="text-2xl font-bold text-foreground">
-                {formatTime(timeRemaining)}
-              </div>
             </div>
 
             {/* Play Controls */}
