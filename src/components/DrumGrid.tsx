@@ -49,13 +49,12 @@ export const DrumGrid = ({
           <Trash2 className="h-4 w-4" />
           Clear
         </Button>
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button variant="outline" size="icon">
           <img 
             src="/lovable-uploads/cbddce42-9b3b-4a2f-bbdc-c7dc00399dd8.png" 
             alt="Menu"
             className="w-4 h-4"
           />
-          Settings
         </Button>
       </div>
 
