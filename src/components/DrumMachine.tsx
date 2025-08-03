@@ -424,7 +424,7 @@ export const DrumMachine = () => {
         {/* Pattern Instructions */}
         <div className="text-center mb-6">
           <p className="text-muted-foreground text-lg">
-            Play the following notes
+            Practice Name
           </p>
         </div>
 
