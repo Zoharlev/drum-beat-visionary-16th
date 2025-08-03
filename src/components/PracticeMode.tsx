@@ -6,6 +6,7 @@ import { useAudioClassification } from '@/hooks/useAudioClassification';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AudioLevelBars } from '@/components/AudioLevelBars';
+import { BeatTimeline } from '@/components/BeatTimeline';
 
 export const PracticeMode = () => {
   const [isActive, setIsActive] = useState(false);
@@ -132,6 +133,16 @@ export const PracticeMode = () => {
             <AudioLevelBars 
               isListening={isListening} 
               analyserRef={analyserRef}
+              className="border border-border"
+            />
+          </div>
+
+          {/* Beat Timeline */}
+          <div className="space-y-3">
+            <BeatTimeline
+              detectedDrum={detectedDrum}
+              confidence={confidence}
+              isListening={isListening}
               className="border border-border"
             />
           </div>
