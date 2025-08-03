@@ -44,7 +44,36 @@ export const DrumGrid = ({
 }: DrumGridProps) => {
   return <div className="space-y-6">
       {/* Controls */}
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          {/* Custom Metronome Toggle */}
+          <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+            <button
+              onClick={onMetronomeToggle}
+              className={cn(
+                "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+              )}
+            >
+              <span
+                className={cn(
+                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                  metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                )}
+              />
+            </button>
+            
+            {/* Metronome Icon */}
+            <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+              <img 
+                src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                alt="Metronome"
+                className="w-8 h-8"
+              />
+            </div>
+          </div>
+        </div>
+        
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
           <Trash2 className="h-4 w-4" />
           Clear
