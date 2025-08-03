@@ -51,7 +51,7 @@ export const DrumGrid = ({
         </Button>
         <Button variant="outline" size="icon">
           <img 
-            src="/lovable-uploads/cbddce42-9b3b-4a2f-bbdc-c7dc00399dd8.png" 
+            src="/lovable-uploads/fbd529ea-6eab-43ce-8d5d-274c34542d99.png" 
             alt="Menu"
             className="w-4 h-4"
           />
