@@ -68,7 +68,7 @@ export const DrumGrid = ({
               <img 
                 src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
                 alt="Metronome"
-                className="w-5 h-5"
+                className="w-8 h-8"
               />
             </div>
           </div>
