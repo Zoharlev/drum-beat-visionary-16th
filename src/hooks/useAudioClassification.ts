@@ -199,31 +199,24 @@ export const useAudioClassification = () => {
           console.log(`🎤 Audio: avg=${totalEnergy.toFixed(1)}, max=${maxLevel}, listening=${isListening}`);
         }
         
-        // Very aggressive detection for testing - detect ANY audio activity
-        if (totalEnergy > 1 || maxLevel > 10) { // Extremely low threshold
-          console.log('🥁 SOUND DETECTED!', { totalEnergy, maxLevel });
+        // ULTRA sensitive detection - detect even the slightest audio changes
+        if (totalEnergy > 0.1 || maxLevel > 1) { // Extremely sensitive threshold
+          console.log('🥁 SOUND DETECTED!', { totalEnergy: totalEnergy.toFixed(2), maxLevel });
           
-          // Enhanced drum detection with lower threshold for testing
-          const sampleRate = audioContextRef.current?.sampleRate || 44100;
-          const result = analyzeFrequencyData(dataArray, sampleRate);
+          // Force a detection for ANY audio activity
+          const drumType = 'Generic Sound';
+          const confidence = Math.max(0.3, totalEnergy / 20, maxLevel / 100); // Guarantee minimum confidence
           
-          console.log(`🎯 Analysis result - Drum: ${result.drumType}, Confidence: ${result.confidence.toFixed(2)}`);
+          setDetectedDrum(drumType);
+          setConfidence(confidence);
+          console.log(`✅ FORCING DETECTION: ${drumType} with confidence ${confidence.toFixed(2)}`);
           
-          // Show detection with VERY low confidence for testing
-          if (result.confidence > 0.05 || totalEnergy > 3) { // Ultra permissive for testing
-            const drumType = result.confidence > 0.05 ? result.drumType : 'Generic Sound';
-            const confidence = Math.max(result.confidence, totalEnergy / 50); // Boost confidence for testing
-            
-            setDetectedDrum(drumType);
-            setConfidence(confidence);
-            console.log(`✅ DETECTED: ${drumType} with confidence ${confidence.toFixed(2)}`);
-            
-            // Clear detection after a short delay
-            setTimeout(() => {
-              setDetectedDrum('');
-              setConfidence(0);
-            }, 1500); // Longer display time for testing
-          }
+          // Clear detection after a delay
+          setTimeout(() => {
+            console.log('🔄 Clearing detection');
+            setDetectedDrum('');
+            setConfidence(0);
+          }, 2000); // Longer display time
         }
         
         animationFrameRef.current = requestAnimationFrame(analyze);

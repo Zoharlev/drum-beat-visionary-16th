@@ -31,9 +31,11 @@ export const BeatTimeline = ({ detectedDrum, confidence, isListening, className 
     }
   }, [isListening, startTime]);
 
-  // Add new detection to timeline
+  // Add new detection to timeline with aggressive debugging
   useEffect(() => {
-    if (detectedDrum && confidence > 0.1 && startTime) {
+    console.log('🎵 Timeline update:', { detectedDrum, confidence, startTime });
+    
+    if (detectedDrum && confidence > 0 && startTime) { // Remove confidence threshold
       const now = Date.now();
       const newDetection: BeatDetection = {
         id: `${now}-${Math.random()}`,
@@ -43,8 +45,11 @@ export const BeatTimeline = ({ detectedDrum, confidence, isListening, className 
         relativeTime: now - startTime
       };
 
+      console.log('📍 Adding detection to timeline:', newDetection);
+
       setDetections(prev => {
         const updated = [...prev, newDetection];
+        console.log('📊 Timeline now has', updated.length, 'detections');
         // Keep only last 50 detections to prevent memory issues
         return updated.slice(-50);
       });
@@ -102,7 +107,9 @@ export const BeatTimeline = ({ detectedDrum, confidence, isListening, className 
   return (
     <div className={cn("w-full bg-slate-900 rounded-lg p-4", className)}>
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-medium text-slate-300">Beat Timeline</h4>
+        <h4 className="text-sm font-medium text-slate-300">
+          Beat Timeline ({detections.length} detections)
+        </h4>
         {startTime && (
           <span className="text-xs text-slate-400">
             {formatTime(Date.now() - startTime)}
@@ -130,35 +137,48 @@ export const BeatTimeline = ({ detectedDrum, confidence, isListening, className 
           ))}
         </div>
 
-        {/* Beat markers */}
+        {/* Beat markers with enhanced visibility */}
         <div className="relative h-full min-w-full">
-          {detections.map((detection) => (
+          {detections.length === 0 && isListening && (
+            <div className="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
+              Waiting for beats... (Make some noise!)
+            </div>
+          )}
+          
+          {detections.map((detection, index) => (
             <div
               key={detection.id}
-              className="absolute top-2 transform -translate-x-1/2 animate-scale-in"
+              className="absolute top-1 transform -translate-x-1/2 animate-scale-in"
               style={{ 
-                left: `${detection.relativeTime / 100}px` // 1px per 100ms
+                left: `${Math.max(detection.relativeTime / 50, 20)}px` // Slower timeline: 1px per 50ms
               }}
             >
-              {/* Beat marker */}
+              {/* Beat marker with enhanced visibility */}
               <div 
                 className={cn(
-                  "w-3 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg",
+                  "w-4 h-14 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg border-2 border-white",
                   getDrumColor(detection.drumType)
                 )}
                 style={{ 
-                  opacity: Math.min(detection.confidence + 0.3, 1),
-                  height: `${Math.max(detection.confidence * 48, 12)}px`
+                  opacity: Math.max(detection.confidence * 0.7 + 0.3, 0.5), // Ensure visibility
+                  height: `${Math.max(detection.confidence * 56, 20)}px` // Minimum height
                 }}
-                title={`${detection.drumType} - ${Math.round(detection.confidence * 100)}%`}
+                title={`${detection.drumType} - ${Math.round(detection.confidence * 100)}% at ${formatTime(detection.relativeTime)}`}
               >
                 {getDrumIcon(detection.drumType)}
               </div>
               
-              {/* Confidence indicator */}
+              {/* Confidence indicator with better visibility */}
               <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-300 bg-slate-800 px-1 rounded">
                   {Math.round(detection.confidence * 100)}%
+                </div>
+              </div>
+              
+              {/* Detection number for debugging */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                <div className="text-xs text-slate-400">
+                  #{index + 1}
                 </div>
               </div>
             </div>
