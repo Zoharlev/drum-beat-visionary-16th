@@ -51,14 +51,14 @@ export const DrumGrid = ({
             <button
               onClick={onMetronomeToggle}
               className={cn(
-                "relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
                 metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
               )}
             >
               <span
                 className={cn(
-                  "inline-block h-6 w-6 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                  metronomeEnabled ? "translate-x-7" : "translate-x-1"
+                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                  metronomeEnabled ? "translate-x-5" : "translate-x-1"
                 )}
               />
             </button>
