@@ -422,10 +422,19 @@ export const DrumMachine = () => {
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
         {/* Pattern Instructions */}
-        <div className="text-center mb-6">
+        <div className="flex justify-between items-center mb-6">
+          <div></div>
           <p className="text-muted-foreground text-lg">
             Practice Name
           </p>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={reset}
+            className="h-12 w-12"
+          >
+            <RotateCcw className="h-5 w-5" />
+          </Button>
         </div>
 
         {/* Drum Grid */}
@@ -515,14 +524,6 @@ export const DrumMachine = () => {
               PREVIEW
             </Button>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={reset}
-              className="h-12 w-12"
-            >
-              <RotateCcw className="h-5 w-5" />
-            </Button>
 
             <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
