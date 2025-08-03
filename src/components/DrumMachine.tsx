@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
 import { PracticeMode } from "./PracticeMode";
+import { SystemLearning } from "./SystemLearning";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -432,9 +433,10 @@ export const DrumMachine = () => {
 
         {/* Tabs for Pattern and Practice Mode */}
         <Tabs defaultValue="pattern" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="pattern">Pattern</TabsTrigger>
             <TabsTrigger value="practice">Practice</TabsTrigger>
+            <TabsTrigger value="learning">System Learning</TabsTrigger>
           </TabsList>
           
           <TabsContent value="pattern" className="space-y-6">
@@ -532,6 +534,10 @@ export const DrumMachine = () => {
           
           <TabsContent value="practice">
             <PracticeMode />
+          </TabsContent>
+
+          <TabsContent value="learning">
+            <SystemLearning />
           </TabsContent>
         </Tabs>
       </div>
