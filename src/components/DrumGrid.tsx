@@ -27,122 +27,64 @@ export const DrumGrid = ({
   onMetronomeToggle,
 }: DrumGridProps) => {
   return (
-    <div className="space-y-6">
-      {/* Controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant={metronomeEnabled ? "default" : "outline"}
-            onClick={onMetronomeToggle}
-            className="flex items-center gap-2"
+    <div className="space-y-4">
+      {/* Beat Numbers */}
+      <div className="flex mb-4">
+        <div className="w-24"></div>
+        {Array.from({ length: 4 }, (_, i) => (
+          <div
+            key={i}
+            className="flex-1 text-center text-lg font-bold text-foreground"
           >
-            {metronomeEnabled ? (
-              <Volume2 className="h-4 w-4" />
-            ) : (
-              <VolumeX className="h-4 w-4" />
-            )}
-            Metronome
-          </Button>
-        </div>
-        
-        <Button
-          variant="outline"
-          onClick={onClearPattern}
-          className="flex items-center gap-2"
-        >
-          <Trash2 className="h-4 w-4" />
-          Clear
-        </Button>
+            {i + 1}
+          </div>
+        ))}
       </div>
 
       {/* Grid Container */}
-      <div className="relative bg-card rounded-lg p-6 shadow-elevated">
-        {/* Playhead */}
-        <div
-          className="absolute top-0 bottom-0 w-1 bg-playhead transition-all duration-75 z-10"
-          style={{
-            left: `${88 + (currentStep * (100 - 88 / 16)) / 16}%`,
-            boxShadow: "0 0 20px hsl(var(--playhead) / 0.6)",
-          }}
-        />
-
-        {/* Beat Numbers */}
-        <div className="flex mb-4">
-          <div className="w-20"></div>
-          {Array.from({ length: 16 }, (_, i) => (
-            <div
-              key={i}
-              className={cn(
-                "flex-1 text-center text-sm font-mono",
-                i % 4 === 0 ? "text-primary font-bold" : "text-muted-foreground"
-              )}
-            >
-              {i % 4 === 0 ? Math.floor(i / 4) + 1 : ""}
-            </div>
-          ))}
-        </div>
-
+      <div className="relative bg-card/50 rounded-lg p-4">
         {/* Drum Rows */}
         {Object.entries(drumLabels).map(([drumKey, { name, symbol }]) => (
-          <div key={drumKey} className="flex items-center mb-3 group">
+          <div key={drumKey} className="flex items-center mb-4 last:mb-0">
             {/* Drum Label */}
-            <div className="w-20 flex items-center gap-2 pr-4">
-              <span className="text-lg font-mono text-accent">{symbol}</span>
+            <div className="w-24 flex items-center gap-3 pr-4">
+              <span className="text-lg text-primary">{symbol}</span>
               <span className="text-sm font-medium text-foreground">{name}</span>
             </div>
 
-            {/* Grid Line */}
-            <div className="flex-1 relative">
-              <div className="absolute inset-0 border-t border-grid-line"></div>
-              
-              {/* Step Buttons */}
-              <div className="flex relative z-10">
-                {pattern[drumKey]?.map((active, stepIndex) => (
-                  <button
-                    key={stepIndex}
-                    onClick={() => onStepToggle(drumKey, stepIndex)}
-                    className={cn(
-                      "flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200",
-                      "flex items-center justify-center group-hover:bg-muted/20",
-                      stepIndex === currentStep && "bg-playhead/10",
-                      stepIndex % 4 === 0 && "border-r-2 border-primary/30"
-                    )}
-                  >
-                    {active && (
-                      <div
+            {/* Step Buttons - Only 4 quarters, each quarter has 4 sixteenths */}
+            <div className="flex-1 flex gap-1">
+              {Array.from({ length: 4 }, (_, quarterIndex) => (
+                <div key={quarterIndex} className="flex-1 flex gap-1">
+                  {Array.from({ length: 4 }, (_, sixteenthIndex) => {
+                    const stepIndex = quarterIndex * 4 + sixteenthIndex;
+                    const active = pattern[drumKey]?.[stepIndex];
+                    const isCurrentStep = stepIndex === currentStep;
+                    
+                    return (
+                      <button
+                        key={sixteenthIndex}
+                        onClick={() => onStepToggle(drumKey, stepIndex)}
                         className={cn(
-                          "w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent",
-                          "shadow-note transition-transform duration-200 hover:scale-110",
-                          "flex items-center justify-center text-xs font-bold text-background",
-                          stepIndex === currentStep && active && "animate-bounce"
+                          "flex-1 h-8 rounded transition-all duration-200",
+                          "flex items-center justify-center",
+                          active 
+                            ? "bg-primary" 
+                            : "bg-secondary/50 hover:bg-secondary",
+                          isCurrentStep && "ring-2 ring-primary/50"
                         )}
                       >
-                        {symbol}
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
+                        {active && (
+                          <div className="w-2 h-2 rounded-full bg-primary-foreground"></div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         ))}
-
-        {/* Grid Enhancement */}
-        <div className="absolute inset-6 pointer-events-none">
-          {/* Vertical beat lines */}
-          {Array.from({ length: 4 }, (_, i) => (
-            <div
-              key={i}
-              className="absolute top-0 bottom-0 border-l border-primary/20"
-              style={{ left: `${88 + (i * 25)}%` }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Pattern Info */}
-      <div className="text-center text-sm text-muted-foreground">
-        Click on the grid to add or remove notes • Yellow line shows current playback position
       </div>
     </div>
   );
