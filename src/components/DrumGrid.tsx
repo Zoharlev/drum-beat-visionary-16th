@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Trash2, Triangle } from "lucide-react";
+import { Trash2, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 interface DrumGridProps {
   pattern: {
@@ -46,36 +46,10 @@ export const DrumGrid = ({
       {/* Controls */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* Custom Metronome Toggle */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={onMetronomeToggle}
-              className="relative flex items-center w-16 h-8 bg-muted rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/20"
-            >
-              {/* Toggle track */}
-              <div className={cn(
-                "absolute inset-1 rounded-full transition-all duration-300",
-                metronomeEnabled ? "bg-primary" : "bg-secondary"
-              )} />
-              
-              {/* Toggle circles */}
-              <div className={cn(
-                "absolute flex items-center transition-all duration-300",
-                metronomeEnabled ? "left-1" : "left-7"
-              )}>
-                <div className="w-6 h-6 bg-yellow-400 rounded-full shadow-sm" />
-                <div className="w-6 h-6 bg-gray-200 rounded-full shadow-sm -ml-2" />
-              </div>
-            </button>
-            
-            {/* Metronome icon */}
-            <div className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-              metronomeEnabled ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-            )}>
-              <Triangle className="h-4 w-4 rotate-180" />
-            </div>
-          </div>
+          <Button variant={metronomeEnabled ? "default" : "outline"} onClick={onMetronomeToggle} className="flex items-center gap-2">
+            {metronomeEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+            Metronome
+          </Button>
         </div>
         
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
