@@ -5,6 +5,7 @@ import { Mic, MicOff, Play, Square } from 'lucide-react';
 import { useAudioClassification } from '@/hooks/useAudioClassification';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { AudioLevelBars } from '@/components/AudioLevelBars';
 
 export const PracticeMode = () => {
   const [isActive, setIsActive] = useState(false);
@@ -17,6 +18,7 @@ export const PracticeMode = () => {
     confidence,
     isLoading,
     detectionMethod,
+    analyserRef,
     startListening,
     stopListening,
     initializeModel
@@ -122,6 +124,16 @@ export const PracticeMode = () => {
                 </p>
               </div>
             )}
+          </div>
+
+          {/* Audio Level Visualization */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-medium text-muted-foreground">Audio Levels</h4>
+            <AudioLevelBars 
+              isListening={isListening} 
+              analyserRef={analyserRef}
+              className="border border-border"
+            />
           </div>
 
           {/* Controls */}

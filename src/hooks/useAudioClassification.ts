@@ -266,6 +266,7 @@ export const useAudioClassification = () => {
     confidence,
     isLoading,
     detectionMethod,
+    analyserRef, // Expose analyser for visualization
     startListening,
     stopListening,
     initializeModel
