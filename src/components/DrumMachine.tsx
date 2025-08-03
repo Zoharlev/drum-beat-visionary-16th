@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus, Music, Mic } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
-import { PracticeMode } from "./PracticeMode";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +10,6 @@ interface DrumPattern {
 }
 
 export const DrumMachine = () => {
-  const [currentMode, setCurrentMode] = useState<'sequencer' | 'practice'>('sequencer');
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [bpm, setBpm] = useState(120);
@@ -423,134 +421,104 @@ export const DrumMachine = () => {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Mode Switcher */}
-        <div className="flex justify-center mb-8">
-          <div className="flex bg-secondary rounded-lg p-1">
-            <Button
-              variant={currentMode === 'sequencer' ? 'default' : 'ghost'}
-              onClick={() => setCurrentMode('sequencer')}
-              className="flex items-center gap-2 px-6"
-            >
-              <Music className="h-4 w-4" />
-              Sequencer
-            </Button>
-            <Button
-              variant={currentMode === 'practice' ? 'default' : 'ghost'}
-              onClick={() => setCurrentMode('practice')}
-              className="flex items-center gap-2 px-6"
-            >
-              <Mic className="h-4 w-4" />
-              Practice
-            </Button>
-          </div>
+        {/* Pattern Instructions */}
+        <div className="text-center mb-6">
+          <p className="text-muted-foreground text-lg">
+            Practice Name
+          </p>
         </div>
 
-        {/* Content based on current mode */}
-        {currentMode === 'sequencer' ? (
-          <>
-            {/* Pattern Instructions */}
-            <div className="text-center mb-6">
-              <p className="text-muted-foreground text-lg">
-                Practice Name
-              </p>
-            </div>
+        {/* Drum Grid */}
+        <DrumGrid
+          pattern={pattern}
+          currentStep={currentStep}
+          onStepToggle={toggleStep}
+          onClearPattern={clearPattern}
+          metronomeEnabled={metronomeEnabled}
+          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+          onTogglePlay={togglePlay}
+          isPlaying={isPlaying}
+        />
 
-            {/* Drum Grid */}
-            <DrumGrid
-              pattern={pattern}
-              currentStep={currentStep}
-              onStepToggle={toggleStep}
-              onClearPattern={clearPattern}
-              metronomeEnabled={metronomeEnabled}
-              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-              onTogglePlay={togglePlay}
-              isPlaying={isPlaying}
-            />
-          </>
-        ) : (
-          <PracticeMode />
-        )}
-
-        {/* Bottom Toolbar - Only show in sequencer mode */}
-        {currentMode === 'sequencer' && (
-          <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
-            {/* Custom Metronome Toggle - Left Side */}
-            <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-              <button
-                onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+        {/* Bottom Toolbar */}
+        <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
+          {/* Custom Metronome Toggle - Left Side */}
+          <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+            <button
+              onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+              className={cn(
+                "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+              )}
+            >
+              <span
                 className={cn(
-                  "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
-                  metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                  metronomeEnabled ? "translate-x-5" : "translate-x-1"
                 )}
-              >
-                <span
-                  className={cn(
-                    "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                    metronomeEnabled ? "translate-x-5" : "translate-x-1"
-                  )}
-                />
-              </button>
-              
-              {/* Metronome Icon */}
-              <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
-                <img 
-                  src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
-                  alt="Metronome"
-                  className="w-8 h-8"
-                />
-              </div>
+              />
+            </button>
+            
+            {/* Metronome Icon */}
+            <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+              <img 
+                src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                alt="Metronome"
+                className="w-8 h-8"
+              />
             </div>
+          </div>
 
-            {/* Main Controls - Center/Right */}
-            <div className="flex items-center gap-4">
-              {/* Tempo Controls */}
-              <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => changeBpm(-5)}
-                  className="h-8 w-8"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                
-                <div className="flex items-center gap-2 px-3">
-                  <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
-                  <div className="w-3 h-3 rounded-full bg-primary"></div>
-                  <span className="text-2xl font-bold text-foreground mx-3">
-                    {bpm}
-                  </span>
-                </div>
-                
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => changeBpm(5)}
-                  className="h-8 w-8"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {/* Timer Display */}
-              <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-                <div className="text-2xl font-bold text-foreground">
-                  {formatTime(timeRemaining)}
-                </div>
-              </div>
-
-              {/* Play Controls */}
+          {/* Main Controls - Center/Right */}
+          <div className="flex items-center gap-4">
+            {/* Tempo Controls */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={reset}
-                className="h-12 w-12"
+                onClick={() => changeBpm(-5)}
+                className="h-8 w-8"
               >
-                <RotateCcw className="h-5 w-5" />
+                <Minus className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center gap-2 px-3">
+                <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <span className="text-2xl font-bold text-foreground mx-3">
+                  {bpm}
+                </span>
+              </div>
+              
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => changeBpm(5)}
+                className="h-8 w-8"
+              >
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
+
+            {/* Timer Display */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+              <div className="text-2xl font-bold text-foreground">
+                {formatTime(timeRemaining)}
+              </div>
+            </div>
+
+            {/* Play Controls */}
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={reset}
+              className="h-12 w-12"
+            >
+              <RotateCcw className="h-5 w-5" />
+            </Button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
