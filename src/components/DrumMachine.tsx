@@ -433,8 +433,6 @@ export const DrumMachine = () => {
           currentStep={currentStep}
           onStepToggle={toggleStep}
           onClearPattern={clearPattern}
-          metronomeEnabled={metronomeEnabled}
-          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
         />
 
         {/* Bottom Toolbar */}
@@ -497,6 +495,19 @@ export const DrumMachine = () => {
               className="h-12 w-12"
             >
               <RotateCcw className="h-5 w-5" />
+            </Button>
+
+            {/* Metronome Toggle */}
+            <Button
+              variant={metronomeEnabled ? "default" : "ghost"}
+              size="icon"
+              onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+              className="h-12 w-12"
+            >
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-current" />
+                <div className="w-1 h-4 bg-current rounded-full" />
+              </div>
             </Button>
 
             <Button variant="ghost" size="icon">
