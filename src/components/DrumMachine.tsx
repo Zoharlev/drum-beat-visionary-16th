@@ -510,13 +510,9 @@ export const DrumMachine = () => {
               variant="ghost"
               size="icon"
               onClick={togglePlay}
-              className="h-12 w-12 bg-primary/10 hover:bg-primary/20"
+              className="h-12 w-12 bg-primary/10 hover:bg-primary/20 rounded-[20px] text-xs"
             >
-              {isPlaying ? (
-                <Pause className="h-6 w-6 text-primary" />
-              ) : (
-                <Play className="h-6 w-6 text-primary" />
-              )}
+              PREVIEW
             </Button>
 
             <Button
