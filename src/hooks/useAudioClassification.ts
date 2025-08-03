@@ -182,7 +182,7 @@ export const useAudioClassification = () => {
       
       setIsListening(true);
       
-      // Start real-time analysis
+      // Start real-time analysis with aggressive debugging
       const analyze = () => {
         if (!analyserRef.current || !isListening) return;
         
@@ -190,34 +190,39 @@ export const useAudioClassification = () => {
         const dataArray = new Uint8Array(bufferLength);
         analyserRef.current.getByteFrequencyData(dataArray);
         
-        // Debug: Log all audio activity
+        // Debug: Always log audio activity (even when silent)
         const totalEnergy = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
-        console.log(`Audio level: ${totalEnergy.toFixed(1)} (max: ${Math.max(...dataArray)})`);
+        const maxLevel = Math.max(...dataArray);
         
-        // Very simple detection for testing - just detect any sound above threshold
-        if (totalEnergy > 5) { // Very low threshold for testing
-          console.log('Sound detected! Energy:', totalEnergy);
+        // Log every few frames to see if audio is being captured
+        if (Math.random() < 0.1) { // Log ~10% of frames to avoid spam
+          console.log(`🎤 Audio: avg=${totalEnergy.toFixed(1)}, max=${maxLevel}, listening=${isListening}`);
+        }
+        
+        // Very aggressive detection for testing - detect ANY audio activity
+        if (totalEnergy > 1 || maxLevel > 10) { // Extremely low threshold
+          console.log('🥁 SOUND DETECTED!', { totalEnergy, maxLevel });
           
           // Enhanced drum detection with lower threshold for testing
           const sampleRate = audioContextRef.current?.sampleRate || 44100;
           const result = analyzeFrequencyData(dataArray, sampleRate);
           
-          console.log(`Analysis result - Drum: ${result.drumType}, Confidence: ${result.confidence.toFixed(2)}`);
+          console.log(`🎯 Analysis result - Drum: ${result.drumType}, Confidence: ${result.confidence.toFixed(2)}`);
           
-          // Show detection even with very low confidence for testing
-          if (result.confidence > 0.1 || totalEnergy > 15) { // Very permissive for testing
-            const drumType = result.confidence > 0.1 ? result.drumType : 'Generic Sound';
-            const confidence = Math.max(result.confidence, totalEnergy / 100);
+          // Show detection with VERY low confidence for testing
+          if (result.confidence > 0.05 || totalEnergy > 3) { // Ultra permissive for testing
+            const drumType = result.confidence > 0.05 ? result.drumType : 'Generic Sound';
+            const confidence = Math.max(result.confidence, totalEnergy / 50); // Boost confidence for testing
             
             setDetectedDrum(drumType);
             setConfidence(confidence);
-            console.log(`Detected: ${drumType} with confidence ${confidence.toFixed(2)}`);
+            console.log(`✅ DETECTED: ${drumType} with confidence ${confidence.toFixed(2)}`);
             
             // Clear detection after a short delay
             setTimeout(() => {
               setDetectedDrum('');
               setConfidence(0);
-            }, 1200);
+            }, 1500); // Longer display time for testing
           }
         }
         
