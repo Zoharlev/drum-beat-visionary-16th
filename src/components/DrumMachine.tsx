@@ -439,40 +439,35 @@ export const DrumMachine = () => {
         />
 
         {/* Bottom Toolbar */}
-        <div className="flex justify-center mt-8">
-          <div className="flex items-center gap-4">
-            {/* Custom Metronome Toggle */}
-            <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-              <button
-                onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+        <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
+          {/* Custom Metronome Toggle - Left Side */}
+          <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+            <button
+              onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+              className={cn(
+                "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+              )}
+            >
+              <span
                 className={cn(
-                  "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
-                  metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                  metronomeEnabled ? "translate-x-5" : "translate-x-1"
                 )}
-              >
-                <span
-                  className={cn(
-                    "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                    metronomeEnabled ? "translate-x-5" : "translate-x-1"
-                  )}
-                />
-              </button>
-              
-              {/* Metronome Icon */}
-              <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
-                <img 
-                  src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
-                  alt="Metronome"
-                  className="w-8 h-8"
-                />
-              </div>
-            </div>
+              />
+            </button>
             
+            {/* Metronome Icon */}
+            <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+              <img 
+                src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                alt="Metronome"
+                className="w-8 h-8"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Main Controls */}
-        <div className="flex justify-center mt-4">
+          {/* Main Controls - Center/Right */}
           <div className="flex items-center gap-4">
             {/* Tempo Controls */}
             <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
