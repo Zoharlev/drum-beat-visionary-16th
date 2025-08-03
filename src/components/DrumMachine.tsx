@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { DrumClassifier } from "./DrumClassifier";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -405,6 +406,23 @@ export const DrumMachine = () => {
     }));
   };
 
+  const handleDrumDetected = (drum: string, confidence: number) => {
+    // Add detected drum to current step
+    if (pattern[drum] && currentStep < 16) {
+      setPattern(prev => ({
+        ...prev,
+        [drum]: prev[drum].map((active, index) => 
+          index === currentStep ? true : active
+        )
+      }));
+
+      toast({
+        title: "Drum Detected",
+        description: `${drum.charAt(0).toUpperCase() + drum.slice(1)} detected (${Math.round(confidence * 100)}%)`,
+      });
+    }
+  };
+
   const clearPattern = () => {
     setPattern({
       kick: new Array(16).fill(false),
@@ -426,6 +444,14 @@ export const DrumMachine = () => {
           <p className="text-muted-foreground text-lg">
             Practice Name
           </p>
+        </div>
+
+        {/* Live Listening Status */}
+        <div className="flex justify-center mb-4">
+          <DrumClassifier 
+            isActive={isPlaying}
+            onDrumDetected={handleDrumDetected}
+          />
         </div>
 
         {/* Drum Grid */}
