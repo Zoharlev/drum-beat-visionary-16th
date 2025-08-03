@@ -420,13 +420,26 @@ export const DrumMachine = () => {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header Controls */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Pattern Instructions */}
+        <div className="text-center mb-6">
+          <p className="text-muted-foreground text-lg">
+            Play the following notes
+          </p>
+        </div>
+
+        {/* Drum Grid */}
+        <DrumGrid
+          pattern={pattern}
+          currentStep={currentStep}
+          onStepToggle={toggleStep}
+          onClearPattern={clearPattern}
+          metronomeEnabled={metronomeEnabled}
+          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+        />
+
+        {/* Bottom Toolbar */}
+        <div className="flex justify-center mt-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <RotateCcw className="h-5 w-5" />
-            </Button>
-            
             {/* Tempo Controls */}
             <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
               <Button
@@ -485,29 +498,12 @@ export const DrumMachine = () => {
             >
               <RotateCcw className="h-5 w-5" />
             </Button>
+
+            <Button variant="ghost" size="icon">
+              <Settings className="h-5 w-5" />
+            </Button>
           </div>
-
-          <Button variant="ghost" size="icon">
-            <Settings className="h-5 w-5" />
-          </Button>
         </div>
-
-        {/* Pattern Instructions */}
-        <div className="text-center mb-6">
-          <p className="text-muted-foreground text-lg">
-            Play the following notes
-          </p>
-        </div>
-
-        {/* Drum Grid */}
-        <DrumGrid
-          pattern={pattern}
-          currentStep={currentStep}
-          onStepToggle={toggleStep}
-          onClearPattern={clearPattern}
-          metronomeEnabled={metronomeEnabled}
-          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-        />
       </div>
     </div>
   );
