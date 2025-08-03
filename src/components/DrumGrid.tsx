@@ -46,10 +46,57 @@ export const DrumGrid = ({
       {/* Controls */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant={metronomeEnabled ? "default" : "outline"} onClick={onMetronomeToggle} className="flex items-center gap-2">
-            {metronomeEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-            Metronome
-          </Button>
+          {/* Custom Metronome Toggle */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onMetronomeToggle}
+              className={cn(
+                "relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+              )}
+            >
+              <span
+                className={cn(
+                  "inline-block h-6 w-6 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                  metronomeEnabled ? "translate-x-7" : "translate-x-1"
+                )}
+              />
+            </button>
+            
+            {/* Metronome Icon */}
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30">
+              <svg 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                className="text-violet-600 dark:text-violet-400"
+              >
+                <path 
+                  d="M12 2L14 6H10L12 2Z" 
+                  fill="currentColor"
+                />
+                <path 
+                  d="M12 6V20" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round"
+                />
+                <path 
+                  d="M8 20H16" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round"
+                />
+                <circle 
+                  cx="12" 
+                  cy="14" 
+                  r="2" 
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
         
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
