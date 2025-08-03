@@ -13,6 +13,7 @@ export const DrumMachine = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
   const [pattern, setPattern] = useState<DrumPattern>(() => {
     // Initialize with your specific Hi-Hat pattern
     // Times: 0.25s, 0.73s, 1.22s, 1.7s
@@ -35,6 +36,7 @@ export const DrumMachine = () => {
   });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const { toast } = useToast();
 
@@ -87,6 +89,36 @@ export const DrumMachine = () => {
       }
     }
   }, [currentStep, isPlaying, pattern, metronomeEnabled]);
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (isPlaying) {
+      timerRef.current = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            setIsPlaying(false);
+            toast({
+              title: "Time's up!",
+              description: "2-minute practice session completed",
+            });
+            return 120; // Reset to 2:00
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isPlaying, toast]);
 
   const playDrumSound = (drum: string) => {
     if (!audioContextRef.current) return;
@@ -346,6 +378,7 @@ export const DrumMachine = () => {
   const reset = () => {
     setIsPlaying(false);
     setCurrentStep(0);
+    setTimeRemaining(120); // Reset timer to 2:00
     toast({
       title: "Reset",
       description: "Pattern reset to beginning",
@@ -354,6 +387,12 @@ export const DrumMachine = () => {
 
   const changeBpm = (delta: number) => {
     setBpm(prev => Math.max(60, Math.min(200, prev + delta)));
+  };
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const toggleStep = (drum: string, step: number) => {
@@ -379,126 +418,96 @@ export const DrumMachine = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Controls */}
+        <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <Button variant="ghost" size="icon">
               <RotateCcw className="h-5 w-5" />
             </Button>
             
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Quarter Note Fill on Snare</h1>
-              <p className="text-sm text-muted-foreground">Rhythm Training</p>
+            {/* Tempo Controls */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => changeBpm(-5)}
+                className="h-8 w-8"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center gap-2 px-3">
+                <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <span className="text-2xl font-bold text-foreground mx-3">
+                  {bpm}
+                </span>
+              </div>
+              
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => changeBpm(5)}
+                className="h-8 w-8"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
             </div>
+
+            {/* Timer Display */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+              <div className="text-2xl font-bold text-foreground">
+                {formatTime(timeRemaining)}
+              </div>
+            </div>
+
+            {/* Play Controls */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={togglePlay}
+              className="h-12 w-12 bg-primary/10 hover:bg-primary/20"
+            >
+              {isPlaying ? (
+                <Pause className="h-6 w-6 text-primary" />
+              ) : (
+                <Play className="h-6 w-6 text-primary" />
+              )}
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={reset}
+              className="h-12 w-12"
+            >
+              <RotateCcw className="h-5 w-5" />
+            </Button>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="text-xs px-3">
-              PREVIEW
-            </Button>
-            
-            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-destructive">
-              <div className="w-3 h-3 rounded-full bg-white"></div>
-            </Button>
-            
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-          </div>
+          <Button variant="ghost" size="icon">
+            <Settings className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Pattern Instructions */}
+        <div className="text-center mb-6">
+          <p className="text-muted-foreground text-lg">
+            Play the following notes
+          </p>
         </div>
 
         {/* Drum Grid */}
-        <div className="p-6">
-          <DrumGrid
-            pattern={pattern}
-            currentStep={currentStep}
-            onStepToggle={toggleStep}
-            onClearPattern={clearPattern}
-            metronomeEnabled={metronomeEnabled}
-            onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-          />
-        </div>
-
-        {/* Progress Bar */}
-        <div className="px-6 pb-4">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
-            <span>00:08</span>
-            <span>/</span>
-            <span>01:00</span>
-          </div>
-          <div className="w-full h-1 bg-secondary rounded-full">
-            <div 
-              className="h-full bg-primary rounded-full transition-all duration-300"
-              style={{ width: '13%' }}
-            ></div>
-          </div>
-        </div>
-
-        {/* Bottom Controls */}
-        <div className="flex items-center justify-center gap-6 p-6 border-t border-border">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={reset}
-            className="w-12 h-12 rounded-full bg-secondary/50 hover:bg-secondary"
-          >
-            <RotateCcw className="h-5 w-5" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={togglePlay}
-            className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90"
-          >
-            {isPlaying ? (
-              <Pause className="h-8 w-8 text-primary-foreground" />
-            ) : (
-              <Play className="h-8 w-8 text-primary-foreground ml-1" />
-            )}
-          </Button>
-
-          <Button
-            variant="ghost"
-            onClick={() => setMetronomeEnabled(!metronomeEnabled)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 hover:bg-secondary"
-          >
-            <div className={`w-3 h-3 rounded-full ${metronomeEnabled ? 'bg-primary' : 'bg-muted-foreground'}`}></div>
-            <div className="w-6 h-6 text-muted-foreground">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C13.1 2 14 2.9 14 4V8L19.5 9.5C19.8 9.6 20 9.9 20 10.2V12.8C20 13.1 19.8 13.4 19.5 13.5L14 15V20C14 21.1 13.1 22 12 22S10 21.1 10 20V15L4.5 13.5C4.2 13.4 4 13.1 4 12.8V10.2C4 9.9 4.2 9.6 4.5 9.5L10 8V4C10 2.9 10.9 2 12 2Z"/>
-              </svg>
-            </div>
-          </Button>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => changeBpm(-5)}
-              className="w-8 h-8 rounded-full bg-secondary/50 hover:bg-secondary"
-            >
-              <Minus className="h-4 w-4" />
-            </Button>
-            
-            <div className="flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-full">
-              <span className="text-2xl font-bold text-foreground">
-                {bpm}
-              </span>
-            </div>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => changeBpm(5)}
-              className="w-8 h-8 rounded-full bg-secondary/50 hover:bg-secondary"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+        <DrumGrid
+          pattern={pattern}
+          currentStep={currentStep}
+          onStepToggle={toggleStep}
+          onClearPattern={clearPattern}
+          metronomeEnabled={metronomeEnabled}
+          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+        />
       </div>
     </div>
   );
