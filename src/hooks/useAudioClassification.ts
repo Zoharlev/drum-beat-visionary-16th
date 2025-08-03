@@ -16,6 +16,7 @@ export const useAudioClassification = () => {
   const [detectedDrum, setDetectedDrum] = useState<string>('');
   const [confidence, setConfidence] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [detectionMethod, setDetectionMethod] = useState<'ml' | 'frequency'>('frequency');
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -27,16 +28,18 @@ export const useAudioClassification = () => {
   // Map ML model predictions to drum names
   const mapToDrumName = (label: string): string => {
     const drumMappings: { [key: string]: string } = {
-      'bass': 'Kick',
-      'kick': 'Kick',
-      'snare': 'Snare',
-      'hihat': 'Hi-Hat',
+      'bass_drum': 'Kick',
+      'kick_drum': 'Kick',
+      'snare_drum': 'Snare',
       'hi-hat': 'Hi-Hat',
+      'hihat': 'Hi-Hat',
       'cymbal': 'Open Hat',
-      'crash': 'Open Hat',
+      'crash_cymbal': 'Open Hat',
+      'tom-tom': 'Tom',
       'tom': 'Tom',
       'clap': 'Snare',
-      'percussion': 'Percussion'
+      'percussion': 'Percussion',
+      'drum': 'Percussion'
     };
 
     const lowerLabel = label.toLowerCase();
@@ -53,83 +56,98 @@ export const useAudioClassification = () => {
     
     setIsLoading(true);
     try {
-      console.log('Initializing audio classification model...');
+      console.log('Attempting to load audio classification model...');
       
-      // Use a general audio classification model
+      // Try to use a proper audio event classification model
       classifierRef.current = await pipeline(
         'audio-classification',
-        'Xenova/wav2vec2-large-xlsr-53-gender-recognition-librispeech', // Simple model for proof of concept
-        { device: 'webgpu' }
+        'MIT/ast-finetuned-audioset-10-10-0.4593',
+        { device: 'cpu' } // Use CPU for better compatibility
       );
       
+      setDetectionMethod('ml');
       setIsInitialized(true);
-      console.log('Audio classification model initialized');
+      console.log('ML model initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize model:', error);
-      // Fallback to a simpler approach with audio analysis
+      console.warn('Failed to load ML model, falling back to frequency analysis:', error);
+      // Fallback to frequency-based detection
+      setDetectionMethod('frequency');
       setIsInitialized(true);
     } finally {
       setIsLoading(false);
     }
   }, [isInitialized]);
 
-  const analyzeAudioBuffer = useCallback(async (audioBuffer: AudioBuffer) => {
-    try {
-      // Simple frequency analysis for drum detection
-      const channelData = audioBuffer.getChannelData(0);
-      const fftSize = 2048;
-      const audioContext = new AudioContext();
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = fftSize;
+  // Enhanced frequency analysis for better drum detection
+  const analyzeFrequencyData = useCallback((dataArray: Uint8Array, sampleRate: number) => {
+    const bufferLength = dataArray.length;
+    
+    // Calculate energy in different frequency bands
+    const lowEnd = Math.floor(20 * bufferLength / (sampleRate / 2)); // 20Hz
+    const lowMid = Math.floor(200 * bufferLength / (sampleRate / 2)); // 200Hz
+    const midHigh = Math.floor(2000 * bufferLength / (sampleRate / 2)); // 2kHz
+    const highEnd = Math.floor(8000 * bufferLength / (sampleRate / 2)); // 8kHz
+    
+    let lowEnergy = 0;
+    let lowMidEnergy = 0;
+    let midHighEnergy = 0;
+    let highEnergy = 0;
+    let totalEnergy = 0;
+    
+    // Calculate energy in each band
+    for (let i = 0; i < bufferLength; i++) {
+      const amplitude = dataArray[i];
+      totalEnergy += amplitude;
       
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      
-      // Create a buffer source and connect it
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(analyser);
-      
-      // Get frequency data
-      analyser.getByteFrequencyData(dataArray);
-      
-      // Analyze frequencies to detect drum type
-      let maxAmplitude = 0;
-      let dominantFrequency = 0;
-      
-      for (let i = 0; i < bufferLength; i++) {
-        if (dataArray[i] > maxAmplitude) {
-          maxAmplitude = dataArray[i];
-          dominantFrequency = i * audioContext.sampleRate / 2 / bufferLength;
-        }
+      if (i <= lowEnd) {
+        lowEnergy += amplitude;
+      } else if (i <= lowMid) {
+        lowMidEnergy += amplitude;
+      } else if (i <= midHigh) {
+        midHighEnergy += amplitude;
+      } else if (i <= highEnd) {
+        highEnergy += amplitude;
       }
-      
-      // Simple frequency-based drum classification
-      let drumType = 'Unknown';
-      const confidence = Math.min(maxAmplitude / 255, 1);
-      
-      if (dominantFrequency < 100) {
-        drumType = 'Kick';
-      } else if (dominantFrequency >= 100 && dominantFrequency < 300) {
-        drumType = 'Snare';
-      } else if (dominantFrequency >= 5000) {
-        drumType = 'Hi-Hat';
-      } else if (dominantFrequency >= 300 && dominantFrequency < 1000) {
-        drumType = 'Tom';
-      } else if (dominantFrequency >= 1000 && dominantFrequency < 5000) {
-        drumType = 'Open Hat';
-      }
-      
-      // Only update if confidence is high enough
-      if (confidence > 0.3) {
-        setDetectedDrum(drumType);
-        setConfidence(confidence);
-      }
-      
-      audioContext.close();
-    } catch (error) {
-      console.error('Error analyzing audio:', error);
     }
+    
+    // Normalize energies
+    const avgEnergy = totalEnergy / bufferLength;
+    lowEnergy /= lowEnd || 1;
+    lowMidEnergy /= (lowMid - lowEnd) || 1;
+    midHighEnergy /= (midHigh - lowMid) || 1;
+    highEnergy /= (highEnd - midHigh) || 1;
+    
+    // Enhanced drum classification based on energy distribution
+    let drumType = 'Unknown';
+    let confidence = 0;
+    
+    // Kick drum: dominant low frequencies
+    if (lowEnergy > lowMidEnergy * 1.5 && lowEnergy > midHighEnergy * 2 && avgEnergy > 80) {
+      drumType = 'Kick';
+      confidence = Math.min(lowEnergy / 255, 1);
+    }
+    // Snare: strong mid frequencies with some high content
+    else if (lowMidEnergy > lowEnergy && lowMidEnergy > highEnergy && midHighEnergy > lowEnergy && avgEnergy > 70) {
+      drumType = 'Snare';
+      confidence = Math.min((lowMidEnergy + midHighEnergy) / 400, 1);
+    }
+    // Hi-hat: dominant high frequencies
+    else if (highEnergy > midHighEnergy && highEnergy > lowMidEnergy * 2 && avgEnergy > 60) {
+      drumType = 'Hi-Hat';
+      confidence = Math.min(highEnergy / 255, 1);
+    }
+    // Open hat: high frequencies with some mid content
+    else if (highEnergy > lowEnergy && midHighEnergy > lowEnergy && avgEnergy > 65) {
+      drumType = 'Open Hat';
+      confidence = Math.min((highEnergy + midHighEnergy) / 400, 1);
+    }
+    // Tom: mid frequencies
+    else if (midHighEnergy > lowEnergy && midHighEnergy > highEnergy && avgEnergy > 70) {
+      drumType = 'Tom';
+      confidence = Math.min(midHighEnergy / 255, 1);
+    }
+    
+    return { drumType, confidence };
   }, []);
 
   const startListening = useCallback(async () => {
@@ -171,43 +189,20 @@ export const useAudioClassification = () => {
         const dataArray = new Uint8Array(bufferLength);
         analyserRef.current.getByteFrequencyData(dataArray);
         
-        // Look for peaks that might indicate drum hits
-        let maxAmplitude = 0;
-        let dominantFrequency = 0;
+        // Enhanced drum detection
+        const sampleRate = audioContextRef.current?.sampleRate || 44100;
+        const result = analyzeFrequencyData(dataArray, sampleRate);
         
-        for (let i = 0; i < bufferLength; i++) {
-          if (dataArray[i] > maxAmplitude) {
-            maxAmplitude = dataArray[i];
-            dominantFrequency = i * (audioContextRef.current?.sampleRate || 44100) / 2 / bufferLength;
-          }
-        }
-        
-        // Detect drum hits based on amplitude threshold
-        if (maxAmplitude > 100) { // Threshold for drum hit detection
-          let drumType = 'Unknown';
-          const confidence = Math.min(maxAmplitude / 255, 1);
-          
-          // Frequency-based classification
-          if (dominantFrequency < 100) {
-            drumType = 'Kick';
-          } else if (dominantFrequency >= 100 && dominantFrequency < 300) {
-            drumType = 'Snare';
-          } else if (dominantFrequency >= 5000) {
-            drumType = 'Hi-Hat';
-          } else if (dominantFrequency >= 300 && dominantFrequency < 1000) {
-            drumType = 'Tom';
-          } else if (dominantFrequency >= 1000 && dominantFrequency < 5000) {
-            drumType = 'Open Hat';
-          }
-          
-          setDetectedDrum(drumType);
-          setConfidence(confidence);
+        // Detect drum hits based on improved threshold
+        if (result.confidence > 0.4) { // Increased threshold for better accuracy
+          setDetectedDrum(result.drumType);
+          setConfidence(result.confidence);
           
           // Clear detection after a short delay
           setTimeout(() => {
             setDetectedDrum('');
             setConfidence(0);
-          }, 1000);
+          }, 800);
         }
         
         animationFrameRef.current = requestAnimationFrame(analyze);
@@ -254,6 +249,7 @@ export const useAudioClassification = () => {
     detectedDrum,
     confidence,
     isLoading,
+    detectionMethod,
     startListening,
     stopListening,
     initializeModel

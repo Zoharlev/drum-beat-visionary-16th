@@ -16,6 +16,7 @@ export const PracticeMode = () => {
     detectedDrum,
     confidence,
     isLoading,
+    detectionMethod,
     startListening,
     stopListening,
     initializeModel
@@ -148,10 +149,15 @@ export const PracticeMode = () => {
             )}
           </div>
 
-          {/* Model Status */}
+          {/* Detection Method Status */}
+          {isInitialized && (
+            <div className="text-sm text-muted-foreground">
+              Detection method: {detectionMethod === 'ml' ? 'Machine Learning' : 'Frequency Analysis'}
+            </div>
+          )}
           {isLoading && (
             <div className="text-sm text-muted-foreground">
-              Loading ML model for audio classification...
+              Loading audio classification model...
             </div>
           )}
         </div>
@@ -175,7 +181,7 @@ export const PracticeMode = () => {
           </div>
           <div className="flex items-start gap-3">
             <span className="flex-shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-xs">4</span>
-            <p>Use background noise reduction and ML-based classification</p>
+            <p>Uses enhanced frequency analysis with ML fallback for accurate drum detection</p>
           </div>
         </div>
       </Card>
