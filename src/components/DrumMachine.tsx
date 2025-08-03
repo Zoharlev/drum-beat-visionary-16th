@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { DrumClassifier } from "./DrumClassifier";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -405,6 +406,24 @@ export const DrumMachine = () => {
     }));
   };
 
+  const handleDrumDetected = (drum: string) => {
+    // Add the detected drum to the pattern at the current step when recording
+    if (drum in pattern && isPlaying) {
+      setPattern(prev => ({
+        ...prev,
+        [drum]: prev[drum].map((active, index) => 
+          index === currentStep ? true : active
+        )
+      }));
+      
+      // Show feedback toast
+      toast({
+        title: "Drum Detected!",
+        description: `${drum.charAt(0).toUpperCase() + drum.slice(1)} added to step ${currentStep + 1}`,
+      });
+    }
+  };
+
   const clearPattern = () => {
     setPattern({
       kick: new Array(16).fill(false),
@@ -427,6 +446,12 @@ export const DrumMachine = () => {
             Practice Name
           </p>
         </div>
+
+        {/* Real-time Drum Classifier */}
+        <DrumClassifier 
+          onDrumDetected={handleDrumDetected}
+          className="mb-6"
+        />
 
         {/* Drum Grid */}
         <DrumGrid
