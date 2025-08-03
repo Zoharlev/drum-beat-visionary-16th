@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { PracticeMode } from "./PracticeMode";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -428,97 +430,110 @@ export const DrumMachine = () => {
           </p>
         </div>
 
-        {/* Drum Grid */}
-        <DrumGrid
-          pattern={pattern}
-          currentStep={currentStep}
-          onStepToggle={toggleStep}
-          onClearPattern={clearPattern}
-          metronomeEnabled={metronomeEnabled}
-          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-          onTogglePlay={togglePlay}
-          isPlaying={isPlaying}
-        />
+        {/* Tabs for Pattern and Practice Mode */}
+        <Tabs defaultValue="pattern" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="pattern">Pattern</TabsTrigger>
+            <TabsTrigger value="practice">Practice</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="pattern" className="space-y-6">
+            {/* Drum Grid */}
+            <DrumGrid
+              pattern={pattern}
+              currentStep={currentStep}
+              onStepToggle={toggleStep}
+              onClearPattern={clearPattern}
+              metronomeEnabled={metronomeEnabled}
+              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+              onTogglePlay={togglePlay}
+              isPlaying={isPlaying}
+            />
 
-        {/* Bottom Toolbar */}
-        <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
-          {/* Custom Metronome Toggle - Left Side */}
-          <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-            <button
-              onClick={() => setMetronomeEnabled(!metronomeEnabled)}
-              className={cn(
-                "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
-                metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
-              )}
-            >
-              <span
-                className={cn(
-                  "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                  metronomeEnabled ? "translate-x-5" : "translate-x-1"
-                )}
-              />
-            </button>
-            
-            {/* Metronome Icon */}
-            <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
-              <img 
-                src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
-                alt="Metronome"
-                className="w-8 h-8"
-              />
-            </div>
-          </div>
-
-          {/* Main Controls - Center/Right */}
-          <div className="flex items-center gap-4">
-            {/* Tempo Controls */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => changeBpm(-5)}
-                className="h-8 w-8"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              
-              <div className="flex items-center gap-2 px-3">
-                <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
-                <div className="w-3 h-3 rounded-full bg-primary"></div>
-                <span className="text-2xl font-bold text-foreground mx-3">
-                  {bpm}
-                </span>
+            {/* Bottom Toolbar */}
+            <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
+              {/* Custom Metronome Toggle - Left Side */}
+              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                <button
+                  onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+                  className={cn(
+                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                    metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                      metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                
+                {/* Metronome Icon */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+                  <img 
+                    src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                    alt="Metronome"
+                    className="w-8 h-8"
+                  />
+                </div>
               </div>
-              
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => changeBpm(5)}
-                className="h-8 w-8"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
 
-            {/* Timer Display */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-              <div className="text-2xl font-bold text-foreground">
-                {formatTime(timeRemaining)}
+              {/* Main Controls - Center/Right */}
+              <div className="flex items-center gap-4">
+                {/* Tempo Controls */}
+                <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => changeBpm(-5)}
+                    className="h-8 w-8"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  
+                  <div className="flex items-center gap-2 px-3">
+                    <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
+                    <div className="w-3 h-3 rounded-full bg-primary"></div>
+                    <span className="text-2xl font-bold text-foreground mx-3">
+                      {bpm}
+                    </span>
+                  </div>
+                  
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => changeBpm(5)}
+                    className="h-8 w-8"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                {/* Timer Display */}
+                <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+                  <div className="text-2xl font-bold text-foreground">
+                    {formatTime(timeRemaining)}
+                  </div>
+                </div>
+
+                {/* Play Controls */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={reset}
+                  className="h-12 w-12"
+                >
+                  <RotateCcw className="h-5 w-5" />
+                </Button>
               </div>
             </div>
-
-            {/* Play Controls */}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={reset}
-              className="h-12 w-12"
-            >
-              <RotateCcw className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="practice">
+            <PracticeMode />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
