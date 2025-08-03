@@ -64,7 +64,7 @@ export const DrumGrid = ({
             </button>
             
             {/* Metronome Icon */}
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30">
+            <div className={cn("flex items-center justify-center w-8 h-8 rounded-full", metronomeEnabled ? "bg-violet-100 dark:bg-violet-900/30" : "")} style={{ backgroundColor: metronomeEnabled ? undefined : '#786C7D' }}>
               <img 
                 src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
                 alt="Metronome"
