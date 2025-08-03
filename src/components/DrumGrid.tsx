@@ -10,6 +10,8 @@ interface DrumGridProps {
   onClearPattern: () => void;
   metronomeEnabled: boolean;
   onMetronomeToggle: () => void;
+  onTogglePlay: () => void;
+  isPlaying: boolean;
 }
 const drumLabels: {
   [key: string]: {
@@ -40,11 +42,20 @@ export const DrumGrid = ({
   onStepToggle,
   onClearPattern,
   metronomeEnabled,
-  onMetronomeToggle
+  onMetronomeToggle,
+  onTogglePlay,
+  isPlaying
 }: DrumGridProps) => {
   return <div className="space-y-6">
       {/* Controls */}
       <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="ghost"
+          onClick={onTogglePlay}
+          className="h-12 px-6 bg-primary/10 hover:bg-primary/20 rounded-[20px] text-xs"
+        >
+          PREVIEW
+        </Button>
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
           <Trash2 className="h-4 w-4" />
           Clear

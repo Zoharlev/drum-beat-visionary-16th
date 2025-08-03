@@ -436,6 +436,8 @@ export const DrumMachine = () => {
           onClearPattern={clearPattern}
           metronomeEnabled={metronomeEnabled}
           onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+          onTogglePlay={togglePlay}
+          isPlaying={isPlaying}
         />
 
         {/* Bottom Toolbar */}
@@ -506,14 +508,6 @@ export const DrumMachine = () => {
             </div>
 
             {/* Play Controls */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={togglePlay}
-              className="h-12 px-6 bg-primary/10 hover:bg-primary/20 rounded-[20px] text-xs"
-            >
-              PREVIEW
-            </Button>
 
             <Button
               variant="ghost"
