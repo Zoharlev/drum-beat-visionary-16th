@@ -182,43 +182,63 @@ export const useAudioClassification = () => {
       
       setIsListening(true);
       
-      // Start real-time analysis with aggressive debugging
+      // Start real-time analysis with comprehensive debugging
+      let frameCount = 0;
       const analyze = () => {
-        if (!analyserRef.current || !isListening) return;
+        frameCount++;
+        
+        // Check if we should continue
+        if (!analyserRef.current) {
+          console.error('❌ Analyser is null! Stopping analysis.');
+          return;
+        }
+        
+        if (!isListening) {
+          console.log('🛑 Not listening anymore, stopping analysis');
+          return;
+        }
         
         const bufferLength = analyserRef.current.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
         analyserRef.current.getByteFrequencyData(dataArray);
         
-        // Debug: Always log audio activity (even when silent)
+        // Calculate audio metrics
         const totalEnergy = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
         const maxLevel = Math.max(...dataArray);
+        const nonZeroValues = dataArray.filter(val => val > 0).length;
         
-        // Log every few frames to see if audio is being captured
-        if (Math.random() < 0.1) { // Log ~10% of frames to avoid spam
-          console.log(`🎤 Audio: avg=${totalEnergy.toFixed(1)}, max=${maxLevel}, listening=${isListening}`);
+        // Log every 30 frames (~1 second at 30fps) to show we're running
+        if (frameCount % 30 === 0) {
+          console.log(`🎤 AUDIO LOOP RUNNING [${frameCount}]: avg=${totalEnergy.toFixed(1)}, max=${maxLevel}, nonZero=${nonZeroValues}/${bufferLength}, listening=${isListening}`);
         }
         
-        // ULTRA sensitive detection - detect even the slightest audio changes
-        if (totalEnergy > 0.1 || maxLevel > 1) { // Extremely sensitive threshold
-          console.log('🥁 SOUND DETECTED!', { totalEnergy: totalEnergy.toFixed(2), maxLevel });
+        // Super sensitive detection - ANY audio activity
+        if (totalEnergy > 0.1 || maxLevel > 0 || nonZeroValues > 10) {
+          console.log('🔥 AUDIO DETECTED!', { 
+            frame: frameCount,
+            totalEnergy: totalEnergy.toFixed(2), 
+            maxLevel, 
+            nonZeroValues,
+            rawSample: Array.from(dataArray.slice(0, 10))
+          });
           
-          // Force a detection for ANY audio activity
-          const drumType = 'Generic Sound';
-          const confidence = Math.max(0.3, totalEnergy / 20, maxLevel / 100); // Guarantee minimum confidence
+          // Immediate detection for ANY sound
+          const drumType = `Sound-${frameCount}`;
+          const confidence = Math.max(0.5, totalEnergy / 50, maxLevel / 200);
           
+          console.log(`🎯 SETTING DETECTION: ${drumType} confidence=${confidence.toFixed(2)}`);
           setDetectedDrum(drumType);
           setConfidence(confidence);
-          console.log(`✅ FORCING DETECTION: ${drumType} with confidence ${confidence.toFixed(2)}`);
           
-          // Clear detection after a delay
+          // Clear after 1.5 seconds
           setTimeout(() => {
-            console.log('🔄 Clearing detection');
+            console.log(`🔄 Clearing detection for ${drumType}`);
             setDetectedDrum('');
             setConfidence(0);
-          }, 2000); // Longer display time
+          }, 1500);
         }
         
+        // Continue the loop
         animationFrameRef.current = requestAnimationFrame(analyze);
       };
       
