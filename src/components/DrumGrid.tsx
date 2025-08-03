@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Trash2, Volume2, VolumeX } from "lucide-react";
+import { Trash2, Volume2, VolumeX, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 interface DrumGridProps {
   pattern: {
@@ -44,10 +44,14 @@ export const DrumGrid = ({
 }: DrumGridProps) => {
   return <div className="space-y-6">
       {/* Controls */}
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-2">
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
           <Trash2 className="h-4 w-4" />
           Clear
+        </Button>
+        <Button variant="outline" className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          Settings
         </Button>
       </div>
 
