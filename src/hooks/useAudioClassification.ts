@@ -62,7 +62,7 @@ export const useAudioClassification = () => {
       classifierRef.current = await pipeline(
         'audio-classification',
         'MIT/ast-finetuned-audioset-10-10-0.4593',
-        { device: 'cpu' } // Use CPU for better compatibility
+        { device: 'wasm' } // Use WASM for better compatibility
       );
       
       setDetectionMethod('ml');
@@ -121,30 +121,31 @@ export const useAudioClassification = () => {
     let drumType = 'Unknown';
     let confidence = 0;
     
+    // Lower the energy thresholds for better detection
     // Kick drum: dominant low frequencies
-    if (lowEnergy > lowMidEnergy * 1.5 && lowEnergy > midHighEnergy * 2 && avgEnergy > 80) {
+    if (lowEnergy > lowMidEnergy * 1.2 && lowEnergy > midHighEnergy * 1.5 && avgEnergy > 40) {
       drumType = 'Kick';
-      confidence = Math.min(lowEnergy / 255, 1);
+      confidence = Math.min(lowEnergy / 200, 1); // Adjusted for better sensitivity
     }
-    // Snare: strong mid frequencies with some high content
-    else if (lowMidEnergy > lowEnergy && lowMidEnergy > highEnergy && midHighEnergy > lowEnergy && avgEnergy > 70) {
+    // Snare: strong mid frequencies with some high content  
+    else if (lowMidEnergy > lowEnergy * 0.8 && midHighEnergy > lowEnergy * 0.5 && avgEnergy > 35) {
       drumType = 'Snare';
-      confidence = Math.min((lowMidEnergy + midHighEnergy) / 400, 1);
+      confidence = Math.min((lowMidEnergy + midHighEnergy) / 300, 1); // Adjusted for better sensitivity
     }
     // Hi-hat: dominant high frequencies
-    else if (highEnergy > midHighEnergy && highEnergy > lowMidEnergy * 2 && avgEnergy > 60) {
+    else if (highEnergy > midHighEnergy * 0.8 && highEnergy > lowMidEnergy * 1.2 && avgEnergy > 30) {
       drumType = 'Hi-Hat';
-      confidence = Math.min(highEnergy / 255, 1);
+      confidence = Math.min(highEnergy / 200, 1); // Adjusted for better sensitivity
     }
     // Open hat: high frequencies with some mid content
-    else if (highEnergy > lowEnergy && midHighEnergy > lowEnergy && avgEnergy > 65) {
+    else if (highEnergy > lowEnergy * 0.8 && midHighEnergy > lowEnergy * 0.5 && avgEnergy > 35) {
       drumType = 'Open Hat';
-      confidence = Math.min((highEnergy + midHighEnergy) / 400, 1);
+      confidence = Math.min((highEnergy + midHighEnergy) / 300, 1); // Adjusted for better sensitivity
     }
     // Tom: mid frequencies
-    else if (midHighEnergy > lowEnergy && midHighEnergy > highEnergy && avgEnergy > 70) {
+    else if (midHighEnergy > lowEnergy * 0.8 && midHighEnergy > highEnergy * 0.8 && avgEnergy > 35) {
       drumType = 'Tom';
-      confidence = Math.min(midHighEnergy / 255, 1);
+      confidence = Math.min(midHighEnergy / 200, 1); // Adjusted for better sensitivity
     }
     
     return { drumType, confidence };
@@ -189,12 +190,18 @@ export const useAudioClassification = () => {
         const dataArray = new Uint8Array(bufferLength);
         analyserRef.current.getByteFrequencyData(dataArray);
         
-        // Enhanced drum detection
+        // Enhanced drum detection with lower threshold for testing
         const sampleRate = audioContextRef.current?.sampleRate || 44100;
         const result = analyzeFrequencyData(dataArray, sampleRate);
         
-        // Detect drum hits based on improved threshold
-        if (result.confidence > 0.4) { // Increased threshold for better accuracy
+        // Debug logging
+        const totalEnergy = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+        if (totalEnergy > 20) { // Log when there's any audio activity
+          console.log(`Audio detected - Total Energy: ${totalEnergy.toFixed(1)}, Drum: ${result.drumType}, Confidence: ${result.confidence.toFixed(2)}`);
+        }
+        
+        // Detect drum hits with lower threshold for testing
+        if (result.confidence > 0.2) { // Lowered threshold for testing
           setDetectedDrum(result.drumType);
           setConfidence(result.confidence);
           
