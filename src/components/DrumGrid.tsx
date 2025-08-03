@@ -8,6 +8,8 @@ interface DrumGridProps {
   currentStep: number;
   onStepToggle: (drum: string, step: number) => void;
   onClearPattern: () => void;
+  metronomeEnabled: boolean;
+  onMetronomeToggle: () => void;
 }
 const drumLabels: {
   [key: string]: {
@@ -36,7 +38,9 @@ export const DrumGrid = ({
   pattern,
   currentStep,
   onStepToggle,
-  onClearPattern
+  onClearPattern,
+  metronomeEnabled,
+  onMetronomeToggle
 }: DrumGridProps) => {
   return <div className="space-y-6">
       {/* Controls */}

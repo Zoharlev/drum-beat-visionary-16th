@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface DrumPattern {
   [key: string]: boolean[];
@@ -433,10 +434,45 @@ export const DrumMachine = () => {
           currentStep={currentStep}
           onStepToggle={toggleStep}
           onClearPattern={clearPattern}
+          metronomeEnabled={metronomeEnabled}
+          onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
         />
 
         {/* Bottom Toolbar */}
         <div className="flex justify-center mt-8">
+          <div className="flex items-center gap-4">
+            {/* Custom Metronome Toggle */}
+            <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+              <button
+                onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+                className={cn(
+                  "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                  metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                    metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                  )}
+                />
+              </button>
+              
+              {/* Metronome Icon */}
+              <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+                <img 
+                  src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                  alt="Metronome"
+                  className="w-8 h-8"
+                />
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+        {/* Main Controls */}
+        <div className="flex justify-center mt-4">
           <div className="flex items-center gap-4">
             {/* Tempo Controls */}
             <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
@@ -495,19 +531,6 @@ export const DrumMachine = () => {
               className="h-12 w-12"
             >
               <RotateCcw className="h-5 w-5" />
-            </Button>
-
-            {/* Metronome Toggle */}
-            <Button
-              variant={metronomeEnabled ? "default" : "ghost"}
-              size="icon"
-              onClick={() => setMetronomeEnabled(!metronomeEnabled)}
-              className="h-12 w-12"
-            >
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-current" />
-                <div className="w-1 h-4 bg-current rounded-full" />
-              </div>
             </Button>
 
             <Button variant="ghost" size="icon">
