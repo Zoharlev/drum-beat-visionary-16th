@@ -4,7 +4,7 @@ import { Clock } from 'lucide-react';
 interface BeatDetection {
   timestamp: number;
   confidence: number;
-  type: 'kick' | 'snare' | 'hihat' | 'beat';
+  type: 'kick' | 'snare' | 'hihat' | 'openhat' | 'beat';
 }
 
 interface BeatTimelineProps {
@@ -20,6 +20,8 @@ export const BeatTimeline = ({ beats }: BeatTimelineProps) => {
         return 'bg-blue-500';
       case 'hihat':
         return 'bg-yellow-500';
+      case 'openhat':
+        return 'bg-orange-500';
       default:
         return 'bg-gray-500';
     }
@@ -105,6 +107,10 @@ export const BeatTimeline = ({ beats }: BeatTimelineProps) => {
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-yellow-500" />
                 <span>Hi-hat</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-orange-500" />
+                <span>Open Hat</span>
               </div>
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-gray-500" />
