@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
 import { PracticeMode } from "./PracticeMode";
 import { SystemLearning } from "./SystemLearning";
 import { useToast } from "@/hooks/use-toast";
+import { useDrumListener } from "@/hooks/useDrumListener";
 import { cn } from "@/lib/utils";
 
 interface DrumPattern {
@@ -43,6 +44,53 @@ export const DrumMachine = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const { toast } = useToast();
+  
+  // Drum listener hook for microphone beat detection
+  const {
+    isListening,
+    detectedBeats,
+    audioLevel,
+    error: listenerError,
+    isModelLoaded,
+    startListening,
+    stopListening,
+    clearBeats
+  } = useDrumListener();
+
+  // Handle listener state changes and errors
+  useEffect(() => {
+    if (listenerError) {
+      toast({
+        title: "Listener Error",
+        description: listenerError,
+        variant: "destructive"
+      });
+    }
+  }, [listenerError, toast]);
+
+  const handleListenerToggle = async () => {
+    if (isListening) {
+      stopListening();
+      toast({
+        title: "Listening Stopped",
+        description: "Drum detection disabled"
+      });
+    } else {
+      try {
+        await startListening();
+        toast({
+          title: "Listening Started",
+          description: "Drum detection enabled"
+        });
+      } catch (error) {
+        toast({
+          title: "Failed to Start",
+          description: "Could not access microphone",
+          variant: "destructive"
+        });
+      }
+    }
+  };
 
   // Initialize audio context
   useEffect(() => {
@@ -454,30 +502,71 @@ export const DrumMachine = () => {
 
             {/* Bottom Toolbar */}
             <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
-              {/* Custom Metronome Toggle - Left Side */}
-              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-                <button
-                  onClick={() => setMetronomeEnabled(!metronomeEnabled)}
-                  className={cn(
-                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
-                    metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
-                  )}
-                >
-                  <span
+              {/* Left Side Controls */}
+              <div className="flex items-center gap-4">
+                {/* Custom Metronome Toggle */}
+                <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                  <button
+                    onClick={() => setMetronomeEnabled(!metronomeEnabled)}
                     className={cn(
-                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                      metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                      "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                      metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
                     )}
-                  />
-                </button>
-                
-                {/* Metronome Icon */}
-                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
-                  <img 
-                    src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
-                    alt="Metronome"
-                    className="w-8 h-8"
-                  />
+                  >
+                    <span
+                      className={cn(
+                        "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                        metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                      )}
+                    />
+                  </button>
+                  
+                  {/* Metronome Icon */}
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+                    <img 
+                      src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                      alt="Metronome"
+                      className="w-8 h-8"
+                    />
+                  </div>
+                </div>
+
+                {/* Drum Listener Toggle */}
+                <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                  <button
+                    onClick={handleListenerToggle}
+                    disabled={!isModelLoaded}
+                    className={cn(
+                      "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+                      isListening ? "bg-red-600" : "bg-gray-300"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                        isListening ? "translate-x-5" : "translate-x-1"
+                      )}
+                    />
+                  </button>
+                  
+                  {/* Microphone Icon */}
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: isListening ? '#ff6b6b' : '#786C7D' }}>
+                    {isListening ? (
+                      <Mic className="h-4 w-4 text-white" />
+                    ) : (
+                      <MicOff className="h-4 w-4 text-white" />
+                    )}
+                  </div>
+                  
+                  {/* Audio Level Indicator */}
+                  {isListening && (
+                    <div className="w-8 h-4 bg-gray-700 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-green-400 transition-all duration-100 rounded-full"
+                        style={{ width: `${audioLevel * 100}%` }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
