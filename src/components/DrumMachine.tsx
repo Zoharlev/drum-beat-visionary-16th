@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "lucide-react";
@@ -103,6 +103,34 @@ export const DrumMachine = () => {
   // Step timing based on BPM
   const stepDuration = (60 / bpm / 4) * 1000; // 16th notes
 
+  // Convert detected beats to pattern grid positions when listening
+  const detectedPattern = useMemo(() => {
+    if (!isListening || detectedBeats.length === 0) return null;
+
+    const newPattern: DrumPattern = {
+      kick: new Array(16).fill(false),
+      snare: new Array(16).fill(false),
+      hihat: new Array(16).fill(false),
+      openhat: new Array(16).fill(false),
+    };
+
+    const firstBeatTime = detectedBeats[0]?.timestamp || Date.now();
+    
+    detectedBeats.forEach(beat => {
+      const relativeTime = beat.timestamp - firstBeatTime;
+      const stepPosition = Math.round(relativeTime / stepDuration) % 16;
+      
+      if (stepPosition >= 0 && stepPosition < 16 && beat.confidence > 0.6) {
+        newPattern[beat.type][stepPosition] = true;
+      }
+    });
+
+    return newPattern;
+  }, [detectedBeats, stepDuration, isListening]);
+
+  // Display pattern: use detected pattern when listening, otherwise use manual pattern
+  const displayPattern = isListening && detectedPattern ? detectedPattern : pattern;
+
   useEffect(() => {
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
@@ -129,7 +157,7 @@ export const DrumMachine = () => {
   useEffect(() => {
     if (isPlaying) {
       // Play sounds for active notes at current step
-      Object.entries(pattern).forEach(([drum, steps]) => {
+      Object.entries(displayPattern).forEach(([drum, steps]) => {
         if (steps[currentStep]) {
           playDrumSound(drum);
         }
@@ -140,7 +168,7 @@ export const DrumMachine = () => {
         playMetronome();
       }
     }
-  }, [currentStep, isPlaying, pattern, metronomeEnabled]);
+  }, [currentStep, isPlaying, displayPattern, metronomeEnabled]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -490,7 +518,7 @@ export const DrumMachine = () => {
           <TabsContent value="pattern" className="space-y-6">
             {/* Drum Grid */}
             <DrumGrid
-              pattern={pattern}
+              pattern={displayPattern}
               currentStep={currentStep}
               onStepToggle={toggleStep}
               onClearPattern={clearPattern}
