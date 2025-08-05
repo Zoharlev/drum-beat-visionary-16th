@@ -6,7 +6,7 @@ import { DrumGrid } from "./DrumGrid";
 import { PracticeMode } from "./PracticeMode";
 import { SystemLearning } from "./SystemLearning";
 import { useToast } from "@/hooks/use-toast";
-import { useTeachableMachineListener } from "@/hooks/useTeachableMachineListener";
+import { useDrumListener } from "@/hooks/useDrumListener";
 import { cn } from "@/lib/utils";
 
 interface DrumPattern {
@@ -45,17 +45,17 @@ export const DrumMachine = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
   const { toast } = useToast();
   
-  // Teachable Machine listener for microphone beat detection
+  // Drum listener hook for microphone beat detection
   const {
     isListening,
     detectedBeats,
     audioLevel,
     error: listenerError,
-    isModelLoading,
+    isModelLoaded,
     startListening,
     stopListening,
     clearBeats
-  } = useTeachableMachineListener();
+  } = useDrumListener();
 
   // Handle listener state changes and errors
   useEffect(() => {
@@ -563,7 +563,7 @@ export const DrumMachine = () => {
                 <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
                   <button
                     onClick={handleListenerToggle}
-                    disabled={isModelLoading}
+                    disabled={!isModelLoaded}
                     className={cn(
                       "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
                       isListening ? "bg-red-600" : "bg-gray-300"
