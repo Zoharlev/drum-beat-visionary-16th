@@ -26,10 +26,11 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
   const audioBufferRef = useRef<Float32Array[]>([]);
   const lastProcessTimeRef = useRef<number>(0);
 
-  // Model configurations
+  // Model configurations with local and remote paths
   const modelConfigs = {
     'wav2vec2-drums': {
-      model: 'DunnBC22/wav2vec2-base-Drum_Kit_Sounds',
+      localPath: './models/wav2vec2-base-Drum_Kit_Sounds',
+      remotePath: 'DunnBC22/wav2vec2-base-Drum_Kit_Sounds',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
@@ -42,7 +43,8 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       }
     },
     'yamnet': {
-      model: 'google/yamnet',
+      localPath: './models/yamnet',
+      remotePath: 'google/yamnet',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
@@ -54,7 +56,29 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
     }
   };
 
-  // Initialize the Hugging Face model
+  // Validate local model files
+  const validateLocalModel = async (localPath: string): Promise<boolean> => {
+    try {
+      // Check for required model files
+      const requiredFiles = ['model.onnx', 'config.json'];
+      const fileChecks = await Promise.all(
+        requiredFiles.map(async (file) => {
+          try {
+            const response = await fetch(`${localPath}/${file}`, { method: 'HEAD' });
+            return response.ok;
+          } catch {
+            return false;
+          }
+        })
+      );
+      
+      return fileChecks.every(exists => exists);
+    } catch {
+      return false;
+    }
+  };
+
+  // Initialize the Hugging Face model with local fallback
   const initializeModel = useCallback(async () => {
     try {
       setError(null);
@@ -64,16 +88,34 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       const config = modelConfigs[modelType];
       console.log(`Initializing ${modelType} model...`);
 
+      let modelPath = config.remotePath;
+      let isLocalModel = false;
+
+      // Try local model first
+      console.log(`Checking for local model at: ${config.localPath}`);
+      const localModelValid = await validateLocalModel(config.localPath);
+      
+      if (localModelValid) {
+        modelPath = config.localPath;
+        isLocalModel = true;
+        console.log(`Using local model: ${modelPath}`);
+      } else {
+        console.log(`Local model not found or invalid, using remote: ${config.remotePath}`);
+      }
+
       // Create pipeline with progress tracking
       const classifier = await pipeline(
         config.task,
-        config.model,
+        modelPath,
         { 
           device: config.device,
           progress_callback: (progress: any) => {
-            if (progress.status === 'downloading') {
+            if (progress.status === 'downloading' && !isLocalModel) {
               const percentage = Math.round((progress.loaded / progress.total) * 100);
               setLoadingProgress(percentage);
+            } else if (isLocalModel) {
+              // For local models, show immediate progress
+              setLoadingProgress(50);
             }
           }
         }
@@ -82,23 +124,43 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       pipelineRef.current = classifier;
       setIsModelLoaded(true);
       setLoadingProgress(100);
-      console.log(`${modelType} model loaded successfully`);
+      console.log(`${modelType} model loaded successfully ${isLocalModel ? '(local)' : '(remote)'}`);
 
     } catch (err) {
       console.error('Error initializing model:', err);
-      setError(`Failed to load ${modelType} model. Falling back to WebGPU might not be available.`);
+      setError(`Failed to load ${modelType} model. Trying CPU fallback...`);
       
       // Fallback to CPU if WebGPU fails
       try {
         const config = modelConfigs[modelType];
-        const classifier = await pipeline(config.task, config.model, { device: 'cpu' });
+        
+        // Try local first, then remote on CPU
+        let modelPath = config.remotePath;
+        const localModelValid = await validateLocalModel(config.localPath);
+        
+        if (localModelValid) {
+          modelPath = config.localPath;
+          console.log('Using local model for CPU fallback');
+        }
+
+        const classifier = await pipeline(config.task, modelPath, { 
+          device: 'cpu',
+          progress_callback: (progress: any) => {
+            if (progress.status === 'downloading') {
+              const percentage = Math.round((progress.loaded / progress.total) * 100);
+              setLoadingProgress(percentage);
+            }
+          }
+        });
+        
         pipelineRef.current = classifier;
         setIsModelLoaded(true);
         setLoadingProgress(100);
         console.log(`${modelType} model loaded on CPU`);
+        setError(`Model loaded on CPU (WebGPU unavailable)`);
       } catch (fallbackErr) {
         console.error('CPU fallback failed:', fallbackErr);
-        setError(`Failed to load ${modelType} model on both WebGPU and CPU`);
+        setError(`Failed to load ${modelType} model on both WebGPU and CPU. Please check network connection or download models locally.`);
       }
     }
   }, [modelType]);
