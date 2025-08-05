@@ -62,8 +62,8 @@ export const useTeachableMachineListener = () => {
       // Initialize the sound classifier with the Teachable Machine model
       const modelURL = 'https://teachablemachine.withgoogle.com/models/bYQl7b5QM/model.json';
       
-      classifierRef.current = await window.ml5.soundClassifier(modelURL, {
-        probabilityThreshold: 0.7
+      classifierRef.current = await window.ml5.soundClassifier(modelURL, () => {
+        console.log('Teachable Machine model loaded successfully');
       });
 
       setIsModelLoading(false);
@@ -128,8 +128,8 @@ export const useTeachableMachineListener = () => {
       };
       updateAudioLevel();
 
-      // Setup classification callback
-      classifierRef.current.classify((error: any, results: any[]) => {
+      // Setup classification callback for Teachable Machine model
+      classifierRef.current.classifyStart((error: any, results: any[]) => {
         if (error) {
           console.error('Classification error:', error);
           return;
@@ -172,8 +172,8 @@ export const useTeachableMachineListener = () => {
       audioContextRef.current = null;
     }
 
-    if (classifierRef.current && classifierRef.current.classify) {
-      classifierRef.current.classify(false);
+    if (classifierRef.current && classifierRef.current.classifyStop) {
+      classifierRef.current.classifyStop();
     }
 
     analyserRef.current = null;
