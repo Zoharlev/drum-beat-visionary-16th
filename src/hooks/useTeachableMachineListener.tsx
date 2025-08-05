@@ -76,11 +76,26 @@ export const useTeachableMachineListener = () => {
 
   // Map model labels to drum types
   const mapLabelToDrumType = (label: string): 'kick' | 'snare' | 'hihat' | 'openhat' | null => {
-    const lowerLabel = label.toLowerCase();
-    if (lowerLabel.includes('kick') || lowerLabel.includes('bass')) return 'kick';
-    if (lowerLabel.includes('snare')) return 'snare';
-    if (lowerLabel.includes('hihat') || lowerLabel.includes('hi-hat')) return 'hihat';
-    if (lowerLabel.includes('open') || lowerLabel.includes('crash')) return 'openhat';
+    const normalizedLabel = label.toLowerCase();
+    
+    // Direct mappings for common drum sounds
+    if (normalizedLabel.includes('kick')) return 'kick';
+    if (normalizedLabel.includes('snare')) return 'snare';
+    if (normalizedLabel.includes('hihat') || normalizedLabel.includes('hi-hat')) return 'hihat';
+    
+    // Map cymbal sounds to openhat
+    if (normalizedLabel.includes('crash') || 
+        normalizedLabel.includes('splash') || 
+        normalizedLabel.includes('ride') ||
+        normalizedLabel.includes('openhat') || 
+        normalizedLabel.includes('open-hat')) return 'openhat';
+    
+    // Map tom sounds to kick for now (could be expanded later)
+    if (normalizedLabel.includes('tom') || 
+        normalizedLabel.includes('floor tom') || 
+        normalizedLabel.includes('high tom') || 
+        normalizedLabel.includes('mid tom')) return 'kick';
+    
     return null;
   };
 
@@ -122,7 +137,14 @@ export const useTeachableMachineListener = () => {
           const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
           analyserRef.current.getByteFrequencyData(dataArray);
           const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-          setAudioLevel(average / 255);
+          const level = average / 255;
+          setAudioLevel(level);
+          
+          // Debug audio level (log every 100th frame to avoid spam)
+          if (Math.random() < 0.01) {
+            console.log('Audio level:', level.toFixed(3));
+          }
+          
           requestAnimationFrame(updateAudioLevel);
         }
       };
@@ -139,7 +161,10 @@ export const useTeachableMachineListener = () => {
           const topResult = results[0];
           const drumType = mapLabelToDrumType(topResult.label);
           
-          if (drumType && topResult.confidence > 0.7) {
+          // Lower confidence threshold to 0.35 for better detection
+          if (drumType && topResult.confidence > 0.35) {
+            console.log(`🥁 Beat detected: ${drumType} (${topResult.label}) - confidence: ${topResult.confidence.toFixed(3)}`);
+            
             const detection: DrumDetection = {
               timestamp: Date.now(),
               confidence: topResult.confidence,
@@ -150,6 +175,9 @@ export const useTeachableMachineListener = () => {
               const filtered = prev.filter(beat => Date.now() - beat.timestamp < 10000);
               return [...filtered, detection].slice(-50);
             });
+          } else if (topResult.confidence > 0.2) {
+            // Debug log for near misses
+            console.log(`Near miss: ${topResult.label} - confidence: ${topResult.confidence.toFixed(3)} (mapped to: ${drumType || 'none'})`);
           }
         }
       });
