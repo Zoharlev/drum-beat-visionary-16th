@@ -69,8 +69,7 @@ export const PracticeMode = () => {
     onComplete: () => {
       startListening();
       practiceSession.startSession();
-      // Start playback after a brief delay to ensure everything is ready
-      setTimeout(() => setIsPlaying(true), 100);
+      setIsPlaying(true);
       toast({
         title: "Practice Started!",
         description: "Play along with the target pattern"
@@ -115,10 +114,8 @@ export const PracticeMode = () => {
     
     detectedBeats.forEach(beat => {
       if (beat.timestamp >= sessionStart) {
-        // Synchronize with playback timing by accounting for step progression
-        const sessionTime = beat.timestamp - sessionStart;
-        const playbackStep = Math.floor(sessionTime / stepDuration);
-        const stepPosition = playbackStep % 16;
+        const relativeTime = beat.timestamp - sessionStart;
+        const stepPosition = Math.round(relativeTime / stepDuration) % 16;
         
         if (stepPosition >= 0 && stepPosition < 16 && beat.confidence > 0.6) {
           newPattern[beat.type][stepPosition] = true;
