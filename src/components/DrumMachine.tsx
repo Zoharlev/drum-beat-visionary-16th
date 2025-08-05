@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
-import { PracticeMode } from "./PracticeMode";
-import { SystemLearning } from "./SystemLearning";
 import { useToast } from "@/hooks/use-toast";
 import { useDrumListener } from "@/hooks/useDrumListener";
 import { cn } from "@/lib/utils";
@@ -507,156 +504,140 @@ export const DrumMachine = () => {
           </p>
         </div>
 
-        {/* Tabs for Pattern and Practice Mode */}
-        <Tabs defaultValue="pattern" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="pattern">Pattern</TabsTrigger>
-            <TabsTrigger value="practice">Practice</TabsTrigger>
-            <TabsTrigger value="learning">System Learning</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="pattern" className="space-y-6">
-            {/* Drum Grid */}
-            <DrumGrid
-              pattern={displayPattern}
-              currentStep={currentStep}
-              onStepToggle={toggleStep}
-              onClearPattern={clearPattern}
-              metronomeEnabled={metronomeEnabled}
-              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-              onTogglePlay={togglePlay}
-              isPlaying={isPlaying}
-            />
+        {/* Main Pattern Content */}
+        <div className="space-y-6">
+          {/* Drum Grid */}
+          <DrumGrid
+            pattern={displayPattern}
+            currentStep={currentStep}
+            onStepToggle={toggleStep}
+            onClearPattern={clearPattern}
+            metronomeEnabled={metronomeEnabled}
+            onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+            onTogglePlay={togglePlay}
+            isPlaying={isPlaying}
+          />
 
-            {/* Bottom Toolbar */}
-            <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
-              {/* Left Side Controls */}
-              <div className="flex items-center gap-4">
-                {/* Custom Metronome Toggle */}
-                <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-                  <button
-                    onClick={() => setMetronomeEnabled(!metronomeEnabled)}
-                    className={cn(
-                      "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
-                      metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                        metronomeEnabled ? "translate-x-5" : "translate-x-1"
-                      )}
-                    />
-                  </button>
-                  
-                  {/* Metronome Icon */}
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
-                    <img 
-                      src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
-                      alt="Metronome"
-                      className="w-8 h-8"
-                    />
-                  </div>
-                </div>
-
-                {/* Drum Listener Toggle */}
-                <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-                  <button
-                    onClick={handleListenerToggle}
-                    disabled={!isModelLoaded}
-                    className={cn(
-                      "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
-                      isListening ? "bg-red-600" : "bg-gray-300"
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                        isListening ? "translate-x-5" : "translate-x-1"
-                      )}
-                    />
-                  </button>
-                  
-                  {/* Microphone Icon */}
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: isListening ? '#ff6b6b' : '#786C7D' }}>
-                    {isListening ? (
-                      <Mic className="h-4 w-4 text-white" />
-                    ) : (
-                      <MicOff className="h-4 w-4 text-white" />
-                    )}
-                  </div>
-                  
-                  {/* Audio Level Indicator */}
-                  {isListening && (
-                    <div className="w-8 h-4 bg-gray-700 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-green-400 transition-all duration-100 rounded-full"
-                        style={{ width: `${audioLevel * 100}%` }}
-                      />
-                    </div>
+          {/* Bottom Toolbar */}
+          <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
+            {/* Left Side Controls */}
+            <div className="flex items-center gap-4">
+              {/* Custom Metronome Toggle */}
+              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                <button
+                  onClick={() => setMetronomeEnabled(!metronomeEnabled)}
+                  className={cn(
+                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                    metronomeEnabled ? "bg-violet-600" : "bg-gray-300"
                   )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                      metronomeEnabled ? "translate-x-5" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                
+                {/* Metronome Icon */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: metronomeEnabled ? '#BFA5C4' : '#786C7D' }}>
+                  <img 
+                    src="/lovable-uploads/6591da94-1dfe-488c-93dc-4572ae65a891.png" 
+                    alt="Metronome"
+                    className="w-8 h-8"
+                  />
                 </div>
               </div>
 
-              {/* Main Controls - Center/Right */}
-              <div className="flex items-center gap-4">
-                {/* Tempo Controls */}
-                <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => changeBpm(-5)}
-                    className="h-8 w-8"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  
-                  <div className="flex items-center gap-2 px-3">
-                    <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
-                    <div className="w-3 h-3 rounded-full bg-primary"></div>
-                    <span className="text-2xl font-bold text-foreground mx-3">
-                      {bpm}
-                    </span>
-                  </div>
-                  
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => changeBpm(5)}
-                    className="h-8 w-8"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
+              {/* Drum Listener Toggle */}
+              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                <button
+                  onClick={handleListenerToggle}
+                  disabled={!isModelLoaded}
+                  className={cn(
+                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+                    isListening ? "bg-red-600" : "bg-gray-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                      isListening ? "translate-x-5" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                
+                {/* Microphone Icon */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: isListening ? '#ff6b6b' : '#786C7D' }}>
+                  {isListening ? (
+                    <Mic className="h-4 w-4 text-white" />
+                  ) : (
+                    <MicOff className="h-4 w-4 text-white" />
+                  )}
                 </div>
-
-                {/* Timer Display */}
-                <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-foreground">
-                    {formatTime(timeRemaining)}
+                
+                {/* Audio Level Indicator */}
+                {isListening && (
+                  <div className="w-8 h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-green-400 transition-all duration-100 rounded-full"
+                      style={{ width: `${audioLevel * 100}%` }}
+                    />
                   </div>
-                </div>
+                )}
+              </div>
+            </div>
 
-                {/* Play Controls */}
+            {/* Main Controls - Center/Right */}
+            <div className="flex items-center gap-4">
+              {/* Tempo Controls */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={reset}
-                  className="h-12 w-12"
+                  onClick={() => changeBpm(-5)}
+                  className="h-8 w-8"
                 >
-                  <RotateCcw className="h-5 w-5" />
+                  <Minus className="h-4 w-4" />
+                </Button>
+                
+                <div className="flex items-center gap-2 px-3">
+                  <div className="w-3 h-3 rounded-full bg-tempo-accent"></div>
+                  <div className="w-3 h-3 rounded-full bg-primary"></div>
+                  <span className="text-2xl font-bold text-foreground mx-3">
+                    {bpm}
+                  </span>
+                </div>
+                
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => changeBpm(5)}
+                  className="h-8 w-8"
+                >
+                  <Plus className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="practice">
-            <PracticeMode />
-          </TabsContent>
 
-          <TabsContent value="learning">
-            <SystemLearning />
-          </TabsContent>
-        </Tabs>
+              {/* Timer Display */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
+                <div className="text-2xl font-bold text-foreground">
+                  {formatTime(timeRemaining)}
+                </div>
+              </div>
+
+              {/* Play Controls */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={reset}
+                className="h-12 w-12"
+              >
+                <RotateCcw className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
