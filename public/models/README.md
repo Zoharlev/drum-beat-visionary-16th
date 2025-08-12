@@ -6,16 +6,16 @@ This directory is for storing locally downloaded pre-trained models to improve l
 
 To download models locally, run these commands in your terminal from the project root:
 
-### Wav2Vec2 Drum Classification Model
+### Wav2Vec2 Audio Classification Model
 ```bash
 cd public/models
-git clone https://huggingface.co/DunnBC22/wav2vec2-base-Drum_Kit_Sounds
+git clone https://huggingface.co/onnx-community/wav2vec2-base-960h
 ```
 
 ### YAMNet Model
 ```bash
 cd public/models  
-git clone https://huggingface.co/google/yamnet
+git clone https://huggingface.co/onnx-community/yamnet
 ```
 
 ## Directory Structure
@@ -25,7 +25,7 @@ After downloading, your models directory should look like:
 ```
 public/models/
 ├── README.md
-├── wav2vec2-base-Drum_Kit_Sounds/
+├── wav2vec2-base-960h/
 │   ├── model.onnx
 │   ├── config.json
 │   └── other model files...

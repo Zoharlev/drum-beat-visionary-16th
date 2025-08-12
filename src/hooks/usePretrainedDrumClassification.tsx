@@ -29,17 +29,17 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
   // Model configurations with local and remote paths
   const modelConfigs = {
     'wav2vec2-drums': {
-      localPath: '/models/wav2vec2-base-Drum_Kit_Sounds',
-      remotePath: 'DunnBC22/wav2vec2-base-Drum_Kit_Sounds',
+      localPath: '/models/wav2vec2-base-960h',
+      remotePath: 'onnx-community/wav2vec2-base-960h',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
-        'kick drum': 'kick',
-        'snare drum': 'snare', 
-        'hi hat': 'hihat',
-        'open hi hat': 'openhat',
-        'ride cymbal': 'hihat', // Map to hihat as fallback
-        'crash cymbal': 'hihat' // Map to hihat as fallback
+        // Generic audio classification - map speech/audio features to drum types
+        'music': 'kick',
+        'speech': 'snare',
+        'sound': 'hihat',
+        'noise': 'openhat',
+        'audio': 'kick'
       }
     },
     'yamnet': {
@@ -48,10 +48,14 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
-        'Drum kit': 'kick',
+        'Drum': 'kick',
         'Snare drum': 'snare',
         'Hi-hat': 'hihat',
-        'Cymbal': 'hihat'
+        'Cymbal': 'hihat',
+        'Bass drum': 'kick',
+        'Percussion': 'kick',
+        'Tom-tom': 'kick',
+        'Clapping': 'snare'
       }
     }
   };
