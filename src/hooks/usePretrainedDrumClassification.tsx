@@ -29,7 +29,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
   // Model configurations with local and remote paths
   const modelConfigs = {
     'wav2vec2-drums': {
-      localPath: './models/wav2vec2-base-Drum_Kit_Sounds',
+      localPath: '/models/wav2vec2-base-Drum_Kit_Sounds',
       remotePath: 'DunnBC22/wav2vec2-base-Drum_Kit_Sounds',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
@@ -43,8 +43,8 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       }
     },
     'yamnet': {
-      localPath: './models/yamnet',
-      remotePath: 'google/yamnet',
+      localPath: '/models/yamnet',
+      remotePath: 'onnx-community/yamnet',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
@@ -90,6 +90,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
 
       let modelPath = config.remotePath;
       let isLocalModel = false;
+      const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
 
       // Try local model first
       console.log(`Checking for local model at: ${config.localPath}`);
@@ -100,6 +101,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
         isLocalModel = true;
         console.log(`Using local model: ${modelPath}`);
       } else {
+        if (isOffline) {
+          throw new Error('Offline and local model not found. Please download models to public/models.');
+        }
         console.log(`Local model not found or invalid, using remote: ${config.remotePath}`);
       }
 
@@ -110,12 +114,12 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
         { 
           device: config.device,
           progress_callback: (progress: any) => {
-            if (progress.status === 'downloading' && !isLocalModel) {
+            if (!isLocalModel && progress.status === 'downloading') {
               const percentage = Math.round((progress.loaded / progress.total) * 100);
-              setLoadingProgress(percentage);
+              setLoadingProgress(Number.isFinite(percentage) ? percentage : 0);
             } else if (isLocalModel) {
               // For local models, show immediate progress
-              setLoadingProgress(50);
+              setLoadingProgress(90);
             }
           }
         }
@@ -133,6 +137,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       // Fallback to CPU if WebGPU fails
       try {
         const config = modelConfigs[modelType];
+        const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
         
         // Try local first, then remote on CPU
         let modelPath = config.remotePath;
@@ -141,6 +146,8 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
         if (localModelValid) {
           modelPath = config.localPath;
           console.log('Using local model for CPU fallback');
+        } else if (isOffline) {
+          throw new Error('Offline and local model not found.');
         }
 
         const classifier = await pipeline(config.task, modelPath, { 
@@ -148,7 +155,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
           progress_callback: (progress: any) => {
             if (progress.status === 'downloading') {
               const percentage = Math.round((progress.loaded / progress.total) * 100);
-              setLoadingProgress(percentage);
+              setLoadingProgress(Number.isFinite(percentage) ? percentage : 0);
+            } else if (localModelValid) {
+              setLoadingProgress(90);
             }
           }
         });
