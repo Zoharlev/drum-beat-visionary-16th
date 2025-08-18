@@ -1,0 +1,14 @@
+# YamNet Model Directory
+
+This directory should contain the YamNet model files downloaded from:
+https://huggingface.co/google/yamnet
+
+Required files:
+- model.onnx
+- config.json
+- preprocessor_config.json (if available)
+
+To download manually:
+1. Visit https://huggingface.co/google/yamnet/tree/main
+2. Download each required file
+3. Place them in this directory
