@@ -55,7 +55,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
     },
     'yamnet': {
       localPath: '/models/yamnet',
-      remotePath: 'onnx-community/yamnet',
+      remotePath: 'google/yamnet',
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
