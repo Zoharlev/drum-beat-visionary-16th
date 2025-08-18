@@ -10,15 +10,17 @@ import { useDrumListener } from '../hooks/useDrumListener';
 import { usePretrainedDrumClassification } from '../hooks/usePretrainedDrumClassification';
 import { useAudioClassification } from '../hooks/useAudioClassification';
 import { useTeachableMachineDrumClassification } from '../hooks/useTeachableMachineDrumClassification';
+import useTensorFlowYAMNet from '../hooks/useTensorFlowYAMNet';
 import { BeatTimeline } from './BeatTimeline';
 
 export const ModelComparison: React.FC = () => {
-  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
+  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
   
   // Initialize all hooks
   const customModel = useDrumListener();
   const wav2vec2Model = usePretrainedDrumClassification('wav2vec2-drums');
   const yamnetModel = usePretrainedDrumClassification('yamnet');
+  const tensorflowYamnetModel = useTensorFlowYAMNet();
   const teachableMachineModel = useTeachableMachineDrumClassification();
   const simpleModel = useAudioClassification();
 
@@ -38,11 +40,18 @@ export const ModelComparison: React.FC = () => {
       color: 'bg-green-500'
     },
     yamnet: {
-      name: 'YAMNet (Google)',
-      description: 'Google\'s YAMNet audio classification model',
+      name: 'YAMNet (HF)',
+      description: 'Hugging Face YAMNet model (ONNX)',
       hook: yamnetModel,
       icon: <Zap className="h-4 w-4" />,
       color: 'bg-purple-500'
+    },
+    'tensorflow-yamnet': {
+      name: 'TensorFlow YAMNet',
+      description: 'Native TensorFlow.js YAMNet (Kaggle)',
+      hook: tensorflowYamnetModel,
+      icon: <Cpu className="h-4 w-4" />,
+      color: 'bg-cyan-500'
     },
     'teachable-machine': {
       name: 'Teachable Machine',
@@ -92,7 +101,7 @@ export const ModelComparison: React.FC = () => {
       </div>
 
       <Tabs value={activeModel} onValueChange={handleModelSwitch}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           {Object.entries(models).map(([key, model]) => (
             <TabsTrigger key={key} value={key} className="flex items-center gap-2">
               {model.icon}
@@ -124,8 +133,13 @@ export const ModelComparison: React.FC = () => {
                           WebGPU Enabled
                         </Badge>
                       )}
+                      {key === 'tensorflow-yamnet' && (
+                        <Badge variant="outline" className="text-xs">
+                          TensorFlow.js
+                        </Badge>
+                      )}
                     </div>
-                    {(key === 'wav2vec2' || key === 'yamnet') && 'loadingProgress' in model.hook && (
+                    {(key === 'wav2vec2' || key === 'yamnet' || key === 'tensorflow-yamnet') && 'loadingProgress' in model.hook && (
                       <div className="space-y-1">
                         <Progress value={model.hook.loadingProgress} className="w-32" />
                         <span className="text-xs text-muted-foreground">
@@ -247,7 +261,7 @@ export const ModelComparison: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {Object.entries(models).map(([key, model]) => (
               <div key={key} className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-2">
