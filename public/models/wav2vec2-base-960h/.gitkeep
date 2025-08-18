@@ -1,0 +1,6 @@
+# Placeholder file to ensure directory is created
+# Upload your wav2vec2 model files here:
+# - model.onnx
+# - config.json
+# - preprocessor_config.json
+# - tokenizer.json (if available)
