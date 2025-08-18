@@ -76,7 +76,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
     try {
       // Check for required model files
       const requiredFiles = modelType === 'wav2vec2-drums' 
-        ? ['model.onnx', 'config.json', 'preprocessor_config.json']
+        ? ['model.onnx', 'config.json', 'preprocessor_config.json', 'tokenizer_config.json']
         : ['model.onnx', 'config.json'];
       const fileChecks = await Promise.all(
         requiredFiles.map(async (file) => {
