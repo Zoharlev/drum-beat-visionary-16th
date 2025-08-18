@@ -30,16 +30,27 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
   const modelConfigs = {
     'wav2vec2-drums': {
       localPath: '/models/wav2vec2-base-960h',
-      remotePath: 'onnx-community/wav2vec2-base-960h',
-      task: 'audio-classification' as const,
+      remotePath: 'onnx-community/wav2vec2-base-960h-ONNX',
+      task: 'automatic-speech-recognition' as const,
       device: 'webgpu' as const,
       drumMapping: {
-        // Generic audio classification - map speech/audio features to drum types
-        'music': 'kick',
-        'speech': 'snare',
-        'sound': 'hihat',
-        'noise': 'openhat',
-        'audio': 'kick'
+        // Map transcribed words to drum types
+        'kick': 'kick',
+        'bass': 'kick',
+        'boom': 'kick',
+        'thud': 'kick',
+        'snare': 'snare',
+        'snap': 'snare',
+        'crack': 'snare',
+        'pop': 'snare',
+        'hat': 'hihat',
+        'hihat': 'hihat',
+        'tick': 'hihat',
+        'tss': 'hihat',
+        'cymbal': 'hihat',
+        'open': 'openhat',
+        'crash': 'openhat',
+        'splash': 'openhat'
       }
     },
     'yamnet': {
@@ -64,7 +75,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
   const validateLocalModel = async (localPath: string): Promise<boolean> => {
     try {
       // Check for required model files
-      const requiredFiles = ['model.onnx', 'config.json'];
+      const requiredFiles = modelType === 'wav2vec2-drums' 
+        ? ['model.onnx', 'config.json', 'preprocessor_config.json']
+        : ['model.onnx', 'config.json'];
       const fileChecks = await Promise.all(
         requiredFiles.map(async (file) => {
           try {
@@ -90,7 +103,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       setIsModelLoaded(false);
 
       const config = modelConfigs[modelType];
-      console.log(`Initializing ${modelType} model...`);
+      console.log(`Initializing ${modelType} model with config:`, config);
 
       let modelPath = config.remotePath;
       let isLocalModel = false;
@@ -103,21 +116,23 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       if (localModelValid) {
         modelPath = config.localPath;
         isLocalModel = true;
-        console.log(`Using local model: ${modelPath}`);
+        console.log(`Using local ${modelType} model: ${modelPath}`);
       } else {
         if (isOffline) {
           throw new Error('Offline and local model not found. Please download models to public/models.');
         }
-        console.log(`Local model not found or invalid, using remote: ${config.remotePath}`);
+        console.log(`Local ${modelType} model not found, using remote: ${config.remotePath}`);
       }
 
       // Create pipeline with progress tracking
+      console.log(`Loading ${modelType} pipeline with task: ${config.task}`);
       const classifier = await pipeline(
         config.task,
         modelPath,
         { 
           device: config.device,
           progress_callback: (progress: any) => {
+            console.log(`${modelType} loading progress:`, progress);
             if (!isLocalModel && progress.status === 'downloading') {
               const percentage = Math.round((progress.loaded / progress.total) * 100);
               setLoadingProgress(Number.isFinite(percentage) ? percentage : 0);
@@ -135,8 +150,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       console.log(`${modelType} model loaded successfully ${isLocalModel ? '(local)' : '(remote)'}`);
 
     } catch (err) {
-      console.error('Error initializing model:', err);
-      setError(`Failed to load ${modelType} model. Trying CPU fallback...`);
+      console.error(`Error initializing ${modelType} model:`, err);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Failed to load ${modelType} model: ${errorMessage}. Trying CPU fallback...`);
       
       // Fallback to CPU if WebGPU fails
       try {
@@ -172,8 +188,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
         console.log(`${modelType} model loaded on CPU`);
         setError(`Model loaded on CPU (WebGPU unavailable)`);
       } catch (fallbackErr) {
-        console.error('CPU fallback failed:', fallbackErr);
-        setError(`Failed to load ${modelType} model on both WebGPU and CPU. Please check network connection or download models locally.`);
+        console.error(`CPU fallback failed for ${modelType}:`, fallbackErr);
+        const fallbackErrorMessage = fallbackErr instanceof Error ? fallbackErr.message : 'Unknown error';
+        setError(`Failed to load ${modelType} model on both WebGPU and CPU: ${fallbackErrorMessage}. Try downloading models locally for better reliability.`);
       }
     }
   }, [modelType]);
@@ -294,8 +311,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       if (energy > 0.001) {
         // Run inference
         const predictions = await pipelineRef.current(combinedBuffer);
+        console.log(`${modelType} predictions:`, predictions);
         
-        if (predictions && Array.isArray(predictions)) {
+        if (predictions) {
           analyzePredictions(predictions);
         }
       }
@@ -306,46 +324,88 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
     }
   }, []);
 
-  const analyzePredictions = useCallback((predictions: any[]) => {
+  const analyzePredictions = useCallback((predictions: any) => {
     const config = modelConfigs[modelType];
     const currentTime = Date.now();
 
-    // Find the highest confidence drum-related prediction
-    let bestDrumPrediction = null;
-    let maxConfidence = 0;
-
-    for (const prediction of predictions) {
-      const { label, score } = prediction;
-      const normalizedLabel = label.toLowerCase();
+    if (modelType === 'wav2vec2-drums') {
+      // Handle speech recognition output
+      let transcribedText = '';
       
-      // Check if this prediction matches any of our drum types
-      for (const [modelLabel, drumType] of Object.entries(config.drumMapping)) {
-        if (normalizedLabel.includes(modelLabel.toLowerCase()) && score > maxConfidence) {
-          maxConfidence = score;
-          bestDrumPrediction = {
-            drumType: drumType as 'kick' | 'snare' | 'hihat' | 'openhat',
-            confidence: score,
-            originalLabel: label
-          };
+      if (typeof predictions === 'string') {
+        transcribedText = predictions;
+      } else if (predictions.text) {
+        transcribedText = predictions.text;
+      } else if (Array.isArray(predictions) && predictions[0]?.text) {
+        transcribedText = predictions[0].text;
+      }
+
+      if (transcribedText && transcribedText.trim()) {
+        console.log(`${modelType} transcribed:`, transcribedText);
+        
+        const lowerText = transcribedText.toLowerCase();
+        
+        // Check if transcription contains drum-related words
+        for (const [keyword, drumType] of Object.entries(config.drumMapping)) {
+          if (lowerText.includes(keyword.toLowerCase())) {
+            const detection: DrumDetection = {
+              timestamp: currentTime,
+              confidence: 0.8, // Default confidence for text-based detection
+              type: drumType as 'kick' | 'snare' | 'hihat' | 'openhat',
+              modelPredictions: {
+                model: modelType,
+                text: transcribedText,
+                keyword: keyword
+              }
+            };
+
+            console.log('Drum detected from transcription:', detection);
+            setDetectedBeats(prev => [...prev.slice(-19), detection]);
+            break; // Only detect first match to avoid duplicates
+          }
         }
       }
-    }
+    } else {
+      // Handle audio classification output (yamnet)
+      if (Array.isArray(predictions)) {
+        // Find the highest confidence drum-related prediction
+        let bestDrumPrediction = null;
+        let maxConfidence = 0;
 
-    // Only trigger detection if confidence is above threshold
-    if (bestDrumPrediction && bestDrumPrediction.confidence > 0.3) {
-      const detection: DrumDetection = {
-        timestamp: currentTime,
-        confidence: bestDrumPrediction.confidence,
-        type: bestDrumPrediction.drumType,
-        modelPredictions: {
-          model: modelType,
-          originalLabel: bestDrumPrediction.originalLabel,
-          allPredictions: predictions.slice(0, 5) // Keep top 5 predictions
+        for (const prediction of predictions) {
+          const { label, score } = prediction;
+          const normalizedLabel = label.toLowerCase();
+          
+          // Check if this prediction matches any of our drum types
+          for (const [modelLabel, drumType] of Object.entries(config.drumMapping)) {
+            if (normalizedLabel.includes(modelLabel.toLowerCase()) && score > maxConfidence) {
+              maxConfidence = score;
+              bestDrumPrediction = {
+                drumType: drumType as 'kick' | 'snare' | 'hihat' | 'openhat',
+                confidence: score,
+                originalLabel: label
+              };
+            }
+          }
         }
-      };
 
-      console.log('Drum detected with pre-trained model:', detection);
-      setDetectedBeats(prev => [...prev.slice(-19), detection]);
+        // Only trigger detection if confidence is above threshold
+        if (bestDrumPrediction && bestDrumPrediction.confidence > 0.3) {
+          const detection: DrumDetection = {
+            timestamp: currentTime,
+            confidence: bestDrumPrediction.confidence,
+            type: bestDrumPrediction.drumType,
+            modelPredictions: {
+              model: modelType,
+              originalLabel: bestDrumPrediction.originalLabel,
+              allPredictions: predictions.slice(0, 5) // Keep top 5 predictions
+            }
+          };
+
+          console.log('Drum detected with pre-trained model:', detection);
+          setDetectedBeats(prev => [...prev.slice(-19), detection]);
+        }
+      }
     }
   }, [modelType]);
 
