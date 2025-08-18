@@ -9,15 +9,17 @@ import { Mic, MicOff, Loader2, Zap, Cpu } from 'lucide-react';
 import { useDrumListener } from '../hooks/useDrumListener';
 import { usePretrainedDrumClassification } from '../hooks/usePretrainedDrumClassification';
 import { useAudioClassification } from '../hooks/useAudioClassification';
+import { useTeachableMachineDrumClassification } from '../hooks/useTeachableMachineDrumClassification';
 import { BeatTimeline } from './BeatTimeline';
 
 export const ModelComparison: React.FC = () => {
-  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'simple'>('wav2vec2');
+  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
   
   // Initialize all hooks
   const customModel = useDrumListener();
   const wav2vec2Model = usePretrainedDrumClassification('wav2vec2-drums');
   const yamnetModel = usePretrainedDrumClassification('yamnet');
+  const teachableMachineModel = useTeachableMachineDrumClassification();
   const simpleModel = useAudioClassification();
 
   const models = {
@@ -41,6 +43,13 @@ export const ModelComparison: React.FC = () => {
       hook: yamnetModel,
       icon: <Zap className="h-4 w-4" />,
       color: 'bg-purple-500'
+    },
+    'teachable-machine': {
+      name: 'Teachable Machine',
+      description: 'Google\'s custom trained drum classification model',
+      hook: teachableMachineModel,
+      icon: <Zap className="h-4 w-4" />,
+      color: 'bg-red-500'
     },
     simple: {
       name: 'Simple Frequency',
@@ -83,7 +92,7 @@ export const ModelComparison: React.FC = () => {
       </div>
 
       <Tabs value={activeModel} onValueChange={handleModelSwitch}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           {Object.entries(models).map(([key, model]) => (
             <TabsTrigger key={key} value={key} className="flex items-center gap-2">
               {model.icon}
