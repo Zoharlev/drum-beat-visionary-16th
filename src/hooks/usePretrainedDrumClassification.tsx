@@ -59,6 +59,7 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       task: 'audio-classification' as const,
       device: 'webgpu' as const,
       drumMapping: {
+        // Enhanced drum mappings for better detection
         'Drum': 'kick',
         'Snare drum': 'snare',
         'Hi-hat': 'hihat',
@@ -66,7 +67,19 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
         'Bass drum': 'kick',
         'Percussion': 'kick',
         'Tom-tom': 'kick',
-        'Clapping': 'snare'
+        'Clapping': 'snare',
+        'Timpani': 'kick',
+        'Drum kit': 'kick',
+        'Snare': 'snare',
+        'Kick drum': 'kick',
+        'Crash cymbal': 'hihat',
+        'Ride cymbal': 'hihat',
+        'Splash cymbal': 'hihat',
+        'Wood block': 'hihat',
+        'Cowbell': 'hihat',
+        'Tap': 'hihat',
+        'Thump': 'kick',
+        'Ratchet': 'snare'
       }
     }
   };
@@ -272,9 +285,9 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
     // Collect audio buffer for processing
     audioBufferRef.current.push(new Float32Array(dataArray));
     
-    // Process audio every 100ms if we have enough data
+    // Process audio every 50ms for better responsiveness
     const currentTime = Date.now();
-    if (currentTime - lastProcessTimeRef.current > 100 && audioBufferRef.current.length > 0) {
+    if (currentTime - lastProcessTimeRef.current > 50 && audioBufferRef.current.length > 0) {
       processAudioBuffer();
       lastProcessTimeRef.current = currentTime;
     }
@@ -305,10 +318,10 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
       // Clear the buffer
       audioBufferRef.current = [];
 
-      // Only process if we have significant audio energy
+      // Only process if we have significant audio energy (lowered threshold for better sensitivity)
       const energy = combinedBuffer.reduce((sum, sample) => sum + Math.abs(sample), 0) / combinedBuffer.length;
       
-      if (energy > 0.001) {
+      if (energy > 0.0005) {
         // Run inference
         const predictions = await pipelineRef.current(combinedBuffer);
         console.log(`${modelType} predictions:`, predictions);
@@ -389,8 +402,8 @@ export const usePretrainedDrumClassification = (modelType: ModelType = 'wav2vec2
           }
         }
 
-        // Only trigger detection if confidence is above threshold
-        if (bestDrumPrediction && bestDrumPrediction.confidence > 0.3) {
+        // Only trigger detection if confidence is above threshold (lowered for better sensitivity)
+        if (bestDrumPrediction && bestDrumPrediction.confidence > 0.15) {
           const detection: DrumDetection = {
             timestamp: currentTime,
             confidence: bestDrumPrediction.confidence,
