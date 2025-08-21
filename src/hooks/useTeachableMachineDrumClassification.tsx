@@ -23,7 +23,7 @@ export const useTeachableMachineDrumClassification = () => {
   const analyserRef = useRef<AnalyserNode | null>(null);
 
   // Teachable Machine model URL
-  const MODEL_URL = 'https://teachablemachine.withgoogle.com/models/4Ct5gZ0m9/';
+  const MODEL_URL = 'https://teachablemachine.withgoogle.com/models/X4kj9rYWZ/';
 
   // Class mapping from Teachable Machine to drum types
   const classMapping: Record<string, 'kick' | 'snare' | 'hihat' | 'openhat'> = {
