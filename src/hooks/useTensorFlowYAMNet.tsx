@@ -183,11 +183,11 @@ const useTensorFlowYAMNet = () => {
       // Clear the buffer
       audioBufferRef.current = [];
 
-      // Check for sufficient audio energy (more sensitive)
+      // Check for sufficient audio energy (less sensitive)
       const energy = combinedBuffer.reduce((sum, sample) => sum + Math.abs(sample), 0) / combinedBuffer.length;
       console.log('YAMNet audio energy:', energy.toFixed(6));
       
-      if (energy > 0.0002) {
+      if (energy > 0.002) { // Increased threshold for less sensitivity
         // Preprocess audio for YAMNet
         const inputTensor = preprocessAudio(combinedBuffer);
         
@@ -237,8 +237,8 @@ const useTensorFlowYAMNet = () => {
         }
       }
 
-      // Only trigger detection if confidence is above threshold (lowered)
-      if (bestDrumPrediction && bestDrumPrediction.confidence > 0.15) {
+      // Only trigger detection if confidence is above higher threshold
+      if (bestDrumPrediction && bestDrumPrediction.confidence > 0.45) {
         const detection: DrumDetection = {
           timestamp,
           confidence: bestDrumPrediction.confidence,
@@ -247,7 +247,7 @@ const useTensorFlowYAMNet = () => {
         };
 
         setDetectedBeats(prev => [...prev.slice(-19), detection]);
-        console.log('TensorFlow YAMNet detected:', detection);
+        console.log('TensorFlow YAMNet detected (high confidence):', detection);
       }
     } catch (err) {
       console.error('Error analyzing predictions:', err);
