@@ -48,34 +48,59 @@ export const useTeachableMachineV2 = () => {
 
       console.log('Loading Teachable Machine V2 model...');
       
-      // Enhanced fallback using direct model loading 
+      // Load model using TensorFlow.js directly
       try {
         setLoadingProgress(40);
-        console.log('Loading model metadata...');
+        console.log('Loading Teachable Machine V2 model with TensorFlow.js...');
         
-        const response = await fetch(MODEL_URL + 'model.json');
-        const modelData = await response.json();
+        // Import TensorFlow.js
+        const tf = await import('@tensorflow/tfjs');
+        setLoadingProgress(50);
+        
+        // Load model and metadata
+        const modelResponse = await fetch(MODEL_URL + 'model.json');
         const metadataResponse = await fetch(MODEL_URL + 'metadata.json');
         const metadata = await metadataResponse.json();
         
-        setLoadingProgress(80);
+        setLoadingProgress(70);
+        
+        // Load the actual TensorFlow model
+        const model = await tf.loadLayersModel(MODEL_URL + 'model.json');
+        setLoadingProgress(90);
         
         modelRef.current = {
-          model: null, // Will use enhanced smart predictions
+          model,
           metadata,
-          classLabels: metadata.labels || ['Kick', 'Snare', 'Hi-Hat', 'Open Hi-Hat'],
+          classLabels: metadata.labels || ['Background Noise', 'Kick', 'Snare', 'Hi-Hat'],
           sampleRate: 16000,
           inputSize: 1024,
-          isFallback: true
+          isFallback: false
         };
+        
+        console.log('Model loaded with labels:', modelRef.current.classLabels);
         
         setIsModelLoaded(true);
         setLoadingProgress(100);
         console.log('Enhanced smart prediction model loaded successfully');
         
       } catch (fallbackErr) {
-        console.error('Model loading failed:', fallbackErr);
-        setError('Failed to load Teachable Machine V2 model. Please check network connection.');
+        console.error('TensorFlow model loading failed, using enhanced fallback:', fallbackErr);
+        
+        // Enhanced fallback with metadata
+        const metadataResponse = await fetch(MODEL_URL + 'metadata.json');
+        const metadata = await metadataResponse.json();
+        
+        modelRef.current = {
+          model: null,
+          metadata,
+          classLabels: metadata.labels || ['Background Noise', 'Kick', 'Snare', 'Hi-Hat'],
+          sampleRate: 16000,
+          inputSize: 1024,
+          isFallback: true
+        };
+        
+        console.log('Using fallback mode with labels:', modelRef.current.classLabels);
+        setError('Using fallback detection mode. Please check network connection for full model.');
       }
     } catch (err) {
       console.error('General error in model initialization:', err);
@@ -161,7 +186,8 @@ export const useTeachableMachineV2 = () => {
 
     // Process audio if we have significant energy and not already processing
     const energy = rms;
-    if (energy > 0.005 && !processingRef.current) {
+    console.log('Audio energy:', energy, 'RMS:', rms); // Debug logging
+    if (energy > 0.001 && !processingRef.current) { // Lowered threshold
       processingRef.current = true;
       processAudioChunk(dataArray, timeDataArray).finally(() => {
         processingRef.current = false;
@@ -180,11 +206,25 @@ export const useTeachableMachineV2 = () => {
       let predictions: any[] = [];
       
       if (modelRef.current.model && !modelRef.current.isFallback) {
-        // Use actual Teachable Machine model
-        predictions = await modelRef.current.model.predict(timeData);
+        // Use actual TensorFlow.js model - need to prepare audio data properly
+        const tf = await import('@tensorflow/tfjs');
+        
+        // Create tensor from time domain data
+        const tensor = tf.tensor2d([Array.from(timeData.slice(0, 1024))]);
+        const reshaped = tensor.reshape([1, 43, 232, 1]); // Model expects this shape
+        
+        const prediction = await modelRef.current.model.predict(reshaped) as any;
+        predictions = await prediction.data();
+        
+        tensor.dispose();
+        reshaped.dispose();
+        prediction.dispose();
+        
+        console.log('TensorFlow predictions:', predictions); // Debug logging
       } else {
         // Enhanced fallback with frequency analysis
         predictions = generateSmartPredictions(frequencyData, timeData);
+        console.log('Fallback predictions:', predictions); // Debug logging
       }
 
       const currentTime = Date.now();
@@ -201,8 +241,9 @@ export const useTeachableMachineV2 = () => {
         }
       }
 
-      // Adjusted confidence threshold for better sensitivity
-      if (maxScore > 0.6) {
+      // Lower confidence threshold for better sensitivity  
+      console.log('Max score:', maxScore, 'Index:', maxIndex); // Debug logging
+      if (maxScore > 0.3) { // Much lower threshold
         const predictedClass = modelRef.current.classLabels[maxIndex] || `Class ${maxIndex}`;
         
         // Map the predicted class to drum type
@@ -232,7 +273,7 @@ export const useTeachableMachineV2 = () => {
     }
   }, []);
 
-  // Enhanced fallback prediction based on frequency analysis
+  // Enhanced fallback prediction based on frequency analysis - much more sensitive
   const generateSmartPredictions = (frequencyData: Uint8Array, timeData: Float32Array): number[] => {
     // Analyze frequency bins for different drum characteristics
     const lowFreq = frequencyData.slice(0, 50).reduce((a, b) => a + b, 0) / 50; // Kick
@@ -243,13 +284,18 @@ export const useTeachableMachineV2 = () => {
     // Calculate attack characteristics
     const attack = Math.abs(timeData[0] - timeData[Math.floor(timeData.length / 4)]);
     
-    // Generate predictions based on frequency analysis
-    const kickScore = (lowFreq / 255) * (attack > 0.1 ? 1.2 : 0.8);
-    const snareScore = (midFreq / 255) * (attack > 0.05 ? 1.1 : 0.7);
-    const hihatScore = (highFreq / 255) * (attack > 0.02 ? 1.0 : 0.6);
-    const openhatScore = (veryHighFreq / 255) * (attack > 0.03 ? 1.0 : 0.5);
+    // Much more sensitive scoring - amplify the results
+    const backgroundScore = 0.1; // Low baseline
+    const kickScore = Math.min(0.9, (lowFreq / 255) * (attack > 0.02 ? 2.0 : 1.5));
+    const snareScore = Math.min(0.9, (midFreq / 255) * (attack > 0.01 ? 1.8 : 1.3));
+    const hihatScore = Math.min(0.9, (highFreq / 255) * (attack > 0.005 ? 1.5 : 1.0));
     
-    return [kickScore, snareScore, hihatScore, openhatScore];
+    const scores = [backgroundScore, kickScore, snareScore, hihatScore];
+    console.log('Frequency analysis scores:', {
+      lowFreq, midFreq, highFreq, veryHighFreq, attack, scores
+    });
+    
+    return scores;
   };
 
   const stopListening = useCallback(async () => {
