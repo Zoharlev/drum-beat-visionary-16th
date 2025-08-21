@@ -227,7 +227,7 @@ export const useBalkeeDrumClassification = () => {
     // Process audio if we have significant energy
     const energy = rms;
     console.log('Balkee - Audio energy:', energy.toFixed(4));
-    if (energy > 0.008) { // Slightly higher threshold for CNN model
+    if (energy > 0.003) { // Lower threshold for more sensitive detection
       processAudioChunk(dataArray);
     }
 
