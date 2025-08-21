@@ -93,35 +93,72 @@ export const useBalkeeDrumClassification = () => {
       setLoadingProgress(60);
 
       // Create mock weights that simulate the trained Balkee model
-      // This creates a realistic prediction distribution based on audio features
+      // This creates a realistic prediction distribution based on actual audio features
       const mockPredict = (input: tf.Tensor) => {
         const batchSize = input.shape[0] || 1;
         const predictions = [];
         
+        // Get the actual spectrogram data for analysis
+        const spectrogramDataRaw = input.dataSync();
+        const spectrogramData = new Float32Array(spectrogramDataRaw);
+        const spectrogramShape = input.shape;
+        console.log('Balkee - Processing spectrogram shape:', spectrogramShape);
+        
         for (let i = 0; i < batchSize; i++) {
-          // Simulate realistic drum classification based on spectrogram analysis
-          const mockFeatures = tf.randomNormal([1]).dataSync()[0];
+          // Analyze actual spectrogram features
+          const batchOffset = i * (spectrogramShape[1] || 128) * (spectrogramShape[2] || 128) * (spectrogramShape[3] || 3);
+          const batchData = spectrogramData.slice(batchOffset, batchOffset + (128 * 128 * 3));
           
-          // Create realistic probability distributions for different drum types
-          let scores: number[];
+          // Calculate energy in different frequency bands
+          const lowFreqEnergy = calculateBandEnergy(batchData, 0, 32); // Low frequencies (kick)
+          const midFreqEnergy = calculateBandEnergy(batchData, 32, 64); // Mid frequencies (snare)
+          const highFreqEnergy = calculateBandEnergy(batchData, 64, 96); // High frequencies (hihat)
+          const veryHighFreqEnergy = calculateBandEnergy(batchData, 96, 128); // Very high frequencies (openhat/clap)
           
-          if (mockFeatures > 0.3) {
-            // High energy - likely kick or snare
-            scores = [0.45, 0.35, 0.1, 0.05, 0.05]; // kick favored
-          } else if (mockFeatures > 0.0) {
-            // Medium energy - likely snare or hihat
-            scores = [0.15, 0.4, 0.3, 0.1, 0.05]; // snare favored
-          } else if (mockFeatures > -0.3) {
-            // Lower energy - likely hihat
-            scores = [0.1, 0.15, 0.5, 0.2, 0.05]; // hihat favored
-          } else {
-            // Very low energy - likely open hat or clap
-            scores = [0.05, 0.1, 0.2, 0.4, 0.25]; // openhat favored
+          // Calculate transient characteristics
+          const transientSharpness = calculateTransientSharpness(batchData);
+          const spectralCentroid = calculateSpectralCentroid(batchData);
+          
+          console.log('Balkee - Audio features:', {
+            lowFreq: lowFreqEnergy.toFixed(4),
+            midFreq: midFreqEnergy.toFixed(4),
+            highFreq: highFreqEnergy.toFixed(4),
+            veryHighFreq: veryHighFreqEnergy.toFixed(4),
+            transient: transientSharpness.toFixed(4),
+            centroid: spectralCentroid.toFixed(4)
+          });
+          
+          // Create realistic probability distributions based on audio features
+          let scores: number[] = [0.2, 0.2, 0.2, 0.2, 0.2]; // Base equal probabilities
+          
+          // Kick drum: Low frequency energy dominance
+          if (lowFreqEnergy > 0.1 && transientSharpness > 0.15) {
+            scores[0] += 0.4 + (lowFreqEnergy * 2);
           }
           
-          // Add some randomness to make it more realistic
-          const noise = 0.1;
-          scores = scores.map(s => Math.max(0, s + (Math.random() - 0.5) * noise));
+          // Snare drum: Mid frequency energy with sharp transient
+          if (midFreqEnergy > 0.08 && transientSharpness > 0.2) {
+            scores[1] += 0.35 + (midFreqEnergy * 3);
+          }
+          
+          // Closed hihat: High frequency energy, short duration
+          if (highFreqEnergy > 0.05 && spectralCentroid > 0.6) {
+            scores[2] += 0.3 + (highFreqEnergy * 4);
+          }
+          
+          // Open hihat: Very high frequency energy, longer sustain
+          if (veryHighFreqEnergy > 0.03 && spectralCentroid > 0.7 && transientSharpness < 0.3) {
+            scores[3] += 0.25 + (veryHighFreqEnergy * 5);
+          }
+          
+          // Clap: Broad spectrum with multiple transients
+          if (midFreqEnergy > 0.06 && highFreqEnergy > 0.04 && transientSharpness > 0.1) {
+            scores[4] += 0.2 + ((midFreqEnergy + highFreqEnergy) * 2);
+          }
+          
+          // Add slight randomness for realism
+          const noise = 0.05;
+          scores = scores.map(s => Math.max(0.01, s + (Math.random() - 0.5) * noise));
           
           // Normalize to sum to 1
           const sum = scores.reduce((a, b) => a + b, 0);
@@ -131,6 +168,36 @@ export const useBalkeeDrumClassification = () => {
         }
         
         return tf.tensor2d(predictions);
+      };
+      
+      // Helper functions for audio feature analysis
+      const calculateBandEnergy = (data: Float32Array, startBin: number, endBin: number): number => {
+        let energy = 0;
+        const binSize = Math.floor(data.length / 128);
+        for (let i = startBin * binSize; i < Math.min(endBin * binSize, data.length); i++) {
+          energy += Math.abs(data[i]);
+        }
+        return energy / (binSize * (endBin - startBin));
+      };
+      
+      const calculateTransientSharpness = (data: Float32Array): number => {
+        let maxDiff = 0;
+        for (let i = 1; i < data.length; i++) {
+          const diff = Math.abs(data[i] - data[i - 1]);
+          maxDiff = Math.max(maxDiff, diff);
+        }
+        return maxDiff;
+      };
+      
+      const calculateSpectralCentroid = (data: Float32Array): number => {
+        let weightedSum = 0;
+        let magnitudeSum = 0;
+        for (let i = 0; i < data.length; i++) {
+          const magnitude = Math.abs(data[i]);
+          weightedSum += i * magnitude;
+          magnitudeSum += magnitude;
+        }
+        return magnitudeSum > 0 ? weightedSum / (magnitudeSum * data.length) : 0;
       };
 
       // Override the predict method
@@ -213,8 +280,10 @@ export const useBalkeeDrumClassification = () => {
 
     const bufferLength = analyserRef.current.fftSize;
     const dataArray = new Float32Array(bufferLength);
+    const freqDataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
     
     analyserRef.current.getFloatTimeDomainData(dataArray);
+    analyserRef.current.getByteFrequencyData(freqDataArray);
 
     // Calculate audio level for visualization
     let sum = 0;
@@ -224,10 +293,28 @@ export const useBalkeeDrumClassification = () => {
     const rms = Math.sqrt(sum / bufferLength);
     setAudioLevel(Math.min(rms * 50, 1));
 
-    // Process audio if we have significant energy
+    // Enhanced energy calculation with frequency analysis
     const energy = rms;
-    console.log('Balkee - Audio energy:', energy.toFixed(4));
-    if (energy > 0.003) { // Lower threshold for more sensitive detection
+    
+    // Calculate frequency band energies for better transient detection
+    const lowFreqEnergy = freqDataArray.slice(0, 64).reduce((a, b) => a + b, 0) / 64 / 255;
+    const midFreqEnergy = freqDataArray.slice(64, 256).reduce((a, b) => a + b, 0) / 192 / 255;
+    const highFreqEnergy = freqDataArray.slice(256, 512).reduce((a, b) => a + b, 0) / 256 / 255;
+    
+    // Detect transients by checking for rapid energy changes
+    const totalFreqEnergy = (lowFreqEnergy + midFreqEnergy + highFreqEnergy) / 3;
+    
+    console.log('Balkee - Audio analysis:', {
+      rms: energy.toFixed(4),
+      lowFreq: lowFreqEnergy.toFixed(4),
+      midFreq: midFreqEnergy.toFixed(4),
+      highFreq: highFreqEnergy.toFixed(4),
+      totalFreq: totalFreqEnergy.toFixed(4)
+    });
+    
+    // More sensitive detection combining time and frequency domain analysis
+    if (energy > 0.003 || totalFreqEnergy > 0.02) {
+      console.log('Balkee - Processing audio: energy threshold met');
       processAudioChunk(dataArray);
     }
 
@@ -274,7 +361,7 @@ export const useBalkeeDrumClassification = () => {
       })));
 
       // Lower confidence threshold for better detection
-      if (maxScore > 0.35) {
+      if (maxScore > 0.25) {
         const predictedClass = classNames[maxIndex] || maxIndex.toString();
         
         // Map the predicted class to drum type
@@ -304,41 +391,68 @@ export const useBalkeeDrumClassification = () => {
     }
   }, []);
 
-  // Convert audio to spectrogram for CNN input
+  // Convert audio to spectrogram for CNN input with improved frequency analysis
   const convertToSpectrogram = useCallback(async (audioData: Float32Array) => {
-    // Create a 128x128x3 spectrogram similar to what the Balkee model expects
     const spectrogramSize = 128;
     const channels = 3;
     
-    // Pad or truncate audio to expected size
-    const targetLength = spectrogramSize * spectrogramSize;
-    const paddedAudio = new Float32Array(targetLength);
+    // Perform FFT-like frequency analysis for better spectrogram simulation
+    const fftSize = Math.min(audioData.length, 1024);
+    const freqBins = fftSize / 2;
     
-    for (let i = 0; i < targetLength; i++) {
-      paddedAudio[i] = i < audioData.length ? audioData[i] : 0;
-    }
-    
-    // Create a simple time-frequency representation
+    // Create improved spectrogram with frequency domain analysis
     const spectrogramData = new Float32Array(spectrogramSize * spectrogramSize * channels);
     
-    // Fill with audio features transformed to spectrogram-like data
-    for (let i = 0; i < spectrogramSize; i++) {
-      for (let j = 0; j < spectrogramSize; j++) {
-        const index = i * spectrogramSize + j;
-        const audioIndex = Math.floor((index / (spectrogramSize * spectrogramSize)) * paddedAudio.length);
-        const value = paddedAudio[audioIndex] || 0;
+    // Divide audio into time windows for spectrogram
+    const hopSize = Math.floor(audioData.length / spectrogramSize);
+    
+    for (let timeFrame = 0; timeFrame < spectrogramSize; timeFrame++) {
+      const windowStart = timeFrame * hopSize;
+      const windowEnd = Math.min(windowStart + fftSize, audioData.length);
+      const windowData = audioData.slice(windowStart, windowEnd);
+      
+      // Apply Hanning window to reduce spectral leakage
+      const windowed = windowData.map((sample, i) => 
+        sample * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / windowData.length))
+      );
+      
+      // Simulate frequency domain analysis (simple DFT approximation)
+      for (let freqBin = 0; freqBin < spectrogramSize; freqBin++) {
+        let real = 0;
+        let imag = 0;
         
-        // Duplicate across all 3 channels (RGB) as mentioned in the paper
-        const baseIndex = (i * spectrogramSize + j) * channels;
-        spectrogramData[baseIndex] = value;     // R channel
-        spectrogramData[baseIndex + 1] = value; // G channel  
-        spectrogramData[baseIndex + 2] = value; // B channel
+        const freqIndex = (freqBin / spectrogramSize) * (windowed.length / 2);
+        
+        // Calculate magnitude for this frequency bin
+        for (let i = 0; i < windowed.length; i++) {
+          const angle = -2 * Math.PI * freqIndex * i / windowed.length;
+          real += windowed[i] * Math.cos(angle);
+          imag += windowed[i] * Math.sin(angle);
+        }
+        
+        const magnitude = Math.sqrt(real * real + imag * imag) / windowed.length;
+        
+        // Map to spectrogram with logarithmic scaling for better dynamic range
+        const logMagnitude = Math.log(Math.max(magnitude, 1e-10) + 1);
+        const normalizedValue = Math.tanh(logMagnitude * 2); // Normalize to [-1, 1]
+        
+        // Fill RGB channels with frequency data
+        const baseIndex = (timeFrame * spectrogramSize + freqBin) * channels;
+        spectrogramData[baseIndex] = normalizedValue;     // R channel
+        spectrogramData[baseIndex + 1] = normalizedValue; // G channel  
+        spectrogramData[baseIndex + 2] = normalizedValue; // B channel
       }
+    }
+    
+    // Add some noise to make it more realistic
+    for (let i = 0; i < spectrogramData.length; i++) {
+      spectrogramData[i] += (Math.random() - 0.5) * 0.01;
     }
     
     // Convert to tensor with correct shape [1, 128, 128, 3]
     const spectrogram = tf.tensor(spectrogramData, [1, spectrogramSize, spectrogramSize, channels]);
     
+    console.log('Balkee - Generated spectrogram with shape:', spectrogram.shape);
     return spectrogram;
   }, []);
 
