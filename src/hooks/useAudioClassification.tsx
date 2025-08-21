@@ -112,11 +112,11 @@ export const useAudioClassification = () => {
     const hihatEnergy = calculateEnergyInRange(freqData, hihatRange);
     const totalEnergy = kickEnergy + snareEnergy + hihatEnergy;
 
-    // Beat detection thresholds (lowered for more sensitivity)
-    const kickThreshold = -45;
-    const snareThreshold = -50;
-    const hihatThreshold = -55;
-    const generalThreshold = -40;
+    // Beat detection thresholds (further lowered for more sensitivity)
+    const kickThreshold = -50;
+    const snareThreshold = -55;
+    const hihatThreshold = -60;
+    const generalThreshold = -45;
     
     // Minimum time between beats to avoid double detection
     const minTimeBetweenBeats = 100;
@@ -153,7 +153,12 @@ export const useAudioClassification = () => {
       }
 
       if (detectedBeat) {
-        console.log('Beat detected:', detectedBeat);
+        console.log('Simple model beat detected:', detectedBeat, {
+          kickEnergy: kickEnergy.toFixed(2),
+          snareEnergy: snareEnergy.toFixed(2), 
+          hihatEnergy: hihatEnergy.toFixed(2),
+          totalEnergy: totalEnergy.toFixed(2)
+        });
         setDetectedBeats(prev => [...prev.slice(-19), detectedBeat]); // Keep last 20 beats
         lastBeatTimeRef.current = currentTime;
       }

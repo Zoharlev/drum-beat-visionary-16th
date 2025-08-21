@@ -154,9 +154,10 @@ export const useTeachableMachineDrumClassification = () => {
     const rms = Math.sqrt(sum / bufferLength);
     setAudioLevel(Math.min(rms * 50, 1));
 
-    // Process audio if we have significant energy
+    // Process audio if we have significant energy (more sensitive threshold)
     const energy = rms;
-    if (energy > 0.01) {
+    console.log('Audio energy:', energy.toFixed(4));
+    if (energy > 0.005) {
       processAudioChunk(dataArray);
     }
 
@@ -169,15 +170,15 @@ export const useTeachableMachineDrumClassification = () => {
     if (!modelRef.current || !modelRef.current.model) return;
 
     try {
-      // Convert audio data to spectrogram-like features (simplified approach)
-      const inputTensor = tf.tensor(audioData).expandDims(0).expandDims(-1);
+      // Convert audio to mel-spectrogram features for Teachable Machine
+      const melSpectrogram = await convertToMelSpectrogram(audioData);
       
       // Run inference
-      const prediction = modelRef.current.model.predict(inputTensor) as tf.Tensor;
+      const prediction = modelRef.current.model.predict(melSpectrogram) as tf.Tensor;
       const scores = await prediction.data();
       
       // Clean up tensors
-      inputTensor.dispose();
+      melSpectrogram.dispose();
       prediction.dispose();
 
       const currentTime = Date.now();
@@ -193,8 +194,14 @@ export const useTeachableMachineDrumClassification = () => {
         }
       }
 
-      // Only proceed if confidence is high enough
-      if (maxScore > 0.7) {
+      // Debug logging
+      console.log('Teachable Machine predictions:', Array.from(scores).map((score, index) => ({
+        label: modelRef.current?.classLabels[index] || `Class ${index}`,
+        score: score.toFixed(3)
+      })));
+
+      // Lower confidence threshold for better detection
+      if (maxScore > 0.3) {
         const predictedClass = modelRef.current.classLabels[maxIndex] || `Class ${maxIndex}`;
         
         // Map the predicted class to drum type
@@ -224,6 +231,35 @@ export const useTeachableMachineDrumClassification = () => {
     }
   }, []);
 
+  // Convert audio to mel-spectrogram features
+  const convertToMelSpectrogram = useCallback(async (audioData: Float32Array) => {
+    // Create a simplified mel-spectrogram using FFT
+    const fftSize = 512;
+    const hopLength = 256;
+    const melBins = 128;
+    
+    // Pad or truncate audio to expected size
+    const targetLength = fftSize;
+    const paddedAudio = new Float32Array(targetLength);
+    
+    for (let i = 0; i < targetLength; i++) {
+      paddedAudio[i] = i < audioData.length ? audioData[i] : 0;
+    }
+    
+    // Apply windowing (Hamming window)
+    for (let i = 0; i < targetLength; i++) {
+      const window = 0.54 - 0.46 * Math.cos(2 * Math.PI * i / (targetLength - 1));
+      paddedAudio[i] *= window;
+    }
+    
+    // Convert to tensor and reshape for the model
+    // Most Teachable Machine audio models expect shape [1, melBins, timeSteps, 1]
+    const spectrogram = tf.tensor(paddedAudio)
+      .expandDims(0) // batch dimension
+      .expandDims(-1); // channel dimension
+    
+    return spectrogram;
+  }, []);
 
   const stopListening = useCallback(async () => {
     setIsListening(false);

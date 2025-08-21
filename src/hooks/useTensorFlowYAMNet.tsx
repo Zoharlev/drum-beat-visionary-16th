@@ -79,13 +79,55 @@ const useTensorFlowYAMNet = () => {
         
         // Fallback: Create a mock model for demonstration
         // In a real implementation, you'd convert the Kaggle model to TensorFlow.js format
-        const mockModel = tf.sequential({
-          layers: [
-            tf.layers.dense({ inputShape: [15600], units: 521, activation: 'softmax' })
-          ]
-        });
+        console.log('[DEBUG] Using improved mock YAMNet model for demonstration');
+        const mockModel = {
+          predict: (audioTensor: tf.Tensor) => {
+            // Generate realistic-looking predictions for drum sounds
+            const drumClasses = {
+              kick: [2, 6, 7], // Bass drum, Kick drum classes
+              snare: [3, 48], // Snare drum, Clapping classes  
+              hihat: [4, 5, 11, 12, 13], // Hi-hat, Cymbal classes
+              openhat: [11, 12, 13] // Open hi-hat classes
+            };
+            const scores = new Float32Array(25); // Match yamnetClasses length
+            
+            // Add baseline noise to all classes
+            for (let i = 0; i < scores.length; i++) {
+              scores[i] = Math.random() * 0.05;
+            }
+            
+            // Analyze audio characteristics to determine likely drum type
+            const audioData = Array.from(audioTensor.dataSync());
+            const energy = audioData.reduce((sum, val) => sum + val * val, 0) / audioData.length;
+            
+            if (energy > 0.002) { // More sensitive threshold
+              // Simple frequency analysis simulation
+              const lowFreqEnergy = audioData.slice(0, audioData.length / 4).reduce((sum, val) => sum + Math.abs(val), 0);
+              const midFreqEnergy = audioData.slice(audioData.length / 4, audioData.length / 2).reduce((sum, val) => sum + Math.abs(val), 0);
+              const highFreqEnergy = audioData.slice(audioData.length / 2).reduce((sum, val) => sum + Math.abs(val), 0);
+              
+              // Determine most likely drum type based on frequency content
+              let targetClasses;
+              if (lowFreqEnergy > midFreqEnergy && lowFreqEnergy > highFreqEnergy) {
+                targetClasses = drumClasses.kick;
+              } else if (midFreqEnergy > highFreqEnergy) {
+                targetClasses = drumClasses.snare;
+              } else {
+                targetClasses = Math.random() > 0.5 ? drumClasses.hihat : drumClasses.openhat;
+              }
+              
+              // Set realistic confidence scores
+              targetClasses.forEach(classIdx => {
+                if (classIdx < scores.length) {
+                  scores[classIdx] = 0.3 + Math.random() * 0.5; // Confidence 0.3-0.8
+                }
+              });
+            }
+            
+            return tf.tensor1d(scores);
+          }
+        };
         modelRef.current = mockModel as any;
-        console.log('Using mock YAMNet model for demonstration');
       }
 
       setIsModelLoaded(true);
@@ -137,10 +179,11 @@ const useTensorFlowYAMNet = () => {
       // Clear the buffer
       audioBufferRef.current = [];
 
-      // Check for sufficient audio energy
+      // Check for sufficient audio energy (more sensitive)
       const energy = combinedBuffer.reduce((sum, sample) => sum + Math.abs(sample), 0) / combinedBuffer.length;
+      console.log('YAMNet audio energy:', energy.toFixed(6));
       
-      if (energy > 0.0005) {
+      if (energy > 0.0002) {
         // Preprocess audio for YAMNet
         const inputTensor = preprocessAudio(combinedBuffer);
         
@@ -190,8 +233,8 @@ const useTensorFlowYAMNet = () => {
         }
       }
 
-      // Only trigger detection if confidence is above threshold
-      if (bestDrumPrediction && bestDrumPrediction.confidence > 0.2) {
+      // Only trigger detection if confidence is above threshold (lowered)
+      if (bestDrumPrediction && bestDrumPrediction.confidence > 0.15) {
         const detection: DrumDetection = {
           timestamp,
           confidence: bestDrumPrediction.confidence,
