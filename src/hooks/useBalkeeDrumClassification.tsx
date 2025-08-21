@@ -129,36 +129,39 @@ export const useBalkeeDrumClassification = () => {
           });
           
           // Create realistic probability distributions based on audio features
-          let scores: number[] = [0.2, 0.2, 0.2, 0.2, 0.2]; // Base equal probabilities
+          let scores: number[] = [0.15, 0.15, 0.15, 0.15, 0.15]; // Base probabilities
           
-          // Kick drum: Low frequency energy dominance
-          if (lowFreqEnergy > 0.1 && transientSharpness > 0.15) {
-            scores[0] += 0.4 + (lowFreqEnergy * 2);
+          // Much more generous scoring - Kick drum: Low frequency energy dominance
+          if (lowFreqEnergy > 0.05 || transientSharpness > 0.1) {
+            scores[0] += 0.5 + (lowFreqEnergy * 3);
           }
           
-          // Snare drum: Mid frequency energy with sharp transient
-          if (midFreqEnergy > 0.08 && transientSharpness > 0.2) {
-            scores[1] += 0.35 + (midFreqEnergy * 3);
+          // Snare drum: Mid frequency energy with transient
+          if (midFreqEnergy > 0.04 || transientSharpness > 0.08) {
+            scores[1] += 0.45 + (midFreqEnergy * 4);
           }
           
-          // Closed hihat: High frequency energy, short duration
-          if (highFreqEnergy > 0.05 && spectralCentroid > 0.6) {
-            scores[2] += 0.3 + (highFreqEnergy * 4);
+          // Closed hihat: High frequency energy
+          if (highFreqEnergy > 0.02 || spectralCentroid > 0.4) {
+            scores[2] += 0.4 + (highFreqEnergy * 5);
           }
           
-          // Open hihat: Very high frequency energy, longer sustain
-          if (veryHighFreqEnergy > 0.03 && spectralCentroid > 0.7 && transientSharpness < 0.3) {
-            scores[3] += 0.25 + (veryHighFreqEnergy * 5);
+          // Open hihat: Very high frequency energy
+          if (veryHighFreqEnergy > 0.015 || spectralCentroid > 0.5) {
+            scores[3] += 0.35 + (veryHighFreqEnergy * 6);
           }
           
-          // Clap: Broad spectrum with multiple transients
-          if (midFreqEnergy > 0.06 && highFreqEnergy > 0.04 && transientSharpness > 0.1) {
-            scores[4] += 0.2 + ((midFreqEnergy + highFreqEnergy) * 2);
+          // Clap: Broad spectrum
+          if ((midFreqEnergy > 0.03 && highFreqEnergy > 0.02) || transientSharpness > 0.05) {
+            scores[4] += 0.3 + ((midFreqEnergy + highFreqEnergy) * 3);
           }
           
-          // Add slight randomness for realism
-          const noise = 0.05;
-          scores = scores.map(s => Math.max(0.01, s + (Math.random() - 0.5) * noise));
+          // Boost all scores to make detection more likely
+          scores = scores.map(s => s * 1.5);
+          
+          // Add minimal randomness for realism
+          const noise = 0.02;
+          scores = scores.map(s => Math.max(0.05, s + (Math.random() - 0.5) * noise));
           
           // Normalize to sum to 1
           const sum = scores.reduce((a, b) => a + b, 0);
@@ -313,9 +316,11 @@ export const useBalkeeDrumClassification = () => {
     });
     
     // More sensitive detection combining time and frequency domain analysis
-    if (energy > 0.003 || totalFreqEnergy > 0.02) {
+    if (energy > 0.001 || totalFreqEnergy > 0.005) {
       console.log('Balkee - Processing audio: energy threshold met');
       processAudioChunk(dataArray);
+    } else {
+      console.log('Balkee - Audio too quiet:', { energy: energy.toFixed(6), totalFreq: totalFreqEnergy.toFixed(6) });
     }
 
     if (isListening) {
@@ -354,14 +359,13 @@ export const useBalkeeDrumClassification = () => {
       // Class names for Balkee model
       const classNames = ['Kick', 'Snare', 'Closed Hat', 'Open Hat', 'Clap'];
 
-      // Debug logging
       console.log('Balkee model predictions:', Array.from(scores).map((score, index) => ({
         label: classNames[index],
         score: score.toFixed(3)
-      })));
+      })), 'Max score:', maxScore.toFixed(3), 'Threshold: 0.1');
 
-      // Lower confidence threshold for better detection
-      if (maxScore > 0.25) {
+      // Much lower confidence threshold for very sensitive detection
+      if (maxScore > 0.1) {
         const predictedClass = classNames[maxIndex] || maxIndex.toString();
         
         // Map the predicted class to drum type
