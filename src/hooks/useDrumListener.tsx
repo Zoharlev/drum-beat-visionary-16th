@@ -130,7 +130,7 @@ export const useDrumListener = () => {
           'rms'
         ], inputData);
 
-        if (features && features.mfcc && features.energy > 0.001) {
+        if (features && features.mfcc && features.energy > 0.005) { // Increased energy threshold
           analyzeDrumFeatures(features);
         }
       };
@@ -165,8 +165,8 @@ export const useDrumListener = () => {
       const maxIndex = predictionData.indexOf(Math.max(...predictionData));
       const confidence = predictionData[maxIndex];
       
-      // Only trigger if confidence is above threshold
-      if (confidence > 0.6) {
+      // Only trigger if confidence is above higher threshold for less sensitivity
+      if (confidence > 0.8) {
         const drumTypes = ['kick', 'snare', 'hihat', 'openhat'];
         const detectedType = drumTypes[maxIndex] as 'kick' | 'snare' | 'hihat' | 'openhat';
         
