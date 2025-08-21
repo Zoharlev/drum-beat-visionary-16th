@@ -21,6 +21,7 @@ export const useTeachableMachineDrumClassification = () => {
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const modelDisposedRef = useRef<boolean>(false);
 
   // Teachable Machine model URL
   const MODEL_URL = 'https://teachablemachine.withgoogle.com/models/X4kj9rYWZ/';
@@ -41,6 +42,12 @@ export const useTeachableMachineDrumClassification = () => {
   // Initialize the Teachable Machine model
   const initializeModel = useCallback(async () => {
     try {
+      // Skip if model already exists and not disposed
+      if (modelRef.current && !modelDisposedRef.current) {
+        console.log('Teachable Machine model already initialized');
+        return;
+      }
+
       setError(null);
       setLoadingProgress(20);
       setIsModelLoaded(false);
@@ -71,6 +78,7 @@ export const useTeachableMachineDrumClassification = () => {
         classLabels: metadata.labels || []
       };
       
+      modelDisposedRef.current = false;
       setIsModelLoaded(true);
       setLoadingProgress(100);
       console.log('Teachable Machine model loaded successfully', modelRef.current);
@@ -286,6 +294,17 @@ export const useTeachableMachineDrumClassification = () => {
   useEffect(() => {
     return () => {
       stopListening();
+      // Clean up model safely
+      if (modelRef.current?.model && !modelDisposedRef.current && typeof modelRef.current.model.dispose === 'function') {
+        try {
+          modelRef.current.model.dispose();
+          modelRef.current = null;
+          modelDisposedRef.current = true;
+          console.log('Teachable Machine model disposed successfully');
+        } catch (err) {
+          console.warn('Error disposing Teachable Machine model:', err);
+        }
+      }
     };
   }, [stopListening]);
 

@@ -125,6 +125,10 @@ const useTensorFlowYAMNet = () => {
             }
             
             return tf.tensor1d(scores);
+          },
+          dispose: function() {
+            // Mock dispose method for cleanup
+            console.log('Mock YAMNet model disposed');
           }
         };
         modelRef.current = mockModel as any;
@@ -342,8 +346,12 @@ const useTensorFlowYAMNet = () => {
     
     return () => {
       stopListening();
-      if (modelRef.current) {
-        modelRef.current.dispose();
+      if (modelRef.current && typeof modelRef.current.dispose === 'function') {
+        try {
+          modelRef.current.dispose();
+        } catch (err) {
+          console.warn('Error disposing model:', err);
+        }
       }
     };
   }, [initializeModel, stopListening]);
