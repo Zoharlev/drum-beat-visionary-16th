@@ -11,11 +11,10 @@ import { usePretrainedDrumClassification } from '../hooks/usePretrainedDrumClass
 import { useAudioClassification } from '../hooks/useAudioClassification';
 import { useTeachableMachineDrumClassification } from '../hooks/useTeachableMachineDrumClassification';
 import useTensorFlowYAMNet from '../hooks/useTensorFlowYAMNet';
-import { useSpeechCommandsDrumClassification } from '../hooks/useSpeechCommandsDrumClassification';
 import { BeatTimeline } from './BeatTimeline';
 
 export const ModelComparison: React.FC = () => {
-  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'speech-commands' | 'simple'>('teachable-machine');
+  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
   
   // Initialize all hooks
   const customModel = useDrumListener();
@@ -23,7 +22,6 @@ export const ModelComparison: React.FC = () => {
   const yamnetModel = usePretrainedDrumClassification('yamnet');
   const tensorflowYamnetModel = useTensorFlowYAMNet();
   const teachableMachineModel = useTeachableMachineDrumClassification();
-  const speechCommandsModel = useSpeechCommandsDrumClassification();
   const simpleModel = useAudioClassification();
 
   const models = {
@@ -61,13 +59,6 @@ export const ModelComparison: React.FC = () => {
       hook: teachableMachineModel,
       icon: <Zap className="h-4 w-4" />,
       color: 'bg-red-500'
-    },
-    'speech-commands': {
-      name: 'Speech Commands',
-      description: 'TensorFlow Speech Commands API',
-      hook: speechCommandsModel,
-      icon: <Cpu className="h-4 w-4" />,
-      color: 'bg-teal-500'
     },
     simple: {
       name: 'Simple Frequency',
@@ -110,7 +101,7 @@ export const ModelComparison: React.FC = () => {
       </div>
 
       <Tabs value={activeModel} onValueChange={handleModelSwitch}>
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-6">
           {Object.entries(models).map(([key, model]) => (
             <TabsTrigger key={key} value={key} className="flex items-center gap-2">
               {model.icon}
@@ -148,7 +139,7 @@ export const ModelComparison: React.FC = () => {
                         </Badge>
                       )}
                     </div>
-                    {(key === 'wav2vec2' || key === 'yamnet' || key === 'tensorflow-yamnet' || key === 'teachable-machine' || key === 'speech-commands') && 'loadingProgress' in model.hook && (
+                    {(key === 'wav2vec2' || key === 'yamnet' || key === 'tensorflow-yamnet' || key === 'teachable-machine') && 'loadingProgress' in model.hook && (
                       <div className="space-y-1">
                         <Progress value={model.hook.loadingProgress} className="w-32" />
                         <span className="text-xs text-muted-foreground">
@@ -270,7 +261,7 @@ export const ModelComparison: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {Object.entries(models).map(([key, model]) => (
               <div key={key} className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-2">
