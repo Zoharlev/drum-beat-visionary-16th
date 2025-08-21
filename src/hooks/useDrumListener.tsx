@@ -22,17 +22,10 @@ export const useDrumListener = () => {
   const scriptProcessorRef = useRef<ScriptProcessorNode | null>(null);
   const modelRef = useRef<tf.LayersModel | null>(null);
   const lastBeatTimeRef = useRef<number>(0);
-  const modelDisposedRef = useRef<boolean>(false);
 
   // Initialize TensorFlow.js and load/create a simple drum classification model
   const initializeModel = useCallback(async () => {
     try {
-      // Skip if model already exists and not disposed
-      if (modelRef.current && !modelDisposedRef.current) {
-        console.log('Model already initialized');
-        return;
-      }
-
       // Initialize TensorFlow.js backend
       await tf.ready();
       
@@ -55,7 +48,6 @@ export const useDrumListener = () => {
       });
 
       modelRef.current = model;
-      modelDisposedRef.current = false;
       setIsModelLoaded(true);
       console.log('Drum classification model initialized');
     } catch (err) {
@@ -248,16 +240,9 @@ export const useDrumListener = () => {
   useEffect(() => {
     return () => {
       stopListening();
-      // Clean up model safely
-      if (modelRef.current && !modelDisposedRef.current && typeof modelRef.current.dispose === 'function') {
-        try {
-          modelRef.current.dispose();
-          modelRef.current = null;
-          modelDisposedRef.current = true;
-          console.log('Drum listener model disposed successfully');
-        } catch (err) {
-          console.warn('Error disposing drum listener model:', err);
-        }
+      // Clean up model
+      if (modelRef.current) {
+        modelRef.current.dispose();
       }
     };
   }, [stopListening]);

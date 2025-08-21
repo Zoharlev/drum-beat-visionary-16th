@@ -11,11 +11,10 @@ import { usePretrainedDrumClassification } from '../hooks/usePretrainedDrumClass
 import { useAudioClassification } from '../hooks/useAudioClassification';
 import { useTeachableMachineDrumClassification } from '../hooks/useTeachableMachineDrumClassification';
 import useTensorFlowYAMNet from '../hooks/useTensorFlowYAMNet';
-import { useBalkeeDrumClassification } from '../hooks/useBalkeeDrumClassification';
 import { BeatTimeline } from './BeatTimeline';
 
 export const ModelComparison: React.FC = () => {
-  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'balkee-cnn' | 'simple'>('teachable-machine');
+  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
   
   // Initialize all hooks
   const customModel = useDrumListener();
@@ -23,7 +22,6 @@ export const ModelComparison: React.FC = () => {
   const yamnetModel = usePretrainedDrumClassification('yamnet');
   const tensorflowYamnetModel = useTensorFlowYAMNet();
   const teachableMachineModel = useTeachableMachineDrumClassification();
-  const balkeeCnnModel = useBalkeeDrumClassification();
   const simpleModel = useAudioClassification();
 
   const models = {
@@ -62,13 +60,6 @@ export const ModelComparison: React.FC = () => {
       icon: <Zap className="h-4 w-4" />,
       color: 'bg-red-500'
     },
-    'balkee-cnn': {
-      name: 'Balkee CNN',
-      description: 'CNN-based drum classifier with spectrogram analysis',
-      hook: balkeeCnnModel,
-      icon: <Cpu className="h-4 w-4" />,
-      color: 'bg-pink-500'
-    },
     simple: {
       name: 'Simple Frequency',
       description: 'Basic frequency analysis detection',
@@ -95,7 +86,6 @@ export const ModelComparison: React.FC = () => {
       snare: 'Snare', 
       hihat: 'Hi-Hat',
       openhat: 'Open Hat',
-      clap: 'Clap',
       beat: 'Beat'
     };
     return typeMap[type] || type;
@@ -111,7 +101,7 @@ export const ModelComparison: React.FC = () => {
       </div>
 
       <Tabs value={activeModel} onValueChange={handleModelSwitch}>
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-6">
           {Object.entries(models).map(([key, model]) => (
             <TabsTrigger key={key} value={key} className="flex items-center gap-2">
               {model.icon}
@@ -149,7 +139,7 @@ export const ModelComparison: React.FC = () => {
                         </Badge>
                       )}
                     </div>
-                    {(key === 'wav2vec2' || key === 'yamnet' || key === 'tensorflow-yamnet' || key === 'teachable-machine' || key === 'balkee-cnn') && 'loadingProgress' in model.hook && (
+                    {(key === 'wav2vec2' || key === 'yamnet' || key === 'tensorflow-yamnet') && 'loadingProgress' in model.hook && (
                       <div className="space-y-1">
                         <Progress value={model.hook.loadingProgress} className="w-32" />
                         <span className="text-xs text-muted-foreground">
@@ -271,7 +261,7 @@ export const ModelComparison: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {Object.entries(models).map(([key, model]) => (
               <div key={key} className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-2">
