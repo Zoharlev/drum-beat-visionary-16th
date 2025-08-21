@@ -10,11 +10,12 @@ import { useDrumListener } from '../hooks/useDrumListener';
 import { usePretrainedDrumClassification } from '../hooks/usePretrainedDrumClassification';
 import { useAudioClassification } from '../hooks/useAudioClassification';
 import { useTeachableMachineDrumClassification } from '../hooks/useTeachableMachineDrumClassification';
+import { useTeachableMachineV2 } from '../hooks/useTeachableMachineV2';
 import useTensorFlowYAMNet from '../hooks/useTensorFlowYAMNet';
 import { BeatTimeline } from './BeatTimeline';
 
 export const ModelComparison: React.FC = () => {
-  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'simple'>('teachable-machine');
+  const [activeModel, setActiveModel] = useState<'custom' | 'wav2vec2' | 'yamnet' | 'tensorflow-yamnet' | 'teachable-machine' | 'teachable-machine-v2' | 'simple'>('teachable-machine');
   
   // Initialize all hooks
   const customModel = useDrumListener();
@@ -22,6 +23,7 @@ export const ModelComparison: React.FC = () => {
   const yamnetModel = usePretrainedDrumClassification('yamnet');
   const tensorflowYamnetModel = useTensorFlowYAMNet();
   const teachableMachineModel = useTeachableMachineDrumClassification();
+  const teachableMachineV2Model = useTeachableMachineV2();
   const simpleModel = useAudioClassification();
 
   const models = {
@@ -59,6 +61,13 @@ export const ModelComparison: React.FC = () => {
       hook: teachableMachineModel,
       icon: <Zap className="h-4 w-4" />,
       color: 'bg-red-500'
+    },
+    'teachable-machine-v2': {
+      name: 'Teachable Machine V2',
+      description: 'Enhanced Teachable Machine model with frequency analysis',
+      hook: teachableMachineV2Model,
+      icon: <Zap className="h-4 w-4" />,
+      color: 'bg-pink-500'
     },
     simple: {
       name: 'Simple Frequency',
@@ -101,7 +110,7 @@ export const ModelComparison: React.FC = () => {
       </div>
 
       <Tabs value={activeModel} onValueChange={handleModelSwitch}>
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           {Object.entries(models).map(([key, model]) => (
             <TabsTrigger key={key} value={key} className="flex items-center gap-2">
               {model.icon}
@@ -261,7 +270,7 @@ export const ModelComparison: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
             {Object.entries(models).map(([key, model]) => (
               <div key={key} className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-2">
