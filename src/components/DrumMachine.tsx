@@ -9,10 +9,7 @@ import { useCSVPatternLoader } from "@/hooks/useCSVPatternLoader";
 import { cn } from "@/lib/utils";
 
 interface DrumPattern {
-  kick: boolean[];
-  snare: boolean[];
-  hihat: boolean[];
-  openhat: boolean[];
+  [key: string]: boolean[] | number;
   length: number;
 }
 
@@ -24,23 +21,10 @@ export const DrumMachine = () => {
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
   const [pattern, setPattern] = useState<DrumPattern>(() => {
-    // Initialize with your specific Hi-Hat pattern
-    // Times: 0.25s, 0.73s, 1.22s, 1.7s
-    // Converting to 16-step grid positions based on timing
-    const hihatPattern = new Array(16).fill(false);
-    
-    // At 120 BPM, each step is about 0.125s (125ms)
-    // 0.25s ≈ step 2, 0.73s ≈ step 6, 1.22s ≈ step 10, 1.7s ≈ step 14
-    hihatPattern[2] = true;  // 0.25s
-    hihatPattern[6] = true;  // 0.73s  
-    hihatPattern[10] = true; // 1.22s
-    hihatPattern[14] = true; // 1.7s
-    
     return {
-      kick: new Array(16).fill(false),
-      snare: new Array(16).fill(false),
-      hihat: hihatPattern,
-      openhat: new Array(16).fill(false),
+      'Kick': new Array(16).fill(false),
+      'Snare': new Array(16).fill(false),
+      'Hi-Hat': new Array(16).fill(false),
       length: 16,
     };
   });
@@ -487,6 +471,21 @@ export const DrumMachine = () => {
     setBpm(prev => Math.max(60, Math.min(200, prev + delta)));
   };
 
+  // Helper function to get drum display info
+  const getDrumInfo = (instrument: string) => {
+    const drumMap: Record<string, { name: string; symbol: string; color: string }> = {
+      'Kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
+      'Snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
+      'Hi-Hat': { name: 'Hi-Hat', symbol: '○', color: 'text-blue-500' },
+      'kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
+      'snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
+      'hihat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
+      'openhat': { name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
+    };
+    
+    return drumMap[instrument] || { name: instrument, symbol: '●', color: 'text-gray-500' };
+  };
+
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -496,20 +495,23 @@ export const DrumMachine = () => {
   const toggleStep = (drum: string, step: number) => {
     setPattern(prev => ({
       ...prev,
-      [drum]: prev[drum].map((active, index) => 
+      [drum]: (prev[drum] as boolean[]).map((active, index) => 
         index === step ? !active : active
       )
     }));
   };
 
   const clearPattern = () => {
-    setPattern({
-      kick: new Array(pattern.length).fill(false),
-      snare: new Array(pattern.length).fill(false),
-      hihat: new Array(pattern.length).fill(false),
-      openhat: new Array(pattern.length).fill(false),
-      length: pattern.length,
+    const clearedPattern: DrumPattern = { length: pattern.length };
+    
+    // Clear all instrument patterns
+    Object.keys(pattern).forEach(key => {
+      if (key !== 'length') {
+        clearedPattern[key] = new Array(pattern.length).fill(false);
+      }
     });
+    
+    setPattern(clearedPattern);
     toast({
       title: "Cleared",
       description: "All patterns cleared",
@@ -526,10 +528,12 @@ export const DrumMachine = () => {
       let totalBeats = 0;
       
       Object.entries(newPattern).forEach(([drumType, steps]) => {
-        const activeSteps = steps.filter(Boolean).length;
-        if (activeSteps > 0) {
-          activeComponents.push(drumType);
-          totalBeats += activeSteps;
+        if (drumType !== 'length' && Array.isArray(steps)) {
+          const activeSteps = (steps as boolean[]).filter(Boolean).length;
+          if (activeSteps > 0) {
+            activeComponents.push(drumType);
+            totalBeats += activeSteps;
+          }
         }
       });
       
@@ -567,20 +571,21 @@ export const DrumMachine = () => {
           <div className="bg-card border border-border rounded-lg p-4">
             <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
             <div className="space-y-2">
-              {[
-                { key: 'kick', name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
-                { key: 'snare', name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
-                { key: 'hihat', name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
-                { key: 'openhat', name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
-              ].map(({ key, name, symbol, color }) => {
-                const isActive = displayPattern[key]?.some(Boolean);
+              {/* Drum Info */}
+              {Object.keys(displayPattern).filter(key => key !== 'length').map((instrument) => {
+                const steps = displayPattern[instrument] as boolean[];
+                if (!Array.isArray(steps)) return null;
+                
+                const isActive = steps.some(Boolean);
+                const drumInfo = getDrumInfo(instrument);
+                
                 return (
-                  <div key={key} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
-                    <span className={cn("text-lg font-mono", color)}>{symbol}</span>
-                    <span className="text-sm font-medium">{name}</span>
+                  <div key={instrument} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
+                    <span className={cn("text-lg font-mono", drumInfo.color)}>{drumInfo.symbol}</span>
+                    <span className="text-sm font-medium">{drumInfo.name}</span>
                     {isActive && (
                       <span className="ml-auto text-xs text-accent font-medium">
-                        {displayPattern[key].filter(Boolean).length} beats
+                        {steps.filter(Boolean).length} beats
                       </span>
                     )}
                   </div>
@@ -631,20 +636,20 @@ export const DrumMachine = () => {
             <div className="bg-card border border-border rounded-lg p-4">
               <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
               <div className="space-y-2">
-                {[
-                  { key: 'kick', name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
-                  { key: 'snare', name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
-                  { key: 'hihat', name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
-                  { key: 'openhat', name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
-                ].map(({ key, name, symbol, color }) => {
-                  const isActive = displayPattern[key]?.some(Boolean);
+                {Object.keys(displayPattern).filter(key => key !== 'length').map((instrument) => {
+                  const steps = displayPattern[instrument] as boolean[];
+                  if (!Array.isArray(steps)) return null;
+                  
+                  const isActive = steps.some(Boolean);
+                  const drumInfo = getDrumInfo(instrument);
+                  
                   return (
-                    <div key={key} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
-                      <span className={cn("text-lg font-mono", color)}>{symbol}</span>
-                      <span className="text-sm font-medium">{name}</span>
+                    <div key={instrument} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
+                      <span className={cn("text-lg font-mono", drumInfo.color)}>{drumInfo.symbol}</span>
+                      <span className="text-sm font-medium">{drumInfo.name}</span>
                       {isActive && (
                         <span className="ml-auto text-xs text-accent font-medium">
-                          {displayPattern[key].filter(Boolean).length} beats
+                          {steps.filter(Boolean).length} beats
                         </span>
                       )}
                     </div>

@@ -4,10 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface DrumGridProps {
   pattern: {
-    kick: boolean[];
-    snare: boolean[];
-    hihat: boolean[];
-    openhat: boolean[];
+    [key: string]: boolean[] | number;
     length: number;
   };
   currentStep: number;
@@ -127,52 +124,60 @@ export const DrumGrid = ({
         </div>
 
         {/* Drum Rows */}
-        {Object.entries(drumLabels).map(([drumKey, {
-        name,
-        symbol
-      }]) => <div key={drumKey} className="flex items-center mb-3 group">
-            {/* Drum Label */}
-            <div className="w-20 flex items-center gap-2 pr-4">
-              <span className="text-lg font-mono text-accent">{symbol}</span>
-              <span className="text-sm font-medium text-foreground">{name}</span>
-            </div>
+        {Object.entries(pattern).filter(([key]) => key !== 'length').map(([drumKey, steps]) => {
+          if (!Array.isArray(steps)) return null;
+          
+          const drumInfo = drumLabels[drumKey] || { 
+            name: drumKey, 
+            symbol: drumKey === 'Kick' ? '●' : drumKey === 'Snare' ? '×' : drumKey === 'Hi-Hat' ? '○' : '●' 
+          };
+          
+          return (
+            <div key={drumKey} className="flex items-center mb-3 group">
+              {/* Drum Label */}
+              <div className="w-20 flex items-center gap-2 pr-4">
+                <span className="text-lg font-mono text-accent">{drumInfo.symbol}</span>
+                <span className="text-sm font-medium text-foreground">{drumInfo.name}</span>
+              </div>
 
-            {/* Grid Line */}
-            <div className="flex-1 relative">
-              <div className="absolute inset-0 border-t border-grid-line"></div>
-              
-              {/* Step Buttons */}
-              <div className="flex relative z-10">
-                {Array.from({ length: visibleSteps }, (_, i) => {
-                  const stepIndex = startStep + i;
-                  const active = pattern[drumKey]?.[stepIndex];
-                  return (
-                    <button 
-                      key={stepIndex} 
-                      onClick={() => onStepToggle(drumKey, stepIndex)} 
-                      className={cn(
-                        "flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200",
-                        "flex items-center justify-center group-hover:bg-muted/20",
-                        stepIndex === currentStep && "bg-playhead/10",
-                        stepIndex % 4 === 0 && "border-r-2 border-primary/30"
-                      )}
-                    >
-                      {active && (
-                        <div className={cn(
-                          "w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent",
-                          "shadow-note transition-transform duration-200 hover:scale-110",
-                          "flex items-center justify-center text-xs font-bold text-background",
-                          stepIndex === currentStep && active && "animate-bounce"
-                        )}>
-                          {symbol}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
+              {/* Grid Line */}
+              <div className="flex-1 relative">
+                <div className="absolute inset-0 border-t border-grid-line"></div>
+                
+                {/* Step Buttons */}
+                <div className="flex relative z-10">
+                  {Array.from({ length: visibleSteps }, (_, i) => {
+                    const stepIndex = startStep + i;
+                    const active = (steps as boolean[])[stepIndex];
+                    return (
+                      <button 
+                        key={stepIndex} 
+                        onClick={() => onStepToggle(drumKey, stepIndex)} 
+                        className={cn(
+                          "flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200",
+                          "flex items-center justify-center group-hover:bg-muted/20",
+                          stepIndex === currentStep && "bg-playhead/10",
+                          stepIndex % 4 === 0 && "border-r-2 border-primary/30"
+                        )}
+                      >
+                        {active && (
+                          <div className={cn(
+                            "w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent",
+                            "shadow-note transition-transform duration-200 hover:scale-110",
+                            "flex items-center justify-center text-xs font-bold text-background",
+                            stepIndex === currentStep && active && "animate-bounce"
+                          )}>
+                            {drumInfo.symbol}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>)}
+          );
+        })}
 
         {/* Grid Enhancement */}
         <div className="absolute inset-6 pointer-events-none">
