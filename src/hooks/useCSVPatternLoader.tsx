@@ -16,11 +16,15 @@ interface DrumPattern {
 
 // Map CSV drum components to our drum types
 const drumComponentMap: Record<string, keyof DrumPattern> = {
-  'F': 'kick',      // F might be kick/bass drum
-  'C': 'snare',     // C might be snare
-  'E': 'hihat',     // E might be hihat
-  'D': 'hihat',     // D might be hihat variation
-  'A': 'openhat',   // A might be open hihat
+  'F': 'kick',           // F might be kick/bass drum
+  'C': 'snare',          // C might be snare
+  'E': 'hihat',          // E might be hihat
+  'D': 'hihat',          // D might be hihat variation
+  'A': 'openhat',        // A might be open hihat
+  'Bass Drum': 'kick',   // Full name mapping
+  'Snare Drum': 'snare', // Full name mapping
+  'Hi-Hat': 'hihat',     // Full name mapping
+  'Open Hi-Hat': 'openhat', // Full name mapping
 };
 
 export const useCSVPatternLoader = () => {
@@ -104,7 +108,7 @@ export const useCSVPatternLoader = () => {
 
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     try {
-      const response = await fetch('/patterns/come_as_you_are_drums.csv');
+      const response = await fetch('/patterns/come_as_you_are_drums_1.csv');
       if (!response.ok) {
         throw new Error('Failed to load pattern file');
       }
