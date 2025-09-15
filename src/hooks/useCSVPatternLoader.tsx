@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 interface CSVDrumRow {
-  part: string;
-  offset: number;
+  part?: string;
+  offset?: number;
+  time?: number;
   duration: number;
-  drumComponent: string;
+  drumComponent?: string;
+  instrument?: string;
 }
 
 interface DrumPattern {
@@ -34,25 +36,57 @@ export const useCSVPatternLoader = () => {
 
   const parseCSVLine = (line: string): CSVDrumRow | null => {
     const parts = line.split(',');
-    if (parts.length !== 4) return null;
+    if (parts.length < 3) return null;
 
-    return {
-      part: parts[0].trim(),
-      offset: parseFloat(parts[1].trim()),
-      duration: parseFloat(parts[2].trim()),
-      drumComponent: parts[3].trim()
-    };
+    // Handle both formats:
+    // Format 1: Part,Offset (Beat),Duration (Quarter),Drum Component
+    // Format 2: Time (s), Instrument,Duration (Quarter)
+    
+    if (parts.length === 4) {
+      // Original format
+      return {
+        part: parts[0].trim(),
+        offset: parseFloat(parts[1].trim()),
+        duration: parseFloat(parts[2].trim()),
+        drumComponent: parts[3].trim()
+      };
+    } else if (parts.length === 3) {
+      // New time-based format
+      return {
+        time: parseFloat(parts[0].trim()),
+        instrument: parts[1].trim(),
+        duration: parseFloat(parts[2].trim())
+      };
+    }
+    
+    return null;
   };
 
   const convertToPattern = (csvData: CSVDrumRow[]): DrumPattern => {
-    // Calculate pattern length based on CSV data range
-    const offsets = csvData.map(row => row.offset);
-    const minOffset = Math.min(...offsets);
-    const maxOffset = Math.max(...offsets);
-    const beatRange = maxOffset - minOffset;
+    // Determine if we're using time-based or offset-based data
+    const isTimeBased = csvData.some(row => row.time !== undefined);
     
-    // Convert to steps (assuming 16th notes, so 4 steps per beat)
-    const patternLength = Math.max(16, Math.ceil((beatRange + 1) * 4));
+    let minTime = 0;
+    let maxTime = 0;
+    
+    if (isTimeBased) {
+      // Time-based format (seconds)
+      const times = csvData.map(row => row.time!).filter(t => !isNaN(t));
+      minTime = Math.min(...times);
+      maxTime = Math.max(...times);
+    } else {
+      // Offset-based format (beats)
+      const offsets = csvData.map(row => row.offset!).filter(o => !isNaN(o));
+      minTime = Math.min(...offsets);
+      maxTime = Math.max(...offsets);
+    }
+    
+    const timeRange = maxTime - minTime;
+    
+    // Convert to steps - for time-based, assume 120 BPM (0.5s per beat, 4 steps per beat = 8 steps per second)
+    // For offset-based, 4 steps per beat
+    const stepsPerUnit = isTimeBased ? 8 : 4;
+    const patternLength = Math.max(16, Math.ceil((timeRange + 1) * stepsPerUnit));
     
     const pattern: DrumPattern = {
       kick: new Array(patternLength).fill(false),
@@ -63,10 +97,22 @@ export const useCSVPatternLoader = () => {
     };
 
     csvData.forEach(row => {
-      const drumType = drumComponentMap[row.drumComponent];
+      // Determine drum type from either drumComponent or instrument field
+      const componentName = row.drumComponent || row.instrument || '';
+      const drumType = drumComponentMap[componentName];
+      
       if (drumType) {
-        // Map the beat offset to step index (4 steps per beat for 16th notes)
-        const stepIndex = Math.round((row.offset - minOffset) * 4);
+        let stepIndex: number;
+        
+        if (isTimeBased && row.time !== undefined) {
+          // Time-based mapping (8 steps per second at 120 BPM)
+          stepIndex = Math.round((row.time - minTime) * stepsPerUnit);
+        } else if (row.offset !== undefined) {
+          // Offset-based mapping (4 steps per beat)
+          stepIndex = Math.round((row.offset - minTime) * stepsPerUnit);
+        } else {
+          return; // Skip invalid rows
+        }
         
         if (stepIndex >= 0 && stepIndex < patternLength) {
           pattern[drumType][stepIndex] = true;
@@ -90,8 +136,11 @@ export const useCSVPatternLoader = () => {
       
       for (const line of dataLines) {
         const row = parseCSVLine(line);
-        if (row && row.part === 'Voice') {
-          csvRows.push(row);
+        if (row) {
+          // Accept rows with 'Voice' part or any valid row in new format
+          if (row.part === 'Voice' || row.instrument) {
+            csvRows.push(row);
+          }
         }
       }
 
@@ -112,7 +161,7 @@ export const useCSVPatternLoader = () => {
 
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     try {
-      const response = await fetch('/patterns/come_as_you_are_drums_1.csv');
+      const response = await fetch('/patterns/come_as_you_are_drums_1-2.csv');
       if (!response.ok) {
         throw new Error('Failed to load pattern file');
       }
