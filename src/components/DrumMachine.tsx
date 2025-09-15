@@ -4,10 +4,14 @@ import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "luci
 import { DrumGrid } from "./DrumGrid";
 import { useToast } from "@/hooks/use-toast";
 import { useDrumListener } from "@/hooks/useDrumListener";
+import { useCSVPatternLoader } from "@/hooks/useCSVPatternLoader";
 import { cn } from "@/lib/utils";
 
 interface DrumPattern {
-  [key: string]: boolean[];
+  kick: boolean[];
+  snare: boolean[];
+  hihat: boolean[];
+  openhat: boolean[];
 }
 
 export const DrumMachine = () => {
@@ -53,6 +57,8 @@ export const DrumMachine = () => {
     stopListening,
     clearBeats
   } = useDrumListener();
+
+  const { loadPatternFromFile, isLoading: isLoadingPattern } = useCSVPatternLoader();
 
   // Handle listener state changes and errors
   useEffect(() => {
@@ -494,6 +500,23 @@ export const DrumMachine = () => {
     });
   };
 
+  const loadCSVPattern = async () => {
+    try {
+      const newPattern = await loadPatternFromFile();
+      setPattern(newPattern);
+      toast({
+        title: "Pattern Loaded",
+        description: "Come As You Are drum pattern loaded successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load drum pattern",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
@@ -507,16 +530,18 @@ export const DrumMachine = () => {
         {/* Main Pattern Content */}
         <div className="space-y-6">
           {/* Drum Grid */}
-          <DrumGrid
-            pattern={displayPattern}
-            currentStep={currentStep}
-            onStepToggle={toggleStep}
-            onClearPattern={clearPattern}
-            metronomeEnabled={metronomeEnabled}
-            onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
-            onTogglePlay={togglePlay}
-            isPlaying={isPlaying}
-          />
+            <DrumGrid
+              pattern={displayPattern}
+              currentStep={currentStep}
+              onStepToggle={toggleStep}
+              onClearPattern={clearPattern}
+              metronomeEnabled={metronomeEnabled}
+              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+              onTogglePlay={togglePlay}
+              isPlaying={isPlaying}
+              onLoadPattern={loadCSVPattern}
+              isLoadingPattern={isLoadingPattern}
+            />
 
           {/* Bottom Toolbar */}
           <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">

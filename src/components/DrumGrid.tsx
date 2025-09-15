@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Trash2, Volume2, VolumeX, Settings } from "lucide-react";
+import { Trash2, Volume2, VolumeX, Settings, Upload, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 interface DrumGridProps {
   pattern: {
-    [key: string]: boolean[];
+    kick: boolean[];
+    snare: boolean[];
+    hihat: boolean[];
+    openhat: boolean[];
   };
   currentStep: number;
   onStepToggle: (drum: string, step: number) => void;
@@ -12,6 +16,8 @@ interface DrumGridProps {
   onMetronomeToggle: () => void;
   onTogglePlay: () => void;
   isPlaying: boolean;
+  onLoadPattern?: () => void;
+  isLoadingPattern?: boolean;
 }
 const drumLabels: {
   [key: string]: {
@@ -44,7 +50,9 @@ export const DrumGrid = ({
   metronomeEnabled,
   onMetronomeToggle,
   onTogglePlay,
-  isPlaying
+  isPlaying,
+  onLoadPattern,
+  isLoadingPattern
 }: DrumGridProps) => {
   return <div className="space-y-6">
       {/* Controls */}
@@ -60,6 +68,21 @@ export const DrumGrid = ({
           <Trash2 className="h-4 w-4" />
           Clear
         </Button>
+        {onLoadPattern && (
+          <Button 
+            onClick={onLoadPattern} 
+            variant="outline" 
+            className="flex items-center gap-2"
+            disabled={isLoadingPattern}
+          >
+            {isLoadingPattern ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="h-4 w-4" />
+            )}
+            Load CSV
+          </Button>
+        )}
         <Button variant="outline" size="icon">
           <img 
             src="/lovable-uploads/fbd529ea-6eab-43ce-8d5d-274c34542d99.png" 
