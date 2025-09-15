@@ -58,7 +58,11 @@ export const DrumMachine = () => {
     clearBeats
   } = useDrumListener();
 
-  const { loadPatternFromFile, isLoading: isLoadingPattern } = useCSVPatternLoader();
+  const { loadPatternFromFile, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
+  const [loadedPatternInfo, setLoadedPatternInfo] = useState<{
+    componentsFound: string[];
+    totalBeats: number;
+  } | null>(null);
 
   // Handle listener state changes and errors
   useEffect(() => {
@@ -504,9 +508,27 @@ export const DrumMachine = () => {
     try {
       const newPattern = await loadPatternFromFile();
       setPattern(newPattern);
+      
+      // Analyze loaded pattern to show component info
+      const activeComponents: string[] = [];
+      let totalBeats = 0;
+      
+      Object.entries(newPattern).forEach(([drumType, steps]) => {
+        const activeSteps = steps.filter(Boolean).length;
+        if (activeSteps > 0) {
+          activeComponents.push(drumType);
+          totalBeats += activeSteps;
+        }
+      });
+      
+      setLoadedPatternInfo({
+        componentsFound: activeComponents,
+        totalBeats
+      });
+      
       toast({
         title: "Pattern Loaded",
-        description: "Come As You Are drum pattern loaded successfully!",
+        description: `Found ${activeComponents.length} drum components with ${totalBeats} beats`,
       });
     } catch (error) {
       toast({
@@ -527,8 +549,132 @@ export const DrumMachine = () => {
           </p>
         </div>
 
+        {/* Drum Components Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Available Drum Components */}
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
+            <div className="space-y-2">
+              {[
+                { key: 'kick', name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
+                { key: 'snare', name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
+                { key: 'hihat', name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
+                { key: 'openhat', name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
+              ].map(({ key, name, symbol, color }) => {
+                const isActive = displayPattern[key]?.some(Boolean);
+                return (
+                  <div key={key} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
+                    <span className={cn("text-lg font-mono", color)}>{symbol}</span>
+                    <span className="text-sm font-medium">{name}</span>
+                    {isActive && (
+                      <span className="ml-auto text-xs text-accent font-medium">
+                        {displayPattern[key].filter(Boolean).length} beats
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Loaded Pattern Info */}
+          {loadedPatternInfo && (
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Loaded Pattern Info</h3>
+              <div className="space-y-2">
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Components Found:</span>
+                  <span className="ml-2 font-medium">{loadedPatternInfo.componentsFound.length}</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Total Beats:</span>
+                  <span className="ml-2 font-medium">{loadedPatternInfo.totalBeats}</span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-2">
+                  Active: {loadedPatternInfo.componentsFound.join(', ')}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Detection Status */}
+        {isListening && detectedBeats.length > 0 && (
+          <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 mb-4">
+            <div className="text-sm font-medium text-accent mb-2">
+              Detected Beats ({detectedBeats.length})
+            </div>
+            <div className="text-xs text-muted-foreground">
+              Last detected: {detectedBeats[detectedBeats.length - 1]?.type} 
+              (confidence: {Math.round((detectedBeats[detectedBeats.length - 1]?.confidence || 0) * 100)}%)
+            </div>
+          </div>
+        )}
+
         {/* Main Pattern Content */}
         <div className="space-y-6">
+          {/* Drum Components Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {/* Available Drum Components */}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
+              <div className="space-y-2">
+                {[
+                  { key: 'kick', name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
+                  { key: 'snare', name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
+                  { key: 'hihat', name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
+                  { key: 'openhat', name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
+                ].map(({ key, name, symbol, color }) => {
+                  const isActive = displayPattern[key]?.some(Boolean);
+                  return (
+                    <div key={key} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
+                      <span className={cn("text-lg font-mono", color)}>{symbol}</span>
+                      <span className="text-sm font-medium">{name}</span>
+                      {isActive && (
+                        <span className="ml-auto text-xs text-accent font-medium">
+                          {displayPattern[key].filter(Boolean).length} beats
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Loaded Pattern Info */}
+            {loadedPatternInfo && (
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-foreground mb-3">Loaded Pattern Info</h3>
+                <div className="space-y-2">
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Components Found:</span>
+                    <span className="ml-2 font-medium">{loadedPatternInfo.componentsFound.length}</span>
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Total Beats:</span>
+                    <span className="ml-2 font-medium">{loadedPatternInfo.totalBeats}</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-2">
+                    Active: {loadedPatternInfo.componentsFound.join(', ')}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Detection Status */}
+          {isListening && detectedBeats.length > 0 && (
+            <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 mb-4">
+              <div className="text-sm font-medium text-accent mb-2">
+                Detected Beats ({detectedBeats.length})
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Last detected: {detectedBeats[detectedBeats.length - 1]?.type} 
+                (confidence: {Math.round((detectedBeats[detectedBeats.length - 1]?.confidence || 0) * 100)}%)
+              </div>
+            </div>
+          )}
+
           {/* Drum Grid */}
             <DrumGrid
               pattern={displayPattern}
