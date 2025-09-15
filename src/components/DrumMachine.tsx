@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
 import { useDrumListener } from "@/hooks/useDrumListener";
 import { useCSVPatternLoader } from "@/hooks/useCSVPatternLoader";
@@ -12,11 +13,13 @@ interface DrumPattern {
   snare: boolean[];
   hihat: boolean[];
   openhat: boolean[];
+  length: number;
 }
 
 export const DrumMachine = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [currentView, setCurrentView] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
@@ -38,6 +41,7 @@ export const DrumMachine = () => {
       snare: new Array(16).fill(false),
       hihat: hihatPattern,
       openhat: new Array(16).fill(false),
+      length: 16,
     };
   });
 
@@ -115,19 +119,20 @@ export const DrumMachine = () => {
     if (!isListening || detectedBeats.length === 0) return null;
 
     const newPattern: DrumPattern = {
-      kick: new Array(16).fill(false),
-      snare: new Array(16).fill(false),
-      hihat: new Array(16).fill(false),
-      openhat: new Array(16).fill(false),
+      kick: new Array(pattern.length).fill(false),
+      snare: new Array(pattern.length).fill(false),
+      hihat: new Array(pattern.length).fill(false),
+      openhat: new Array(pattern.length).fill(false),
+      length: pattern.length,
     };
 
     const firstBeatTime = detectedBeats[0]?.timestamp || Date.now();
     
     detectedBeats.forEach(beat => {
       const relativeTime = beat.timestamp - firstBeatTime;
-      const stepPosition = Math.round(relativeTime / stepDuration) % 16;
+      const stepPosition = Math.round(relativeTime / stepDuration) % pattern.length;
       
-      if (stepPosition >= 0 && stepPosition < 16 && beat.confidence > 0.6) {
+      if (stepPosition >= 0 && stepPosition < pattern.length && beat.confidence > 0.6) {
         newPattern[beat.type][stepPosition] = true;
       }
     });
@@ -142,7 +147,13 @@ export const DrumMachine = () => {
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
         setCurrentStep((prev) => {
-          const nextStep = (prev + 1) % 16;
+          const nextStep = (prev + 1) % displayPattern.length;
+          // Auto-scroll to next view if needed
+          const stepsPerView = 16;
+          const newView = Math.floor(nextStep / stepsPerView);
+          if (newView !== currentView) {
+            setCurrentView(newView);
+          }
           return nextStep;
         });
       }, stepDuration);
@@ -493,10 +504,11 @@ export const DrumMachine = () => {
 
   const clearPattern = () => {
     setPattern({
-      kick: new Array(16).fill(false),
-      snare: new Array(16).fill(false),
-      hihat: new Array(16).fill(false),
-      openhat: new Array(16).fill(false),
+      kick: new Array(pattern.length).fill(false),
+      snare: new Array(pattern.length).fill(false),
+      hihat: new Array(pattern.length).fill(false),
+      openhat: new Array(pattern.length).fill(false),
+      length: pattern.length,
     });
     toast({
       title: "Cleared",
@@ -675,10 +687,20 @@ export const DrumMachine = () => {
             </div>
           )}
 
+          {/* Pattern Navigation */}
+          <PatternNavigation
+            currentView={currentView}
+            totalSteps={displayPattern.length}
+            stepsPerView={16}
+            onViewChange={setCurrentView}
+          />
+
           {/* Drum Grid */}
             <DrumGrid
               pattern={displayPattern}
               currentStep={currentStep}
+              currentView={currentView}
+              stepsPerView={16}
               onStepToggle={toggleStep}
               onClearPattern={clearPattern}
               metronomeEnabled={metronomeEnabled}

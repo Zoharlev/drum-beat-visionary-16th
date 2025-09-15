@@ -8,8 +8,11 @@ interface DrumGridProps {
     snare: boolean[];
     hihat: boolean[];
     openhat: boolean[];
+    length: number;
   };
   currentStep: number;
+  currentView?: number;
+  stepsPerView?: number;
   onStepToggle: (drum: string, step: number) => void;
   onClearPattern: () => void;
   metronomeEnabled: boolean;
@@ -45,6 +48,8 @@ const drumLabels: {
 export const DrumGrid = ({
   pattern,
   currentStep,
+  currentView = 0,
+  stepsPerView = 16,
   onStepToggle,
   onClearPattern,
   metronomeEnabled,
@@ -54,6 +59,10 @@ export const DrumGrid = ({
   onLoadPattern,
   isLoadingPattern
 }: DrumGridProps) => {
+  // Calculate visible steps
+  const startStep = currentView * stepsPerView;
+  const endStep = Math.min(startStep + stepsPerView, pattern.length);
+  const visibleSteps = endStep - startStep;
   return <div className="space-y-6">
       {/* Controls */}
       <div className="flex items-center justify-end gap-2">
@@ -95,19 +104,26 @@ export const DrumGrid = ({
       {/* Grid Container */}
       <div className="relative bg-card rounded-lg p-6 shadow-elevated">
         {/* Playhead */}
-        <div className="absolute top-0 bottom-0 w-1 bg-playhead transition-all duration-75 z-10" style={{
-        left: `${88 + currentStep * (100 - 88 / 16) / 16}%`,
-        boxShadow: "0 0 20px hsl(var(--playhead) / 0.6)"
-      }} />
+        {currentStep >= startStep && currentStep < endStep && (
+          <div className="absolute top-0 bottom-0 w-1 bg-playhead transition-all duration-75 z-10" style={{
+            left: `${88 + (currentStep - startStep) * (100 - 88 / visibleSteps) / visibleSteps}%`,
+            boxShadow: "0 0 20px hsl(var(--playhead) / 0.6)"
+          }} />
+        )}
 
         {/* Beat Numbers */}
         <div className="flex mb-4">
           <div className="w-20"></div>
           {Array.from({
-          length: 16
-        }, (_, i) => <div key={i} className={cn("flex-1 text-center text-sm font-mono", i % 4 === 0 ? "text-primary font-bold" : "text-muted-foreground")}>
-              {i % 4 === 0 ? Math.floor(i / 4) + 1 : ""}
-            </div>)}
+            length: visibleSteps
+          }, (_, i) => {
+            const stepIndex = startStep + i;
+            return (
+              <div key={stepIndex} className={cn("flex-1 text-center text-sm font-mono", stepIndex % 4 === 0 ? "text-primary font-bold" : "text-muted-foreground")}>
+                {stepIndex % 4 === 0 ? Math.floor(stepIndex / 4) + 1 : ""}
+              </div>
+            );
+          })}
         </div>
 
         {/* Drum Rows */}
@@ -127,11 +143,33 @@ export const DrumGrid = ({
               
               {/* Step Buttons */}
               <div className="flex relative z-10">
-                {pattern[drumKey]?.map((active, stepIndex) => <button key={stepIndex} onClick={() => onStepToggle(drumKey, stepIndex)} className={cn("flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200", "flex items-center justify-center group-hover:bg-muted/20", stepIndex === currentStep && "bg-playhead/10", stepIndex % 4 === 0 && "border-r-2 border-primary/30")}>
-                    {active && <div className={cn("w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent", "shadow-note transition-transform duration-200 hover:scale-110", "flex items-center justify-center text-xs font-bold text-background", stepIndex === currentStep && active && "animate-bounce")}>
-                        {symbol}
-                      </div>}
-                  </button>)}
+                {Array.from({ length: visibleSteps }, (_, i) => {
+                  const stepIndex = startStep + i;
+                  const active = pattern[drumKey]?.[stepIndex];
+                  return (
+                    <button 
+                      key={stepIndex} 
+                      onClick={() => onStepToggle(drumKey, stepIndex)} 
+                      className={cn(
+                        "flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200",
+                        "flex items-center justify-center group-hover:bg-muted/20",
+                        stepIndex === currentStep && "bg-playhead/10",
+                        stepIndex % 4 === 0 && "border-r-2 border-primary/30"
+                      )}
+                    >
+                      {active && (
+                        <div className={cn(
+                          "w-6 h-6 rounded-full bg-gradient-to-br from-note-active to-accent",
+                          "shadow-note transition-transform duration-200 hover:scale-110",
+                          "flex items-center justify-center text-xs font-bold text-background",
+                          stepIndex === currentStep && active && "animate-bounce"
+                        )}>
+                          {symbol}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>)}
@@ -139,11 +177,15 @@ export const DrumGrid = ({
         {/* Grid Enhancement */}
         <div className="absolute inset-6 pointer-events-none">
           {/* Vertical beat lines */}
-          {Array.from({
-          length: 4
-        }, (_, i) => <div key={i} className="absolute top-0 bottom-0 border-l border-primary/20" style={{
-          left: `${88 + i * 25}%`
-        }} />)}
+          {Array.from({ length: Math.ceil(visibleSteps / 4) }, (_, i) => (
+            <div 
+              key={i} 
+              className="absolute top-0 bottom-0 border-l border-primary/20" 
+              style={{
+                left: `${88 + i * (100 - 88 / visibleSteps) / (visibleSteps / 4)}%`
+              }} 
+            />
+          ))}
         </div>
       </div>
 

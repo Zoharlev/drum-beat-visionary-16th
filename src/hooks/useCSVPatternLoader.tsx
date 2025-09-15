@@ -12,6 +12,7 @@ interface DrumPattern {
   snare: boolean[];
   hihat: boolean[];
   openhat: boolean[];
+  length: number;
 }
 
 // Map CSV drum components to our drum types
@@ -43,26 +44,29 @@ export const useCSVPatternLoader = () => {
     };
   };
 
-  const convertToPattern = (csvData: CSVDrumRow[], patternLength: number = 16): DrumPattern => {
-    const pattern: DrumPattern = {
-      kick: new Array(patternLength).fill(false),
-      snare: new Array(patternLength).fill(false),
-      hihat: new Array(patternLength).fill(false),
-      openhat: new Array(patternLength).fill(false)
-    };
-
-    // Find the range of beats to determine how to map to our 16-step grid
+  const convertToPattern = (csvData: CSVDrumRow[]): DrumPattern => {
+    // Calculate pattern length based on CSV data range
     const offsets = csvData.map(row => row.offset);
     const minOffset = Math.min(...offsets);
     const maxOffset = Math.max(...offsets);
     const beatRange = maxOffset - minOffset;
+    
+    // Convert to steps (assuming 16th notes, so 4 steps per beat)
+    const patternLength = Math.max(16, Math.ceil((beatRange + 1) * 4));
+    
+    const pattern: DrumPattern = {
+      kick: new Array(patternLength).fill(false),
+      snare: new Array(patternLength).fill(false),
+      hihat: new Array(patternLength).fill(false),
+      openhat: new Array(patternLength).fill(false),
+      length: patternLength
+    };
 
     csvData.forEach(row => {
       const drumType = drumComponentMap[row.drumComponent];
       if (drumType) {
-        // Map the beat offset to our 16-step grid
-        const normalizedOffset = (row.offset - minOffset) / beatRange;
-        const stepIndex = Math.round(normalizedOffset * (patternLength - 1));
+        // Map the beat offset to step index (4 steps per beat for 16th notes)
+        const stepIndex = Math.round((row.offset - minOffset) * 4);
         
         if (stepIndex >= 0 && stepIndex < patternLength) {
           pattern[drumType][stepIndex] = true;
