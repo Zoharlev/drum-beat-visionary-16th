@@ -288,11 +288,94 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  // Parse beat-based drum notation format
+  const parseTextNotation = (content: string): DrumPattern => {
+    const pattern: DrumPattern = {
+      length: 0,
+      kick: [],
+      snare: [],
+      hihat: []
+    };
+
+    const lines = content.split('\n');
+    let currentBar = 0;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      if (line.startsWith('Bar ')) {
+        currentBar = parseInt(line.split(' ')[1].replace(':', ''));
+        
+        // Look ahead for the drum lines
+        const hiHatLine = lines[i + 3]?.substring(7) || ''; // Skip "Hi-Hat:"
+        const snareLine = lines[i + 4]?.substring(6) || '';  // Skip "Snare:"
+        const kickLine = lines[i + 5]?.substring(5) || '';   // Skip "Kick:"
+        
+        // Parse 8 positions per bar (1 & 2 & 3 & 4 &)
+        const barStartIndex = (currentBar - 1) * 8;
+        
+        // Ensure arrays are long enough
+        const kickArray = pattern.kick as boolean[];
+        const snareArray = pattern.snare as boolean[];
+        const hihatArray = pattern.hihat as boolean[];
+        
+        while (kickArray.length < barStartIndex + 8) {
+          kickArray.push(false);
+          snareArray.push(false);
+          hihatArray.push(false);
+        }
+        
+        // Parse each position in the bar
+        for (let pos = 0; pos < 8; pos++) {
+          const charIndex = pos * 6; // Characters are spaced 6 positions apart
+          
+          // Check for drum hits (●, x, o)
+          const kickChar = kickLine[charIndex];
+          const snareChar = snareLine[charIndex];
+          const hihatChar = hiHatLine[charIndex];
+          
+          kickArray[barStartIndex + pos] = kickChar === '●';
+          snareArray[barStartIndex + pos] = snareChar === '●';
+          hihatArray[barStartIndex + pos] = hihatChar === '●' || hihatChar === 'x' || hihatChar === 'o';
+        }
+      }
+    }
+    
+    const kickArray = pattern.kick as boolean[];
+    const snareArray = pattern.snare as boolean[];
+    const hihatArray = pattern.hihat as boolean[];
+    
+    pattern.length = Math.max(kickArray.length, snareArray.length, hihatArray.length);
+    return pattern;
+  };
+
+  const loadPatternFromTextNotation = async (filePath: string): Promise<DrumPattern> => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`Failed to load file: ${response.statusText}`);
+      }
+      const content = await response.text();
+      const pattern = parseTextNotation(content);
+      return pattern;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     loadPatternFromCSV,
     loadPatternFromNotation,
     loadPatternFromFile,
     loadPatternFromMXL,
+    loadPatternFromTextNotation,
     isLoading,
     error
   };

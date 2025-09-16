@@ -46,17 +46,17 @@ export const DrumMachine = () => {
     clearBeats
   } = useDrumListener();
 
-  const { loadPatternFromFile, loadPatternFromMXL, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
+  const { loadPatternFromFile, loadPatternFromMXL, loadPatternFromTextNotation, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
   const [loadedPatternInfo, setLoadedPatternInfo] = useState<{
     componentsFound: string[];
     totalBeats: number;
   } | null>(null);
 
-  // Load MXL pattern on component mount
+  // Load text notation pattern on component mount
   useEffect(() => {
-    const loadMXLPattern = async () => {
+    const loadTextPattern = async () => {
       try {
-        const newPattern = await loadPatternFromMXL('/patterns/come-as-you-are-nirvana-new.mxl');
+        const newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_by_beat.txt');
         setPattern(newPattern);
         
         // Update pattern info
@@ -68,10 +68,10 @@ export const DrumMachine = () => {
         
         toast({
           title: "Pattern Loaded",
-          description: `Loaded "Come As You Are" with ${componentsFound.length} drum components (${newPattern.length} steps)`
+          description: `Loaded "Come As You Are" drum notation with ${componentsFound.length} drum components (${newPattern.length} steps)`
         });
       } catch (error) {
-        console.error('Failed to load MXL pattern:', error);
+        console.error('Failed to load text notation pattern:', error);
         toast({
           title: "Pattern Load Failed",
           description: "Using default pattern",
@@ -80,8 +80,8 @@ export const DrumMachine = () => {
       }
     };
 
-    loadMXLPattern();
-  }, [loadPatternFromMXL, toast]);
+    loadTextPattern();
+  }, [loadPatternFromTextNotation, toast]);
 
   // Handle listener state changes and errors
   useEffect(() => {
