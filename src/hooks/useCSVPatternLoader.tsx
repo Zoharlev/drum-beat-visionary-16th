@@ -126,8 +126,8 @@ export const useCSVPatternLoader = () => {
     const timeRange = maxTime - minTime;
     
     // Convert to steps - for time-based, assume 120 BPM (0.5s per beat, 4 steps per beat = 8 steps per second)
-    // For offset-based, 4 steps per beat
-    const stepsPerUnit = isTimeBased ? 8 : 4;
+    // For offset-based, 2 steps per beat (8 steps per bar / 4 beats = 2 steps per beat)
+    const stepsPerUnit = isTimeBased ? 8 : 2;
     const patternLength = Math.max(16, Math.ceil((timeRange + 1) * stepsPerUnit));
     
     const pattern: DrumPattern = {
@@ -161,7 +161,7 @@ export const useCSVPatternLoader = () => {
           // Time-based mapping (8 steps per second at 120 BPM)
           stepIndex = Math.round((row.time - minTime) * stepsPerUnit);
         } else if (row.offset !== undefined) {
-          // Offset-based mapping (4 steps per beat)
+          // Offset-based mapping (2 steps per beat, 8 steps per bar)
           stepIndex = Math.round((row.offset - minTime) * stepsPerUnit);
         } else {
           return; // Skip invalid rows
