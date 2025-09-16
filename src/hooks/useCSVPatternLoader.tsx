@@ -59,40 +59,49 @@ export const useCSVPatternLoader = () => {
     return null;
   };
 
-  const parseNotationLine = (line: string): { instrument: string; positions: number[] } | null => {
+  const getBeatColumnsFromCountLine = (line: string): number[] => {
+    // Extract the columns of the 8 positions from the Count line: 1 & 2 & 3 & 4 &
+    const match = line.match(/^Count:\s*(.*)$/);
+    if (!match) return [];
+    const notation = match[1];
+    const cols: number[] = [];
+    for (let i = 0; i < notation.length; i++) {
+      const ch = notation[i];
+      if (ch === '1' || ch === '&' || ch === '2' || ch === '3' || ch === '4') {
+        cols.push(i);
+        if (cols.length === 8) break;
+      }
+    }
+    return cols;
+  };
+
+  const parseInstrumentLine = (line: string, beatColumns: number[] | null): { instrument: string; positions: number[] } | null => {
     // Parse lines like "Snare:      ●                    ●               "
     // Also parse "HH Closed:" and "HH Open:" lines
     const match = line.match(/^(Hi-Hat|Snare|Kick|HH Closed|HH Open):\s*(.*)$/);
-    if (!match) return null;
-    
+    if (!match || !beatColumns || beatColumns.length < 8) return null;
+
     const [, instrument, notation] = match;
-    const positions: number[] = [];
-    
-    // Each bar has 8 positions (1, &, 2, &, 3, &, 4, &)
-    // The notation line has specific spacing for each position
-    const positionSpacing = [7, 13, 19, 25, 31, 37, 43, 49]; // Approximate character positions for beats
-    
+    const positionsSet = new Set<number>();
+
+    // Map hit characters to nearest beat columns derived from the matching Count line
     for (let i = 0; i < notation.length; i++) {
-      // Check for different hit markers: ● for general hits, x for closed hi-hat, o for open hi-hat
-      if (notation[i] === '●' || notation[i] === 'x' || notation[i] === 'o') {
-        // Find the closest beat position
+      const ch = notation[i];
+      if (ch === '●' || ch === 'x' || ch === 'o') {
         let closestPos = 0;
-        let minDistance = Math.abs(i - positionSpacing[0]);
-        
-        for (let j = 1; j < positionSpacing.length; j++) {
-          if (j >= positionSpacing.length) break;
-          const distance = Math.abs(i - positionSpacing[j]);
+        let minDistance = Math.abs(i - beatColumns[0]);
+        for (let j = 1; j < beatColumns.length; j++) {
+          const distance = Math.abs(i - beatColumns[j]);
           if (distance < minDistance) {
             minDistance = distance;
             closestPos = j;
           }
         }
-        
-        positions.push(closestPos);
+        positionsSet.add(closestPos);
       }
     }
-    
-    return { instrument, positions };
+
+    return { instrument, positions: Array.from(positionsSet).sort((a, b) => a - b) };
   };
 
   const convertToPattern = (csvData: CSVDrumRow[]): DrumPattern => {
@@ -229,14 +238,18 @@ export const useCSVPatternLoader = () => {
       }
       
       // Parse the notation
+      let currentBeatColumns: number[] | null = null;
       for (const line of lines) {
         if (line.startsWith('Bar ')) {
           const barMatch = line.match(/Bar (\d+):/);
           if (barMatch) {
             currentBar = parseInt(barMatch[1]) - 1; // Convert to 0-based
+            currentBeatColumns = null; // reset for new bar
           }
+        } else if (line.startsWith('Count:')) {
+          currentBeatColumns = getBeatColumnsFromCountLine(line);
         } else {
-          const parsed = parseNotationLine(line);
+          const parsed = parseInstrumentLine(line, currentBeatColumns);
           if (parsed && pattern[parsed.instrument]) {
             // Map positions to the correct bar offset
             for (const pos of parsed.positions) {
