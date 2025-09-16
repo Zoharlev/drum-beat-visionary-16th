@@ -20,13 +20,15 @@ export const DrumMachine = () => {
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
+  const [patternLength, setPatternLength] = useState<8 | 16>(16);
   const [pattern, setPattern] = useState<DrumPattern>(() => {
+    const initialLength = 16;
     return {
-      'Kick': new Array(16).fill(false),
-      'Snare': new Array(16).fill(false),
-      'HH Closed': new Array(16).fill(false),
-      'HH Open': new Array(16).fill(false),
-      length: 16,
+      'Kick': new Array(initialLength).fill(false),
+      'Snare': new Array(initialLength).fill(false),
+      'HH Closed': new Array(initialLength).fill(false),
+      'HH Open': new Array(initialLength).fill(false),
+      length: initialLength,
     };
   });
 
@@ -104,20 +106,20 @@ export const DrumMachine = () => {
     if (!isListening || detectedBeats.length === 0) return null;
 
     const newPattern: DrumPattern = {
-      'Kick': new Array(pattern.length).fill(false),
-      'Snare': new Array(pattern.length).fill(false),
-      'HH Closed': new Array(pattern.length).fill(false),
-      'HH Open': new Array(pattern.length).fill(false),
-      length: pattern.length,
+      'Kick': new Array(patternLength).fill(false),
+      'Snare': new Array(patternLength).fill(false),
+      'HH Closed': new Array(patternLength).fill(false),
+      'HH Open': new Array(patternLength).fill(false),
+      length: patternLength,
     };
 
     const firstBeatTime = detectedBeats[0]?.timestamp || Date.now();
     
     detectedBeats.forEach(beat => {
       const relativeTime = beat.timestamp - firstBeatTime;
-      const stepPosition = Math.round(relativeTime / stepDuration) % pattern.length;
+      const stepPosition = Math.round(relativeTime / stepDuration) % patternLength;
       
-      if (stepPosition >= 0 && stepPosition < pattern.length && beat.confidence > 0.6) {
+      if (stepPosition >= 0 && stepPosition < patternLength && beat.confidence > 0.6) {
         // Map detected beat types to instrument names
         let instrumentKey = '';
         if (beat.type === 'kick') instrumentKey = 'Kick';
@@ -132,7 +134,7 @@ export const DrumMachine = () => {
     });
 
     return newPattern;
-  }, [detectedBeats, stepDuration, isListening]);
+  }, [detectedBeats, stepDuration, isListening, patternLength]);
 
   // Display pattern: use detected pattern when listening, otherwise use manual pattern
   const displayPattern = isListening && detectedPattern ? detectedPattern : pattern;
@@ -143,7 +145,7 @@ export const DrumMachine = () => {
         setCurrentStep((prev) => {
           const nextStep = (prev + 1) % displayPattern.length;
           // Auto-scroll to next view if needed
-          const stepsPerView = 16;
+          const stepsPerView = patternLength;
           const newView = Math.floor(nextStep / stepsPerView);
           if (newView !== currentView) {
             setCurrentView(newView);
@@ -716,6 +718,33 @@ export const DrumMachine = () => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const changePatternLength = (newLength: 8 | 16) => {
+    setPatternLength(newLength);
+    setCurrentStep(0);
+    setCurrentView(0);
+    
+    const newPattern: DrumPattern = { length: newLength };
+    
+    Object.keys(pattern).forEach(key => {
+      if (key !== 'length') {
+        const oldSteps = pattern[key] as boolean[];
+        if (newLength === 8) {
+          // Take first 8 steps when going from 16 to 8
+          newPattern[key] = oldSteps.slice(0, 8);
+        } else {
+          // Extend to 16 steps when going from 8 to 16, duplicating the pattern
+          newPattern[key] = [...oldSteps, ...oldSteps];
+        }
+      }
+    });
+    
+    setPattern(newPattern);
+    toast({
+      title: "Pattern Length Changed",
+      description: `Now using ${newLength}-step pattern (${newLength === 8 ? '1 bar' : '2 bars'})`,
+    });
+  };
+
   const toggleStep = (drum: string, step: number) => {
     setPattern(prev => ({
       ...prev,
@@ -726,12 +755,12 @@ export const DrumMachine = () => {
   };
 
   const clearPattern = () => {
-    const clearedPattern: DrumPattern = { length: pattern.length };
+    const clearedPattern: DrumPattern = { length: patternLength };
     
     // Clear all instrument patterns
     Object.keys(pattern).forEach(key => {
       if (key !== 'length') {
-        clearedPattern[key] = new Array(pattern.length).fill(false);
+        clearedPattern[key] = new Array(patternLength).fill(false);
       }
     });
     
@@ -916,11 +945,34 @@ export const DrumMachine = () => {
             </div>
           )}
 
+          {/* Pattern Length Controls */}
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="text-sm font-medium text-muted-foreground">Pattern Length:</span>
+            <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-1">
+              <Button
+                variant={patternLength === 8 ? "default" : "ghost"}
+                size="sm"
+                onClick={() => changePatternLength(8)}
+                className="h-8 px-3"
+              >
+                8 Steps (1 Bar)
+              </Button>
+              <Button
+                variant={patternLength === 16 ? "default" : "ghost"}
+                size="sm"
+                onClick={() => changePatternLength(16)}
+                className="h-8 px-3"
+              >
+                16 Steps (2 Bars)
+              </Button>
+            </div>
+          </div>
+
           {/* Pattern Navigation */}
           <PatternNavigation
             currentView={currentView}
             totalSteps={displayPattern.length}
-            stepsPerView={16}
+            stepsPerView={patternLength}
             onViewChange={setCurrentView}
           />
 
@@ -929,7 +981,7 @@ export const DrumMachine = () => {
               pattern={displayPattern}
               currentStep={currentStep}
               currentView={currentView}
-              stepsPerView={16}
+              stepsPerView={patternLength}
               onStepToggle={toggleStep}
               onClearPattern={clearPattern}
               metronomeEnabled={metronomeEnabled}
