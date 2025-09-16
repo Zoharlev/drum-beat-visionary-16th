@@ -203,9 +203,19 @@ export const DrumMachine = () => {
   }, [isPlaying, toast]);
 
   const playDrumSound = (drum: string) => {
-    if (!audioContextRef.current) return;
+    if (!audioContextRef.current) {
+      console.error('Audio context not available');
+      return;
+    }
 
     const context = audioContextRef.current;
+    
+    if (context.state === 'suspended') {
+      console.warn('Audio context is suspended, cannot play sound');
+      return;
+    }
+
+    console.log(`Playing drum sound: ${drum}`);
 
     if (drum === 'hihat' || drum === 'openhat') {
       // Create white noise for hi-hat sounds
@@ -503,7 +513,23 @@ export const DrumMachine = () => {
     oscillator.stop(context.currentTime + 0.05);
   };
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
+    // Resume audio context if suspended (required by browser autoplay policies)
+    if (audioContextRef.current?.state === 'suspended') {
+      try {
+        await audioContextRef.current.resume();
+        console.log('Audio context resumed successfully');
+      } catch (error) {
+        console.error('Failed to resume audio context:', error);
+        toast({
+          title: "Audio Error",
+          description: "Failed to start audio. Please check your browser settings.",
+          variant: "destructive"
+        });
+        return;
+      }
+    }
+
     setIsPlaying(!isPlaying);
     if (!isPlaying) {
       toast({
