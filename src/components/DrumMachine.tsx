@@ -745,7 +745,7 @@ export const DrumMachine = () => {
 
   const loadCSVPattern = async () => {
     try {
-      const newPattern = await loadPatternFromFile();
+      const newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_separated_hh.txt');
       setPattern(newPattern);
       
       // Analyze loaded pattern to show component info

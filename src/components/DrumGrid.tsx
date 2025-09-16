@@ -90,7 +90,7 @@ export const DrumGrid = ({
             ) : (
               <Upload className="h-4 w-4" />
             )}
-            Load CSV
+            Load Note
           </Button>
         )}
         <Button variant="outline" size="icon">
