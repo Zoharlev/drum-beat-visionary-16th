@@ -558,6 +558,13 @@ export const DrumMachine = () => {
     setIsPlaying(false);
     setCurrentStep(0);
     setTimeRemaining(120); // Reset timer to 2:00
+    
+    // Reset backing track to beginning
+    if (backingTrackRef.current) {
+      backingTrackRef.current.currentTime = 0;
+      backingTrackRef.current.pause();
+    }
+    
     toast({
       title: "Reset",
       description: "Pattern reset to beginning",
