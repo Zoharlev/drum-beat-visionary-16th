@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
 import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
@@ -31,6 +31,7 @@ export const DrumMachine = () => {
       length: initialLength,
     };
   });
+  const [backingTrackEnabled, setBackingTrackEnabled] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,6 +40,7 @@ export const DrumMachine = () => {
   const kickBufferRef = useRef<AudioBuffer | null>(null);
   const hhOpenBufferRef = useRef<AudioBuffer | null>(null);
   const hhClosedBufferRef = useRef<AudioBuffer | null>(null);
+  const backingTrackRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
   // Drum listener hook for microphone beat detection
@@ -157,8 +159,18 @@ export const DrumMachine = () => {
     loadKickBuffer();
     loadHHOpenBuffer();
     loadHHClosedBuffer();
+    
+    // Initialize backing track
+    backingTrackRef.current = new Audio('/samples/come_as_you_are_backing_track.mp3');
+    backingTrackRef.current.loop = true;
+    backingTrackRef.current.volume = 0.3;
+    
     return () => {
       audioContextRef.current?.close();
+      if (backingTrackRef.current) {
+        backingTrackRef.current.pause();
+        backingTrackRef.current = null;
+      }
     };
   }, []);
 
@@ -217,10 +229,20 @@ export const DrumMachine = () => {
           return nextStep;
         });
       }, stepDuration);
+      
+      // Start backing track if enabled
+      if (backingTrackEnabled && backingTrackRef.current) {
+        backingTrackRef.current.play().catch(console.error);
+      }
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
+      }
+      
+      // Pause backing track
+      if (backingTrackRef.current) {
+        backingTrackRef.current.pause();
       }
     }
 
@@ -229,7 +251,7 @@ export const DrumMachine = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPlaying, stepDuration]);
+  }, [isPlaying, stepDuration, backingTrackEnabled]);
 
   // Separate effect for playing sounds based on currentStep
   useEffect(() => {
@@ -908,6 +930,29 @@ export const DrumMachine = () => {
                     />
                   </div>
                 )}
+              </div>
+
+              {/* Backing Track Toggle */}
+              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                <button
+                  onClick={() => setBackingTrackEnabled(!backingTrackEnabled)}
+                  className={cn(
+                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                    backingTrackEnabled ? "bg-blue-600" : "bg-gray-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                      backingTrackEnabled ? "translate-x-5" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                
+                {/* Music Icon */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: backingTrackEnabled ? '#3B82F6' : '#786C7D' }}>
+                  <Music className="h-4 w-4 text-white" />
+                </div>
               </div>
             </div>
 
