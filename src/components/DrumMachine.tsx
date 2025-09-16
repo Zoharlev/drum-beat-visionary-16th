@@ -35,6 +35,7 @@ export const DrumMachine = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const snareBufferRef = useRef<AudioBuffer | null>(null);
   const { toast } = useToast();
   
   // Drum listener hook for microphone beat detection
@@ -90,9 +91,24 @@ export const DrumMachine = () => {
     }
   };
 
-  // Initialize audio context
+  // Load snare sample
+  const loadSnareBuffer = async () => {
+    if (audioContextRef.current && !snareBufferRef.current) {
+      try {
+        const response = await fetch('/samples/snare-acoustic-raw-2.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        snareBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load snare sample:', error);
+      }
+    }
+  };
+
+  // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    loadSnareBuffer();
     return () => {
       audioContextRef.current?.close();
     };
@@ -275,203 +291,42 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else if (normalizedDrum.includes('snare') || normalizedDrum.includes('rim')) {
-      // Enhanced realistic snare with improved acoustic modeling
-      
-      // 1. Shell body resonance with better tuning
-      const shellOsc1 = context.createOscillator();
-      const shellOsc2 = context.createOscillator();
-      const shellOsc3 = context.createOscillator();
-      const shellGain = context.createGain();
-      
-      // Improved fundamental frequencies for realistic snare body
-      shellOsc1.frequency.setValueAtTime(220, context.currentTime);
-      shellOsc1.frequency.exponentialRampToValueAtTime(180, context.currentTime + 0.01);
-      shellOsc1.frequency.exponentialRampToValueAtTime(160, context.currentTime + 0.03);
-      shellOsc1.frequency.exponentialRampToValueAtTime(140, context.currentTime + 0.08);
-      shellOsc1.type = 'sine';
-      
-      shellOsc2.frequency.setValueAtTime(340, context.currentTime);
-      shellOsc2.frequency.exponentialRampToValueAtTime(280, context.currentTime + 0.02);
-      shellOsc2.frequency.exponentialRampToValueAtTime(240, context.currentTime + 0.06);
-      shellOsc2.type = 'triangle';
-      
-      shellOsc3.frequency.setValueAtTime(480, context.currentTime);
-      shellOsc3.frequency.exponentialRampToValueAtTime(380, context.currentTime + 0.015);
-      shellOsc3.frequency.exponentialRampToValueAtTime(320, context.currentTime + 0.04);
-      shellOsc3.type = 'sawtooth';
-      
-      shellOsc1.connect(shellGain);
-      shellOsc2.connect(shellGain);
-      shellOsc3.connect(shellGain);
-      
-      // 2. Enhanced snare buzz with more realistic rattle
-      const buzzSize = context.sampleRate * 0.2;
-      const buzzBuffer = context.createBuffer(1, buzzSize, context.sampleRate);
-      const buzzData = buzzBuffer.getChannelData(0);
-      
-      // Create more authentic snare buzz with irregular pattern
-      for (let i = 0; i < buzzSize; i++) {
-        const phase = i / buzzSize;
-        const decay = Math.exp(-phase * 8);
-        const flutter = 1 + Math.sin(phase * 150) * 0.3; // Wire flutter effect
-        const randomness = (Math.random() * 2 - 1) * 0.7 + (Math.random() * 2 - 1) * 0.3;
-        buzzData[i] = randomness * decay * flutter;
+      // Play loaded snare sample
+      if (snareBufferRef.current) {
+        const source = context.createBufferSource();
+        source.buffer = snareBufferRef.current;
+        
+        // Add some EQ and compression to the sample
+        const gainNode = context.createGain();
+        const compressor = context.createDynamicsCompressor();
+        const eqFilter = context.createBiquadFilter();
+        
+        // Subtle EQ to enhance the sample
+        eqFilter.type = 'peaking';
+        eqFilter.frequency.setValueAtTime(3000, context.currentTime);
+        eqFilter.Q.setValueAtTime(1.5, context.currentTime);
+        eqFilter.gain.setValueAtTime(2, context.currentTime);
+        
+        // Light compression for consistency
+        compressor.threshold.setValueAtTime(-12, context.currentTime);
+        compressor.knee.setValueAtTime(6, context.currentTime);
+        compressor.ratio.setValueAtTime(4, context.currentTime);
+        compressor.attack.setValueAtTime(0.003, context.currentTime);
+        compressor.release.setValueAtTime(0.1, context.currentTime);
+        
+        // Signal chain
+        source.connect(eqFilter);
+        eqFilter.connect(compressor);
+        compressor.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Volume envelope for consistency with other drums
+        gainNode.gain.setValueAtTime(0.7, context.currentTime);
+        
+        source.start(context.currentTime);
+      } else {
+        console.warn('Snare sample not loaded yet');
       }
-      
-      const buzz = context.createBufferSource();
-      buzz.buffer = buzzBuffer;
-      
-      // Improved snare buzz filtering chain
-      const buzzHighpass1 = context.createBiquadFilter();
-      buzzHighpass1.type = 'highpass';
-      buzzHighpass1.frequency.setValueAtTime(2200, context.currentTime);
-      buzzHighpass1.Q.setValueAtTime(0.8, context.currentTime);
-      
-      const buzzBandpass = context.createBiquadFilter();
-      buzzBandpass.type = 'bandpass';
-      buzzBandpass.frequency.setValueAtTime(5200, context.currentTime);
-      buzzBandpass.Q.setValueAtTime(1.8, context.currentTime);
-      
-      const buzzHighpass2 = context.createBiquadFilter();
-      buzzHighpass2.type = 'highpass';
-      buzzHighpass2.frequency.setValueAtTime(8000, context.currentTime);
-      buzzHighpass2.Q.setValueAtTime(0.5, context.currentTime);
-      
-      const buzzGain = context.createGain();
-      buzz.connect(buzzHighpass1);
-      buzzHighpass1.connect(buzzBandpass);
-      buzzBandpass.connect(buzzHighpass2);
-      buzzHighpass2.connect(buzzGain);
-      
-      // 3. Sharper stick attack transient
-      const attackNoise = context.createBuffer(1, context.sampleRate * 0.008, context.sampleRate);
-      const attackData = attackNoise.getChannelData(0);
-      
-      for (let i = 0; i < attackData.length; i++) {
-        const phase = i / attackData.length;
-        const envelope = Math.exp(-phase * 35); // Sharper attack
-        const crack = Math.sin(phase * 80) * 0.4; // Adding crack character
-        attackData[i] = ((Math.random() * 2 - 1) * 0.8 + crack) * envelope;
-      }
-      
-      const attack = context.createBufferSource();
-      attack.buffer = attackNoise;
-      
-      const attackFilter1 = context.createBiquadFilter();
-      attackFilter1.type = 'bandpass';
-      attackFilter1.frequency.setValueAtTime(4500, context.currentTime);
-      attackFilter1.Q.setValueAtTime(2.5, context.currentTime);
-      
-      const attackFilter2 = context.createBiquadFilter();
-      attackFilter2.type = 'highpass';
-      attackFilter2.frequency.setValueAtTime(6000, context.currentTime);
-      attackFilter2.Q.setValueAtTime(1, context.currentTime);
-      
-      const attackGain = context.createGain();
-      attack.connect(attackFilter1);
-      attackFilter1.connect(attackFilter2);
-      attackFilter2.connect(attackGain);
-      
-      // 4. Improved rim/wood component
-      const rimOsc = context.createOscillator();
-      const rimGain = context.createGain();
-      
-      rimOsc.frequency.setValueAtTime(1200, context.currentTime);
-      rimOsc.frequency.exponentialRampToValueAtTime(800, context.currentTime + 0.008);
-      rimOsc.frequency.exponentialRampToValueAtTime(600, context.currentTime + 0.02);
-      rimOsc.type = 'square';
-      
-      rimOsc.connect(rimGain);
-      
-      // 5. Enhanced filtering chain
-      const bodyFilter = context.createBiquadFilter();
-      bodyFilter.type = 'peaking';
-      bodyFilter.frequency.setValueAtTime(180, context.currentTime);
-      bodyFilter.Q.setValueAtTime(1.8, context.currentTime);
-      bodyFilter.gain.setValueAtTime(6, context.currentTime);
-      
-      const crackFilter = context.createBiquadFilter();
-      crackFilter.type = 'peaking';
-      crackFilter.frequency.setValueAtTime(3200, context.currentTime);
-      crackFilter.Q.setValueAtTime(2.2, context.currentTime);
-      crackFilter.gain.setValueAtTime(4, context.currentTime);
-      
-      const presenceFilter = context.createBiquadFilter();
-      presenceFilter.type = 'peaking';
-      presenceFilter.frequency.setValueAtTime(6800, context.currentTime);
-      presenceFilter.Q.setValueAtTime(1.2, context.currentTime);
-      presenceFilter.gain.setValueAtTime(3, context.currentTime);
-      
-      // 6. Improved compression for more punch
-      const compressor = context.createDynamicsCompressor();
-      compressor.threshold.setValueAtTime(-16, context.currentTime);
-      compressor.knee.setValueAtTime(8, context.currentTime);
-      compressor.ratio.setValueAtTime(12, context.currentTime);
-      compressor.attack.setValueAtTime(0.0005, context.currentTime);
-      compressor.release.setValueAtTime(0.08, context.currentTime);
-      
-      // 7. Signal routing with better balance
-      const snarePreMix = context.createGain();
-      shellGain.connect(bodyFilter);
-      bodyFilter.connect(snarePreMix);
-      buzzGain.connect(snarePreMix);
-      attackGain.connect(crackFilter);
-      crackFilter.connect(snarePreMix);
-      rimGain.connect(snarePreMix);
-      
-      // Processing chain
-      snarePreMix.connect(presenceFilter);
-      presenceFilter.connect(compressor);
-      
-      const snareMix = context.createGain();
-      compressor.connect(snareMix);
-      snareMix.connect(context.destination);
-      
-      // 8. Improved envelopes for more realistic decay
-      const duration = 0.16;
-      
-      // Shell body envelope with more natural curve
-      shellGain.gain.setValueAtTime(0, context.currentTime);
-      shellGain.gain.linearRampToValueAtTime(0.6, context.currentTime + 0.002);
-      shellGain.gain.exponentialRampToValueAtTime(0.35, context.currentTime + 0.015);
-      shellGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.1);
-      
-      // Snare buzz envelope with authentic rattle decay
-      buzzGain.gain.setValueAtTime(0, context.currentTime);
-      buzzGain.gain.linearRampToValueAtTime(0.7, context.currentTime + 0.001);
-      buzzGain.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.003);
-      buzzGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
-      
-      // Attack transient envelope - sharper and more punchy
-      attackGain.gain.setValueAtTime(0, context.currentTime);
-      attackGain.gain.linearRampToValueAtTime(0.8, context.currentTime + 0.0005);
-      attackGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.008);
-      
-      // Rim component envelope
-      rimGain.gain.setValueAtTime(0, context.currentTime);
-      rimGain.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
-      rimGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.025);
-      
-      // Overall mix envelope
-      snareMix.gain.setValueAtTime(0.6, context.currentTime);
-      snareMix.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
-      
-      // Start all sound sources
-      shellOsc1.start(context.currentTime);
-      shellOsc1.stop(context.currentTime + 0.12);
-      shellOsc2.start(context.currentTime);
-      shellOsc2.stop(context.currentTime + 0.08);
-      shellOsc3.start(context.currentTime);
-      shellOsc3.stop(context.currentTime + 0.06);
-      
-      buzz.start(context.currentTime);
-      buzz.stop(context.currentTime + duration);
-      
-      attack.start(context.currentTime);
-      attack.stop(context.currentTime + 0.01);
-      
-      rimOsc.start(context.currentTime);
-      rimOsc.stop(context.currentTime + 0.03);
       
     } else {
       // Enhanced professional kick drum with ultra-realistic acoustic modeling
