@@ -38,6 +38,7 @@ export const DrumMachine = () => {
   const snareBufferRef = useRef<AudioBuffer | null>(null);
   const kickBufferRef = useRef<AudioBuffer | null>(null);
   const hhOpenBufferRef = useRef<AudioBuffer | null>(null);
+  const hhClosedBufferRef = useRef<AudioBuffer | null>(null);
   const { toast } = useToast();
   
   // Drum listener hook for microphone beat detection
@@ -135,12 +136,27 @@ export const DrumMachine = () => {
     }
   };
 
+  // Load HH Closed sample
+  const loadHHClosedBuffer = async () => {
+    if (audioContextRef.current && !hhClosedBufferRef.current) {
+      try {
+        const response = await fetch('/samples/cloed-hi-hat-808-rome.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        hhClosedBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load HH Closed sample:', error);
+      }
+    }
+  };
+
   // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     loadSnareBuffer();
     loadKickBuffer();
     loadHHOpenBuffer();
+    loadHHClosedBuffer();
     return () => {
       audioContextRef.current?.close();
     };
@@ -314,8 +330,39 @@ export const DrumMachine = () => {
         gainNode.gain.setValueAtTime(0.6, context.currentTime);
         
         source.start(context.currentTime);
+      } else if (hhClosedBufferRef.current) {
+        // Play loaded HH Closed sample
+        const source = context.createBufferSource();
+        source.buffer = hhClosedBufferRef.current;
+        
+        // Add some processing to the HH Closed sample
+        const gainNode = context.createGain();
+        const highpass = context.createBiquadFilter();
+        const crisp = context.createBiquadFilter();
+        
+        // High-pass for tightness
+        highpass.type = 'highpass';
+        highpass.frequency.setValueAtTime(10000, context.currentTime);
+        highpass.Q.setValueAtTime(0.8, context.currentTime);
+        
+        // Crisp boost for definition
+        crisp.type = 'peaking';
+        crisp.frequency.setValueAtTime(14000, context.currentTime);
+        crisp.Q.setValueAtTime(1.5, context.currentTime);
+        crisp.gain.setValueAtTime(1.5, context.currentTime);
+        
+        // Signal chain
+        source.connect(highpass);
+        highpass.connect(crisp);
+        crisp.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Volume envelope
+        gainNode.gain.setValueAtTime(0.5, context.currentTime);
+        
+        source.start(context.currentTime);
       } else {
-        // Synthesized closed hi-hat
+        // Fallback synthesized closed hi-hat if sample not loaded
         const bufferSize = context.sampleRate * 0.06;
         const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
         const data = buffer.getChannelData(0);
