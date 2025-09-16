@@ -263,69 +263,171 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else if (normalizedDrum.includes('snare') || normalizedDrum.includes('rim')) {
-      // Improved snare with better balance
+      // Realistic snare with complex acoustic modeling
       
-      // Body oscillators
-      const osc1 = context.createOscillator();
-      const osc2 = context.createOscillator();
-      const bodyGain = context.createGain();
+      // Shell body resonance (multiple modes)
+      const shellOsc1 = context.createOscillator();
+      const shellOsc2 = context.createOscillator();
+      const shellOsc3 = context.createOscillator();
+      const shellGain = context.createGain();
       
-      osc1.frequency.setValueAtTime(220, context.currentTime);
-      osc1.frequency.exponentialRampToValueAtTime(80, context.currentTime + 0.03);
-      osc1.type = 'triangle';
+      // Fundamental and overtones for shell body
+      shellOsc1.frequency.setValueAtTime(240, context.currentTime);
+      shellOsc1.frequency.exponentialRampToValueAtTime(100, context.currentTime + 0.04);
+      shellOsc1.frequency.exponentialRampToValueAtTime(85, context.currentTime + 0.08);
+      shellOsc1.type = 'triangle';
       
-      osc2.frequency.setValueAtTime(150, context.currentTime);
-      osc2.frequency.exponentialRampToValueAtTime(60, context.currentTime + 0.03);
-      osc2.type = 'sine';
+      shellOsc2.frequency.setValueAtTime(180, context.currentTime);
+      shellOsc2.frequency.exponentialRampToValueAtTime(75, context.currentTime + 0.05);
+      shellOsc2.type = 'sine';
       
-      osc1.connect(bodyGain);
-      osc2.connect(bodyGain);
+      shellOsc3.frequency.setValueAtTime(320, context.currentTime); // Higher overtone
+      shellOsc3.frequency.exponentialRampToValueAtTime(140, context.currentTime + 0.03);
+      shellOsc3.type = 'sawtooth';
       
-      // Snare noise
-      const noiseSize = context.sampleRate * 0.12;
-      const noiseBuffer = context.createBuffer(1, noiseSize, context.sampleRate);
-      const noiseData = noiseBuffer.getChannelData(0);
+      shellOsc1.connect(shellGain);
+      shellOsc2.connect(shellGain);
+      shellOsc3.connect(shellGain);
       
-      for (let i = 0; i < noiseSize; i++) {
-        noiseData[i] = Math.random() * 2 - 1;
+      // Snare buzz (multiple filtered noise sources)
+      const buzzSize = context.sampleRate * 0.15;
+      const buzzBuffer = context.createBuffer(1, buzzSize, context.sampleRate);
+      const buzzData = buzzBuffer.getChannelData(0);
+      
+      // Create realistic snare buzz pattern
+      for (let i = 0; i < buzzSize; i++) {
+        const decay = Math.exp(-i / buzzSize * 6);
+        buzzData[i] = (Math.random() * 2 - 1) * decay;
       }
       
-      const noise = context.createBufferSource();
-      noise.buffer = noiseBuffer;
+      const buzz = context.createBufferSource();
+      buzz.buffer = buzzBuffer;
       
-      const noiseFilter = context.createBiquadFilter();
-      noiseFilter.type = 'highpass';
-      noiseFilter.frequency.setValueAtTime(2000, context.currentTime);
+      // Multiple filters for snare character
+      const buzzHighpass = context.createBiquadFilter();
+      buzzHighpass.type = 'highpass';
+      buzzHighpass.frequency.setValueAtTime(1800, context.currentTime);
+      buzzHighpass.Q.setValueAtTime(0.7, context.currentTime);
       
-      const noiseGain = context.createGain();
-      noise.connect(noiseFilter);
-      noiseFilter.connect(noiseGain);
+      const buzzBandpass = context.createBiquadFilter();
+      buzzBandpass.type = 'bandpass';
+      buzzBandpass.frequency.setValueAtTime(4500, context.currentTime);
+      buzzBandpass.Q.setValueAtTime(1.2, context.currentTime);
       
-      // Mix components
-      const mixGain = context.createGain();
-      bodyGain.connect(mixGain);
-      noiseGain.connect(mixGain);
-      mixGain.connect(context.destination);
+      const buzzGain = context.createGain();
+      buzz.connect(buzzHighpass);
+      buzzHighpass.connect(buzzBandpass);
+      buzzBandpass.connect(buzzGain);
       
-      // Envelopes
-      const duration = 0.12;
+      // Stick attack transient
+      const attackNoise = context.createBuffer(1, context.sampleRate * 0.02, context.sampleRate);
+      const attackData = attackNoise.getChannelData(0);
       
-      bodyGain.gain.setValueAtTime(0.6, context.currentTime);
-      bodyGain.gain.exponentialRampToValueAtTime(0.1, context.currentTime + 0.02);
-      bodyGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.06);
+      for (let i = 0; i < attackData.length; i++) {
+        const envelope = Math.exp(-i / attackData.length * 20);
+        attackData[i] = (Math.random() * 2 - 1) * envelope;
+      }
       
-      noiseGain.gain.setValueAtTime(0.35, context.currentTime);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      const attack = context.createBufferSource();
+      attack.buffer = attackNoise;
       
-      mixGain.gain.setValueAtTime(0.4, context.currentTime);
-      mixGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      const attackFilter = context.createBiquadFilter();
+      attackFilter.type = 'highpass';
+      attackFilter.frequency.setValueAtTime(3000, context.currentTime);
       
-      osc1.start(context.currentTime);
-      osc1.stop(context.currentTime + 0.06);
-      osc2.start(context.currentTime);
-      osc2.stop(context.currentTime + 0.06);
-      noise.start(context.currentTime);
-      noise.stop(context.currentTime + duration);
+      const attackGain = context.createGain();
+      attack.connect(attackFilter);
+      attackFilter.connect(attackGain);
+      
+      // Wooden rim sound component
+      const rimOsc = context.createOscillator();
+      const rimGain = context.createGain();
+      
+      rimOsc.frequency.setValueAtTime(800, context.currentTime);
+      rimOsc.frequency.exponentialRampToValueAtTime(400, context.currentTime + 0.015);
+      rimOsc.type = 'square';
+      
+      rimOsc.connect(rimGain);
+      
+      // Body resonance filtering
+      const bodyFilter = context.createBiquadFilter();
+      bodyFilter.type = 'peaking';
+      bodyFilter.frequency.setValueAtTime(200, context.currentTime);
+      bodyFilter.Q.setValueAtTime(2, context.currentTime);
+      bodyFilter.gain.setValueAtTime(4, context.currentTime);
+      
+      // Presence boost for realism
+      const presenceFilter = context.createBiquadFilter();
+      presenceFilter.type = 'peaking';
+      presenceFilter.frequency.setValueAtTime(2500, context.currentTime);
+      presenceFilter.Q.setValueAtTime(1.5, context.currentTime);
+      presenceFilter.gain.setValueAtTime(3, context.currentTime);
+      
+      // Compression for punch
+      const compressor = context.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-20, context.currentTime);
+      compressor.knee.setValueAtTime(15, context.currentTime);
+      compressor.ratio.setValueAtTime(8, context.currentTime);
+      compressor.attack.setValueAtTime(0.001, context.currentTime);
+      compressor.release.setValueAtTime(0.1, context.currentTime);
+      
+      // Mix all components
+      const snarePreMix = context.createGain();
+      shellGain.connect(bodyFilter);
+      bodyFilter.connect(snarePreMix);
+      buzzGain.connect(snarePreMix);
+      attackGain.connect(snarePreMix);
+      rimGain.connect(snarePreMix);
+      
+      // Process through presence and compression
+      snarePreMix.connect(presenceFilter);
+      presenceFilter.connect(compressor);
+      
+      const snareMix = context.createGain();
+      compressor.connect(snareMix);
+      snareMix.connect(context.destination);
+      
+      // Realistic envelopes
+      const duration = 0.18;
+      
+      // Shell body envelope - natural drum decay
+      shellGain.gain.setValueAtTime(0.7, context.currentTime);
+      shellGain.gain.exponentialRampToValueAtTime(0.2, context.currentTime + 0.02);
+      shellGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.08);
+      
+      // Snare buzz envelope - characteristic buzz decay
+      buzzGain.gain.setValueAtTime(0.5, context.currentTime);
+      buzzGain.gain.linearRampToValueAtTime(0.4, context.currentTime + 0.005);
+      buzzGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Attack transient envelope - very short and punchy
+      attackGain.gain.setValueAtTime(0.6, context.currentTime);
+      attackGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.01);
+      
+      // Rim component envelope
+      rimGain.gain.setValueAtTime(0.25, context.currentTime);
+      rimGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.02);
+      
+      // Overall mix envelope
+      snareMix.gain.setValueAtTime(0.5, context.currentTime);
+      snareMix.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Start all sound sources
+      shellOsc1.start(context.currentTime);
+      shellOsc1.stop(context.currentTime + 0.1);
+      shellOsc2.start(context.currentTime);
+      shellOsc2.stop(context.currentTime + 0.1);
+      shellOsc3.start(context.currentTime);
+      shellOsc3.stop(context.currentTime + 0.05);
+      
+      buzz.start(context.currentTime);
+      buzz.stop(context.currentTime + duration);
+      
+      attack.start(context.currentTime);
+      attack.stop(context.currentTime + 0.02);
+      
+      rimOsc.start(context.currentTime);
+      rimOsc.stop(context.currentTime + 0.025);
       
     } else {
       // Ultimate bass-heavy kick drum
