@@ -328,70 +328,140 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else {
-      // Simplified but punchy kick drum
+      // Enhanced kick drum with powerful sub-bass
       
-      // Main kick body
+      // Primary kick oscillator (fundamental)
       const kickOsc = context.createOscillator();
       const kickGain = context.createGain();
       
-      kickOsc.frequency.setValueAtTime(65, context.currentTime);
-      kickOsc.frequency.exponentialRampToValueAtTime(40, context.currentTime + 0.05);
-      kickOsc.frequency.exponentialRampToValueAtTime(28, context.currentTime + 0.15);
+      kickOsc.frequency.setValueAtTime(75, context.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(45, context.currentTime + 0.04);
+      kickOsc.frequency.exponentialRampToValueAtTime(32, context.currentTime + 0.12);
+      kickOsc.frequency.exponentialRampToValueAtTime(25, context.currentTime + 0.25);
       kickOsc.type = 'sine';
       
-      // Sub-bass component
-      const subOsc = context.createOscillator();
-      const subGain = context.createGain();
+      // Deep sub-bass (octave below)
+      const subOsc1 = context.createOscillator();
+      const subGain1 = context.createGain();
       
-      subOsc.frequency.setValueAtTime(32, context.currentTime);
-      subOsc.frequency.exponentialRampToValueAtTime(22, context.currentTime + 0.08);
-      subOsc.type = 'sine';
+      subOsc1.frequency.setValueAtTime(37.5, context.currentTime); // Half frequency
+      subOsc1.frequency.exponentialRampToValueAtTime(22.5, context.currentTime + 0.06);
+      subOsc1.frequency.exponentialRampToValueAtTime(16, context.currentTime + 0.15);
+      subOsc1.frequency.exponentialRampToValueAtTime(12.5, context.currentTime + 0.3);
+      subOsc1.type = 'sine';
       
-      // Attack click
+      // Ultra-deep sub (two octaves below for massive low-end)
+      const subOsc2 = context.createOscillator();
+      const subGain2 = context.createGain();
+      
+      subOsc2.frequency.setValueAtTime(18.75, context.currentTime);
+      subOsc2.frequency.exponentialRampToValueAtTime(11.25, context.currentTime + 0.08);
+      subOsc2.frequency.exponentialRampToValueAtTime(8, context.currentTime + 0.2);
+      subOsc2.type = 'sine';
+      
+      // Harmonic for body warmth
+      const harmonicOsc = context.createOscillator();
+      const harmonicGain = context.createGain();
+      
+      harmonicOsc.frequency.setValueAtTime(150, context.currentTime); // 2nd harmonic
+      harmonicOsc.frequency.exponentialRampToValueAtTime(90, context.currentTime + 0.03);
+      harmonicOsc.frequency.exponentialRampToValueAtTime(64, context.currentTime + 0.08);
+      harmonicOsc.type = 'triangle';
+      
+      // Attack transient for punch
       const clickOsc = context.createOscillator();
       const clickGain = context.createGain();
       
-      clickOsc.frequency.setValueAtTime(1500, context.currentTime);
-      clickOsc.frequency.exponentialRampToValueAtTime(150, context.currentTime + 0.006);
+      clickOsc.frequency.setValueAtTime(2200, context.currentTime);
+      clickOsc.frequency.exponentialRampToValueAtTime(180, context.currentTime + 0.005);
       clickOsc.type = 'square';
       
-      // Simple low-pass filter
+      // Saturation for warmth and character
+      const waveshaper = context.createWaveShaper();
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i - 128) / 128;
+        // Gentle saturation curve
+        curve[i] = Math.tanh(x * 1.5) * 0.9;
+      }
+      waveshaper.curve = curve;
+      
+      // Low-pass filter with resonance for punch
       const filter = context.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(150, context.currentTime);
-      filter.Q.setValueAtTime(1, context.currentTime);
+      filter.frequency.setValueAtTime(180, context.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(100, context.currentTime + 0.06);
+      filter.Q.setValueAtTime(2, context.currentTime); // More resonance for punch
       
-      // Connect everything
+      // High-pass to clean up mud
+      const highpass = context.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.setValueAtTime(25, context.currentTime);
+      
+      // Connect signal chain
       kickOsc.connect(kickGain);
-      subOsc.connect(subGain);
+      subOsc1.connect(subGain1);
+      subOsc2.connect(subGain2);
+      harmonicOsc.connect(harmonicGain);
       clickOsc.connect(clickGain);
       
-      const mixGain = context.createGain();
-      kickGain.connect(filter);
-      subGain.connect(filter);
-      clickGain.connect(mixGain);
-      filter.connect(mixGain);
-      mixGain.connect(context.destination);
+      // Mix low-frequency components
+      const bassGain = context.createGain();
+      kickGain.connect(bassGain);
+      subGain1.connect(bassGain);
+      subGain2.connect(bassGain);
+      harmonicGain.connect(bassGain);
       
-      // Envelopes
-      const duration = 0.35;
+      // Process bass through saturation and filtering
+      bassGain.connect(waveshaper);
+      waveshaper.connect(filter);
+      filter.connect(highpass);
       
-      kickGain.gain.setValueAtTime(0.7, context.currentTime);
-      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.8);
+      // Mix with click
+      const finalMix = context.createGain();
+      highpass.connect(finalMix);
+      clickGain.connect(finalMix);
+      finalMix.connect(context.destination);
       
-      subGain.gain.setValueAtTime(0.5, context.currentTime);
-      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      // Improved envelopes for maximum impact
+      const duration = 0.45;
       
-      clickGain.gain.setValueAtTime(0.3, context.currentTime);
-      clickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.01);
+      // Main kick envelope - punchy attack, controlled decay
+      kickGain.gain.setValueAtTime(0.85, context.currentTime);
+      kickGain.gain.linearRampToValueAtTime(0.75, context.currentTime + 0.008);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.7);
       
-      mixGain.gain.setValueAtTime(0.6, context.currentTime);
-      mixGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      // Sub-bass 1 envelope - deeper and longer
+      subGain1.gain.setValueAtTime(0.7, context.currentTime);
+      subGain1.gain.linearRampToValueAtTime(0.6, context.currentTime + 0.015);
+      subGain1.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.85);
       
+      // Ultra-deep sub envelope - longest sustain
+      subGain2.gain.setValueAtTime(0.5, context.currentTime);
+      subGain2.gain.linearRampToValueAtTime(0.4, context.currentTime + 0.02);
+      subGain2.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Harmonic envelope - quick decay for punch
+      harmonicGain.gain.setValueAtTime(0.3, context.currentTime);
+      harmonicGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.05);
+      
+      // Click envelope - very short for attack
+      clickGain.gain.setValueAtTime(0.4, context.currentTime);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.008);
+      
+      // Final mix envelope
+      finalMix.gain.setValueAtTime(0.8, context.currentTime);
+      finalMix.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Start all oscillators
       kickOsc.start(context.currentTime);
       kickOsc.stop(context.currentTime + duration);
-      subOsc.start(context.currentTime);
-      subOsc.stop(context.currentTime + duration);
+      subOsc1.start(context.currentTime);
+      subOsc1.stop(context.currentTime + duration);
+      subOsc2.start(context.currentTime);
+      subOsc2.stop(context.currentTime + duration);
+      harmonicOsc.start(context.currentTime);
+      harmonicOsc.stop(context.currentTime + 0.08);
       clickOsc.start(context.currentTime);
       clickOsc.stop(context.currentTime + 0.01);
     }
