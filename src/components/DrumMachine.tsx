@@ -57,7 +57,7 @@ export const DrumMachine = () => {
   useEffect(() => {
     const loadTextPattern = async () => {
       try {
-        const newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_by_beat.txt');
+        const newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_separated_hh.txt');
         setPattern(newPattern);
         
         // Update pattern info

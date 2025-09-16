@@ -60,8 +60,8 @@ export const useCSVPatternLoader = () => {
   };
 
   const parseNotationLine = (line: string): { instrument: string; positions: number[] } | null => {
-    // Parse lines like "Snare:      ●                    ●               "
-    const match = line.match(/^(Hi-Hat|Snare|Kick):\s*(.*)$/);
+    // Parse lines like "Snare:      ●                    ●               " or "HH Closed:  x   x   x   x"
+    const match = line.match(/^(Hi-Hat|HH Closed|HH Open|Snare|Kick):\s*(.*)$/);
     if (!match) return null;
     
     const [, instrument, notation] = match;
@@ -220,10 +220,12 @@ export const useCSVPatternLoader = () => {
       
       // Initialize pattern arrays
       const totalSteps = totalBars * 8; // 8 steps per bar
-      const instruments = ['Kick', 'Snare', 'Hi-Hat'];
+      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open'];
       
-      for (const instrument of instruments) {
-        pattern[instrument] = new Array(totalSteps).fill(false);
+      // Map instrument names to pattern keys
+      const patternKeys = ['kick', 'snare', 'closedhat', 'openhat'];
+      for (const key of patternKeys) {
+        pattern[key] = new Array(totalSteps).fill(false);
       }
       
       // Parse the notation
@@ -235,12 +237,21 @@ export const useCSVPatternLoader = () => {
           }
         } else {
           const parsed = parseNotationLine(line);
-          if (parsed && pattern[parsed.instrument]) {
-            // Map positions to the correct bar offset
-            for (const pos of parsed.positions) {
-              const stepIndex = currentBar * 8 + pos;
-              if (stepIndex < totalSteps) {
-                pattern[parsed.instrument][stepIndex] = true;
+          if (parsed) {
+            // Map instrument names to pattern keys
+            let instrumentKey = parsed.instrument;
+            if (parsed.instrument === 'HH Closed') instrumentKey = 'closedhat';
+            if (parsed.instrument === 'HH Open') instrumentKey = 'openhat';
+            if (parsed.instrument === 'Kick') instrumentKey = 'kick';
+            if (parsed.instrument === 'Snare') instrumentKey = 'snare';
+            
+            if (pattern[instrumentKey]) {
+              // Map positions to the correct bar offset
+              for (const pos of parsed.positions) {
+                const stepIndex = currentBar * 8 + pos;
+                if (stepIndex < totalSteps) {
+                  pattern[instrumentKey][stepIndex] = true;
+                }
               }
             }
           }
