@@ -299,7 +299,7 @@ export const useCSVPatternLoader = () => {
     }
   };
 
-  // Parse beat-based drum notation format
+  // Parse beat-based drum notation format (robust: aligns to Count line and supports x/o hats)
   const parseTextNotation = (content: string): DrumPattern => {
     const pattern: DrumPattern = {
       length: 0,
@@ -311,60 +311,89 @@ export const useCSVPatternLoader = () => {
 
     const lines = content.split('\n');
     let currentBar = 0;
-    
+
+    // Helper: substring after the first ':' and optional space
+    const afterColon = (raw: string | undefined) => {
+      if (!raw) return '';
+      const idx = raw.indexOf(':');
+      if (idx === -1) return '';
+      const out = raw.slice(idx + 1);
+      return out.startsWith(' ') ? out.slice(1) : out;
+    };
+
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      
-      if (line.startsWith('Bar ')) {
-        currentBar = parseInt(line.split(' ')[1].replace(':', ''));
-        
-        // Look ahead for the drum lines (correct indices based on file format)
-        const hhClosedLine = lines[i + 2]?.substring(11) || ''; // Skip "HH Closed: "
-        const hhOpenLine = lines[i + 3]?.substring(9) || '';    // Skip "HH Open: "
-        const snareLine = lines[i + 4]?.substring(7) || '';     // Skip "Snare: "
-        const kickLine = lines[i + 5]?.substring(6) || '';      // Skip "Kick: "
-        
-        // Parse 8 positions per bar (1 & 2 & 3 & 4 &)
-        const barStartIndex = (currentBar - 1) * 8;
-        
-        // Ensure arrays are long enough
-        const kickArray = pattern.kick as boolean[];
-        const snareArray = pattern.snare as boolean[];
-        const closedhatArray = pattern.closedhat as boolean[];
-        const openhatArray = pattern.openhat as boolean[];
-        
-        while (kickArray.length < barStartIndex + 8) {
-          kickArray.push(false);
-          snareArray.push(false);
-          closedhatArray.push(false);
-          openhatArray.push(false);
-        }
-        
-        // Parse each position in the bar - positions are at indices: 0, 6, 12, 18, 24, 30, 36, 42
-        const positions = [0, 6, 12, 18, 24, 30, 36, 42];
-        
-        for (let pos = 0; pos < 8; pos++) {
-          const charIndex = positions[pos];
-          
-          // Check for drum hits (●)
-          const kickChar = kickLine[charIndex];
-          const snareChar = snareLine[charIndex];
-          const hhClosedChar = hhClosedLine[charIndex];
-          const hhOpenChar = hhOpenLine[charIndex];
-          
-          kickArray[barStartIndex + pos] = kickChar === '●';
-          snareArray[barStartIndex + pos] = snareChar === '●';
-          closedhatArray[barStartIndex + pos] = hhClosedChar === '●';
-          openhatArray[barStartIndex + pos] = hhOpenChar === '●';
+      const trimmed = lines[i].trim();
+      if (!trimmed.startsWith('Bar ')) continue;
+
+      const barMatch = trimmed.match(/^Bar\s+(\d+):?/);
+      if (!barMatch) continue;
+      currentBar = parseInt(barMatch[1], 10);
+
+      // Expect specific layout for each bar
+      const countLine = lines[i + 1] || '';
+      const hhClosedLine = lines[i + 2] || '';
+      const hhOpenLine = lines[i + 3] || '';
+      const snareLine = lines[i + 4] || '';
+      const kickLine = lines[i + 5] || '';
+
+      const countStr = afterColon(countLine);
+      const hhClosedStr = afterColon(hhClosedLine);
+      const hhOpenStr = afterColon(hhOpenLine);
+      const snareStr = afterColon(snareLine);
+      const kickStr = afterColon(kickLine);
+
+      // Derive the 8 beat column indices from the Count line by finding tokens 1 & 2 & 3 & 4 &
+      const beatPositions: number[] = [];
+      for (let idx = 0; idx < countStr.length; idx++) {
+        const ch = countStr[idx];
+        if (ch === '1' || ch === '2' || ch === '3' || ch === '4' || ch === '&') {
+          beatPositions.push(idx);
+          if (beatPositions.length === 8) break;
         }
       }
+      // Fallback to approximate spacing if Count line parsing fails
+      if (beatPositions.length !== 8) {
+        const len = Math.max(48, countStr.length || 48);
+        for (let k = 0; k < 8; k++) {
+          beatPositions[k] = Math.min(len - 1, Math.round((k / 7) * (len - 1)));
+        }
+      }
+
+      const barStart = (currentBar - 1) * 8;
+      const ensureLength = (arr: boolean[], length: number) => {
+        while (arr.length < length) arr.push(false);
+      };
+
+      const kickArray = pattern.kick as boolean[];
+      const snareArray = pattern.snare as boolean[];
+      const closedhatArray = pattern.closedhat as boolean[];
+      const openhatArray = pattern.openhat as boolean[];
+
+      ensureLength(kickArray, barStart + 8);
+      ensureLength(snareArray, barStart + 8);
+      ensureLength(closedhatArray, barStart + 8);
+      ensureLength(openhatArray, barStart + 8);
+
+      for (let pos = 0; pos < 8; pos++) {
+        const col = beatPositions[pos];
+        const kCh = kickStr[col];
+        const sCh = snareStr[col];
+        const hcCh = hhClosedStr[col];
+        const hoCh = hhOpenStr[col];
+
+        // Treat filled circle as a hit; also support x/o markers for hats
+        kickArray[barStart + pos] = kCh === '●';
+        snareArray[barStart + pos] = sCh === '●';
+        closedhatArray[barStart + pos] = hcCh === '●' || (hcCh && hcCh.toLowerCase() === 'x');
+        openhatArray[barStart + pos] = hoCh === '●' || (hoCh && hoCh.toLowerCase() === 'o');
+      }
     }
-    
+
     const kickArray = pattern.kick as boolean[];
     const snareArray = pattern.snare as boolean[];
     const closedhatArray = pattern.closedhat as boolean[];
     const openhatArray = pattern.openhat as boolean[];
-    
+
     pattern.length = Math.max(kickArray.length, snareArray.length, closedhatArray.length, openhatArray.length);
     return pattern;
   };
