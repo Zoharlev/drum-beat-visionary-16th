@@ -46,11 +46,42 @@ export const DrumMachine = () => {
     clearBeats
   } = useDrumListener();
 
-  const { loadPatternFromFile, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
+  const { loadPatternFromFile, loadPatternFromMXL, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
   const [loadedPatternInfo, setLoadedPatternInfo] = useState<{
     componentsFound: string[];
     totalBeats: number;
   } | null>(null);
+
+  // Load MXL pattern on component mount
+  useEffect(() => {
+    const loadMXLPattern = async () => {
+      try {
+        const newPattern = await loadPatternFromMXL('/patterns/come-as-you-are-nirvana-new.mxl');
+        setPattern(newPattern);
+        
+        // Update pattern info
+        const componentsFound = Object.keys(newPattern).filter(key => key !== 'length');
+        setLoadedPatternInfo({
+          componentsFound,
+          totalBeats: newPattern.length
+        });
+        
+        toast({
+          title: "Pattern Loaded",
+          description: `Loaded "Come As You Are" with ${componentsFound.length} drum components (${newPattern.length} steps)`
+        });
+      } catch (error) {
+        console.error('Failed to load MXL pattern:', error);
+        toast({
+          title: "Pattern Load Failed",
+          description: "Using default pattern",
+          variant: "destructive"
+        });
+      }
+    };
+
+    loadMXLPattern();
+  }, [loadPatternFromMXL, toast]);
 
   // Handle listener state changes and errors
   useEffect(() => {
