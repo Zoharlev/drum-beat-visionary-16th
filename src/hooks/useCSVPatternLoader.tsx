@@ -277,7 +277,7 @@ export const useCSVPatternLoader = () => {
 
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     try {
-      const response = await fetch('/patterns/come_as_you_are_drum_notation_with_hihat-3.txt');
+      const response = await fetch('/patterns/come_as_you_are_drum_notation_with_hihat-4.txt');
       if (!response.ok) {
         throw new Error('Failed to load pattern file');
       }
