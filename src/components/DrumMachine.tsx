@@ -37,6 +37,7 @@ export const DrumMachine = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
   const snareBufferRef = useRef<AudioBuffer | null>(null);
   const kickBufferRef = useRef<AudioBuffer | null>(null);
+  const hhOpenBufferRef = useRef<AudioBuffer | null>(null);
   const { toast } = useToast();
   
   // Drum listener hook for microphone beat detection
@@ -120,11 +121,26 @@ export const DrumMachine = () => {
     }
   };
 
+  // Load HH Open sample
+  const loadHHOpenBuffer = async () => {
+    if (audioContextRef.current && !hhOpenBufferRef.current) {
+      try {
+        const response = await fetch('/samples/vibrant-metal-waves-afro-hi-hats.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        hhOpenBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load HH Open sample:', error);
+      }
+    }
+  };
+
   // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     loadSnareBuffer();
     loadKickBuffer();
+    loadHHOpenBuffer();
     return () => {
       audioContextRef.current?.close();
     };
@@ -265,46 +281,78 @@ export const DrumMachine = () => {
     const normalizedDrum = drum.toLowerCase().replace(/[-\s]/g, '');
 
     if (normalizedDrum.includes('hihat') || normalizedDrum.includes('hat')) {
-      // Hi-hat sounds with improved synthesis
-      const bufferSize = context.sampleRate * 0.15;
-      const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
-      const data = buffer.getChannelData(0);
-      
-      // Generate metallic noise
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / bufferSize * 8);
-      }
-      
-      const noise = context.createBufferSource();
-      noise.buffer = buffer;
-      
-      // Filter chain for hi-hat character
-      const highpass = context.createBiquadFilter();
-      highpass.type = 'highpass';
-      highpass.frequency.setValueAtTime(7000, context.currentTime);
-      
-      const bandpass = context.createBiquadFilter();
-      bandpass.type = 'bandpass';
-      bandpass.frequency.setValueAtTime(10000, context.currentTime);
-      bandpass.Q.setValueAtTime(1.5, context.currentTime);
-      
-      const gainNode = context.createGain();
-      
-      noise.connect(highpass);
-      highpass.connect(bandpass);
-      bandpass.connect(gainNode);
-      gainNode.connect(context.destination);
-      
-      // Different envelope for open vs closed hat
       const isOpenHat = normalizedDrum.includes('open') || normalizedDrum.includes('crash');
-      const duration = isOpenHat ? 0.3 : 0.06;
       
-      gainNode.gain.setValueAtTime(0, context.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.25, context.currentTime + 0.001);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
-      
-      noise.start(context.currentTime);
-      noise.stop(context.currentTime + duration);
+      if (isOpenHat && hhOpenBufferRef.current) {
+        // Play loaded HH Open sample
+        const source = context.createBufferSource();
+        source.buffer = hhOpenBufferRef.current;
+        
+        // Add some processing to the HH Open sample
+        const gainNode = context.createGain();
+        const highpass = context.createBiquadFilter();
+        const presence = context.createBiquadFilter();
+        
+        // High-pass to clean up low-end
+        highpass.type = 'highpass';
+        highpass.frequency.setValueAtTime(8000, context.currentTime);
+        highpass.Q.setValueAtTime(0.7, context.currentTime);
+        
+        // Presence boost for sparkle
+        presence.type = 'peaking';
+        presence.frequency.setValueAtTime(12000, context.currentTime);
+        presence.Q.setValueAtTime(1.2, context.currentTime);
+        presence.gain.setValueAtTime(2, context.currentTime);
+        
+        // Signal chain
+        source.connect(highpass);
+        highpass.connect(presence);
+        presence.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Volume envelope
+        gainNode.gain.setValueAtTime(0.6, context.currentTime);
+        
+        source.start(context.currentTime);
+      } else {
+        // Synthesized closed hi-hat
+        const bufferSize = context.sampleRate * 0.06;
+        const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        // Generate metallic noise for closed hat
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / bufferSize * 12);
+        }
+        
+        const noise = context.createBufferSource();
+        noise.buffer = buffer;
+        
+        // Filter chain for closed hi-hat character
+        const highpass = context.createBiquadFilter();
+        highpass.type = 'highpass';
+        highpass.frequency.setValueAtTime(9000, context.currentTime);
+        
+        const bandpass = context.createBiquadFilter();
+        bandpass.type = 'bandpass';
+        bandpass.frequency.setValueAtTime(11000, context.currentTime);
+        bandpass.Q.setValueAtTime(2, context.currentTime);
+        
+        const gainNode = context.createGain();
+        
+        noise.connect(highpass);
+        highpass.connect(bandpass);
+        bandpass.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Tight envelope for closed hat
+        gainNode.gain.setValueAtTime(0, context.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.06);
+        
+        noise.start(context.currentTime);
+        noise.stop(context.currentTime + 0.06);
+      }
       
     } else if (normalizedDrum.includes('snare') || normalizedDrum.includes('rim')) {
       // Play loaded snare sample
