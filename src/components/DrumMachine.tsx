@@ -772,9 +772,10 @@ export const DrumMachine = () => {
         description: `Found ${activeComponents.length} drum components with ${totalBeats} beats`,
       });
     } catch (error) {
+      console.error('Failed to load pattern:', error);
       toast({
         title: "Error",
-        description: "Failed to load drum pattern",
+        description: error instanceof Error ? error.message : "Failed to load drum pattern",
         variant: "destructive",
       });
     }

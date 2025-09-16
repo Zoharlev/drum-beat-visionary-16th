@@ -318,10 +318,11 @@ export const useCSVPatternLoader = () => {
       if (line.startsWith('Bar ')) {
         currentBar = parseInt(line.split(' ')[1].replace(':', ''));
         
-        // Look ahead for the drum lines
-        const hiHatLine = lines[i + 3]?.substring(7) || ''; // Skip "Hi-Hat:"
-        const snareLine = lines[i + 4]?.substring(6) || '';  // Skip "Snare:"
-        const kickLine = lines[i + 5]?.substring(5) || '';   // Skip "Kick:"
+        // Look ahead for the drum lines (correct indices based on file format)
+        const hhClosedLine = lines[i + 2]?.substring(11) || ''; // Skip "HH Closed: "
+        const hhOpenLine = lines[i + 3]?.substring(9) || '';    // Skip "HH Open: "
+        const snareLine = lines[i + 4]?.substring(7) || '';     // Skip "Snare: "
+        const kickLine = lines[i + 5]?.substring(6) || '';      // Skip "Kick: "
         
         // Parse 8 positions per bar (1 & 2 & 3 & 4 &)
         const barStartIndex = (currentBar - 1) * 8;
@@ -339,20 +340,22 @@ export const useCSVPatternLoader = () => {
           openhatArray.push(false);
         }
         
-        // Parse each position in the bar
+        // Parse each position in the bar - positions are at indices: 0, 6, 12, 18, 24, 30, 36, 42
+        const positions = [0, 6, 12, 18, 24, 30, 36, 42];
+        
         for (let pos = 0; pos < 8; pos++) {
-          const charIndex = pos * 6; // Characters are spaced 6 positions apart
+          const charIndex = positions[pos];
           
-          // Check for drum hits (●, x, o)
+          // Check for drum hits (●)
           const kickChar = kickLine[charIndex];
           const snareChar = snareLine[charIndex];
-          const hihatChar = hiHatLine[charIndex];
+          const hhClosedChar = hhClosedLine[charIndex];
+          const hhOpenChar = hhOpenLine[charIndex];
           
           kickArray[barStartIndex + pos] = kickChar === '●';
           snareArray[barStartIndex + pos] = snareChar === '●';
-          // x = closed hi-hat, o = open hi-hat
-          closedhatArray[barStartIndex + pos] = hihatChar === 'x' || hihatChar === '●';
-          openhatArray[barStartIndex + pos] = hihatChar === 'o';
+          closedhatArray[barStartIndex + pos] = hhClosedChar === '●';
+          openhatArray[barStartIndex + pos] = hhOpenChar === '●';
         }
       }
     }
