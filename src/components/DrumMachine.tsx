@@ -356,74 +356,130 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else {
-      // Improved kick drum with sub-bass and attack click
+      // Enhanced kick drum with deep sub-bass, punchy attack, and texture
       
-      // Main kick oscillator (fundamental)
+      // Main kick oscillator (fundamental body)
       const kickOsc = context.createOscillator();
       const kickGain = context.createGain();
       
-      kickOsc.frequency.setValueAtTime(60, context.currentTime);
-      kickOsc.frequency.exponentialRampToValueAtTime(35, context.currentTime + 0.05);
+      kickOsc.frequency.setValueAtTime(80, context.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(45, context.currentTime + 0.04);
+      kickOsc.frequency.exponentialRampToValueAtTime(30, context.currentTime + 0.12);
       kickOsc.type = 'sine';
       
-      // Sub-bass oscillator for weight
+      // Deep sub-bass oscillator for massive low-end
       const subOsc = context.createOscillator();
       const subGain = context.createGain();
       
-      subOsc.frequency.setValueAtTime(30, context.currentTime);
-      subOsc.frequency.exponentialRampToValueAtTime(20, context.currentTime + 0.08);
+      subOsc.frequency.setValueAtTime(35, context.currentTime);
+      subOsc.frequency.exponentialRampToValueAtTime(25, context.currentTime + 0.06);
+      subOsc.frequency.exponentialRampToValueAtTime(18, context.currentTime + 0.15);
       subOsc.type = 'sine';
       
-      // Attack click for punch
-      const clickOsc = context.createOscillator();
+      // Enhanced attack click with more character
+      const clickOsc1 = context.createOscillator();
+      const clickOsc2 = context.createOscillator();
       const clickGain = context.createGain();
       
-      clickOsc.frequency.setValueAtTime(1000, context.currentTime);
-      clickOsc.frequency.exponentialRampToValueAtTime(100, context.currentTime + 0.005);
-      clickOsc.type = 'square';
+      clickOsc1.frequency.setValueAtTime(2000, context.currentTime);
+      clickOsc1.frequency.exponentialRampToValueAtTime(200, context.currentTime + 0.008);
+      clickOsc1.type = 'square';
       
-      // Low-pass filter for warmth
+      clickOsc2.frequency.setValueAtTime(800, context.currentTime);
+      clickOsc2.frequency.exponentialRampToValueAtTime(80, context.currentTime + 0.012);
+      clickOsc2.type = 'sawtooth';
+      
+      // Add noise texture for realism
+      const noiseBuffer = context.createBuffer(1, context.sampleRate * 0.05, context.sampleRate);
+      const noiseData = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseData.length; i++) {
+        noiseData[i] = (Math.random() * 2 - 1) * 0.3;
+      }
+      
+      const noise = context.createBufferSource();
+      noise.buffer = noiseBuffer;
+      const noiseGain = context.createGain();
+      
+      // Saturation/distortion for punch
+      const waveshaper = context.createWaveShaper();
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i - 128) / 128;
+        curve[i] = Math.tanh(x * 2) * 0.8;
+      }
+      waveshaper.curve = curve;
+      waveshaper.oversample = '4x';
+      
+      // Dynamic low-pass filter
       const lowPassFilter = context.createBiquadFilter();
       lowPassFilter.type = 'lowpass';
-      lowPassFilter.frequency.setValueAtTime(120, context.currentTime);
-      lowPassFilter.Q.setValueAtTime(1, context.currentTime);
+      lowPassFilter.frequency.setValueAtTime(200, context.currentTime);
+      lowPassFilter.frequency.exponentialRampToValueAtTime(80, context.currentTime + 0.05);
+      lowPassFilter.Q.setValueAtTime(1.5, context.currentTime);
       
-      // Mix all components
-      const mixGain = context.createGain();
+      // Compression for punch
+      const compressor = context.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-24, context.currentTime);
+      compressor.knee.setValueAtTime(30, context.currentTime);
+      compressor.ratio.setValueAtTime(12, context.currentTime);
+      compressor.attack.setValueAtTime(0.003, context.currentTime);
+      compressor.release.setValueAtTime(0.25, context.currentTime);
       
+      // Connect the signal chain
       kickOsc.connect(kickGain);
       subOsc.connect(subGain);
-      clickOsc.connect(clickGain);
+      clickOsc1.connect(clickGain);
+      clickOsc2.connect(clickGain);
+      noise.connect(noiseGain);
       
-      kickGain.connect(lowPassFilter);
-      subGain.connect(lowPassFilter);
-      clickGain.connect(mixGain);
-      lowPassFilter.connect(mixGain);
-      mixGain.connect(context.destination);
+      // Mix and process
+      const preGain = context.createGain();
+      kickGain.connect(preGain);
+      subGain.connect(preGain);
+      clickGain.connect(preGain);
+      noiseGain.connect(preGain);
       
-      // Envelope for main kick
-      const duration = 0.3;
-      kickGain.gain.setValueAtTime(0.6, context.currentTime);
-      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      preGain.connect(waveshaper);
+      waveshaper.connect(lowPassFilter);
+      lowPassFilter.connect(compressor);
+      compressor.connect(context.destination);
       
-      // Sub-bass envelope
-      subGain.gain.setValueAtTime(0.4, context.currentTime);
-      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.8);
+      // Improved envelopes
+      const duration = 0.4;
       
-      // Click envelope (very short)
-      clickGain.gain.setValueAtTime(0.3, context.currentTime);
-      clickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.01);
+      // Main kick envelope with more punch
+      kickGain.gain.setValueAtTime(0.8, context.currentTime);
+      kickGain.gain.linearRampToValueAtTime(0.7, context.currentTime + 0.01);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration * 0.7);
       
-      // Overall mix envelope
-      mixGain.gain.setValueAtTime(0.5, context.currentTime);
-      mixGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      // Deeper sub-bass envelope
+      subGain.gain.setValueAtTime(0.6, context.currentTime);
+      subGain.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.02);
+      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
+      // Enhanced click envelope
+      clickGain.gain.setValueAtTime(0.4, context.currentTime);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.015);
+      
+      // Noise texture envelope
+      noiseGain.gain.setValueAtTime(0.2, context.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.03);
+      
+      // Overall pre-gain envelope
+      preGain.gain.setValueAtTime(0.7, context.currentTime);
+      preGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+      
+      // Start all oscillators
       kickOsc.start(context.currentTime);
       kickOsc.stop(context.currentTime + duration);
       subOsc.start(context.currentTime);
       subOsc.stop(context.currentTime + duration);
-      clickOsc.start(context.currentTime);
-      clickOsc.stop(context.currentTime + 0.01);
+      clickOsc1.start(context.currentTime);
+      clickOsc1.stop(context.currentTime + 0.015);
+      clickOsc2.start(context.currentTime);
+      clickOsc2.stop(context.currentTime + 0.015);
+      noise.start(context.currentTime);
+      noise.stop(context.currentTime + 0.05);
     }
   };
 
