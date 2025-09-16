@@ -24,8 +24,7 @@ export const DrumMachine = () => {
     return {
       'Kick': new Array(16).fill(false),
       'Snare': new Array(16).fill(false),
-      'closedhat': new Array(16).fill(false),
-      'openhat': new Array(16).fill(false),
+      'Hi-Hat': new Array(16).fill(false),
       length: 16,
     };
   });
@@ -33,7 +32,6 @@ export const DrumMachine = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const loadedOnceRef = useRef(false);
   const { toast } = useToast();
   
   // Drum listener hook for microphone beat detection
@@ -48,89 +46,11 @@ export const DrumMachine = () => {
     clearBeats
   } = useDrumListener();
 
-  const { loadPatternFromFile, loadPatternFromMXL, loadPatternFromTextNotation, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
+  const { loadPatternFromFile, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
   const [loadedPatternInfo, setLoadedPatternInfo] = useState<{
     componentsFound: string[];
     totalBeats: number;
   } | null>(null);
-
-  // Load text notation pattern on component mount (only once)
-  useEffect(() => {
-    if (loadedOnceRef.current) return;
-    loadedOnceRef.current = true;
-    
-    const loadTextPattern = async () => {
-      try {
-        let newPattern;
-        try {
-          // Try new uploaded pattern first
-          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_with_hihat-2.txt');
-        } catch (primaryError) {
-          console.warn('Primary file failed, trying fallback:', primaryError);
-          // Try fallback file
-          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_custom_pattern.txt');
-        }
-        
-        setPattern(newPattern);
-        
-        // Count active notes across all instruments
-        const componentsFound = Object.keys(newPattern).filter(key => key !== 'length');
-        let totalActiveNotes = 0;
-        componentsFound.forEach(component => {
-          const steps = newPattern[component];
-          if (Array.isArray(steps)) {
-            totalActiveNotes += steps.filter(Boolean).length;
-          }
-        });
-        
-        // Find first active step for auto-navigation
-        let firstActiveStep = -1;
-        for (let step = 0; step < newPattern.length; step++) {
-          const hasActiveNote = componentsFound.some(component => {
-            const steps = newPattern[component];
-            return Array.isArray(steps) && steps[step];
-          });
-          if (hasActiveNote) {
-            firstActiveStep = step;
-            break;
-          }
-        }
-        
-        // Auto-navigate to first active step
-        if (firstActiveStep !== -1) {
-          const targetView = Math.floor(firstActiveStep / 16);
-          setCurrentView(targetView);
-          const barNumber = Math.floor(firstActiveStep / 4) + 1;
-          
-          toast({
-            title: "Pattern Loaded",
-            description: `Loaded "Come As You Are" with ${totalActiveNotes} notes. Jumped to first note at bar ${barNumber}.`
-          });
-        } else {
-          toast({
-            title: "Pattern Loaded", 
-            description: `Loaded "Come As You Are" drum notation with ${componentsFound.length} drum components (${newPattern.length} steps)`
-          });
-        }
-        
-        // Update pattern info
-        setLoadedPatternInfo({
-          componentsFound,
-          totalBeats: newPattern.length
-        });
-        
-      } catch (error) {
-        console.error('Failed to load text notation pattern:', error);
-        toast({
-          title: "Pattern Load Failed",
-          description: "Using default pattern",
-          variant: "destructive"
-        });
-      }
-    };
-
-    loadTextPattern();
-  }, []); // Empty dependency array to run only once
 
   // Handle listener state changes and errors
   useEffect(() => {
@@ -752,7 +672,6 @@ export const DrumMachine = () => {
       'kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
       'snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
       'hihat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
-      'closedhat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
       'openhat': { name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
     };
     
@@ -793,7 +712,7 @@ export const DrumMachine = () => {
 
   const loadCSVPattern = async () => {
     try {
-      const newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_separated_hh.txt');
+      const newPattern = await loadPatternFromFile();
       setPattern(newPattern);
       
       // Analyze loaded pattern to show component info
@@ -820,10 +739,9 @@ export const DrumMachine = () => {
         description: `Found ${activeComponents.length} drum components with ${totalBeats} beats`,
       });
     } catch (error) {
-      console.error('Failed to load pattern:', error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to load drum pattern",
+        description: "Failed to load drum pattern",
         variant: "destructive",
       });
     }
@@ -986,6 +904,8 @@ export const DrumMachine = () => {
               onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
               onTogglePlay={togglePlay}
               isPlaying={isPlaying}
+              onLoadPattern={loadCSVPattern}
+              isLoadingPattern={isLoadingPattern}
             />
 
           {/* Bottom Toolbar */}

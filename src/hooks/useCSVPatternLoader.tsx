@@ -60,8 +60,8 @@ export const useCSVPatternLoader = () => {
   };
 
   const parseNotationLine = (line: string): { instrument: string; positions: number[] } | null => {
-    // Parse lines like "Snare:      ●                    ●               " or "HH Closed:  x   x   x   x"
-    const match = line.match(/^(Hi-Hat|HH Closed|HH Open|Snare|Kick):\s*(.*)$/);
+    // Parse lines like "Snare:      ●                    ●               "
+    const match = line.match(/^(Hi-Hat|Snare|Kick):\s*(.*)$/);
     if (!match) return null;
     
     const [, instrument, notation] = match;
@@ -220,12 +220,10 @@ export const useCSVPatternLoader = () => {
       
       // Initialize pattern arrays
       const totalSteps = totalBars * 8; // 8 steps per bar
-      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open'];
+      const instruments = ['Kick', 'Snare', 'Hi-Hat'];
       
-      // Map instrument names to pattern keys
-      const patternKeys = ['kick', 'snare', 'closedhat', 'openhat'];
-      for (const key of patternKeys) {
-        pattern[key] = new Array(totalSteps).fill(false);
+      for (const instrument of instruments) {
+        pattern[instrument] = new Array(totalSteps).fill(false);
       }
       
       // Parse the notation
@@ -237,21 +235,12 @@ export const useCSVPatternLoader = () => {
           }
         } else {
           const parsed = parseNotationLine(line);
-          if (parsed) {
-            // Map instrument names to pattern keys
-            let instrumentKey = parsed.instrument;
-            if (parsed.instrument === 'HH Closed') instrumentKey = 'closedhat';
-            if (parsed.instrument === 'HH Open') instrumentKey = 'openhat';
-            if (parsed.instrument === 'Kick') instrumentKey = 'kick';
-            if (parsed.instrument === 'Snare') instrumentKey = 'snare';
-            
-            if (pattern[instrumentKey]) {
-              // Map positions to the correct bar offset
-              for (const pos of parsed.positions) {
-                const stepIndex = currentBar * 8 + pos;
-                if (stepIndex < totalSteps) {
-                  pattern[instrumentKey][stepIndex] = true;
-                }
+          if (parsed && pattern[parsed.instrument]) {
+            // Map positions to the correct bar offset
+            for (const pos of parsed.positions) {
+              const stepIndex = currentBar * 8 + pos;
+              if (stepIndex < totalSteps) {
+                pattern[parsed.instrument][stepIndex] = true;
               }
             }
           }
@@ -286,145 +275,10 @@ export const useCSVPatternLoader = () => {
     }
   };
 
-  const loadPatternFromMXL = async (mxlPath: string): Promise<DrumPattern> => {
-    try {
-      const { useMusicXMLParser } = await import('./useMusicXMLParser');
-      const { parseFromMXLPath } = useMusicXMLParser();
-      const { pattern } = await parseFromMXLPath(mxlPath);
-      return pattern;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load MXL pattern';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    }
-  };
-
-  // Parse beat-based drum notation format (robust: aligns to Count line and supports x/o hats)
-  const parseTextNotation = (content: string): DrumPattern => {
-    const pattern: DrumPattern = {
-      length: 0,
-      kick: [],
-      snare: [],
-      closedhat: [],
-      openhat: []
-    };
-
-    const lines = content.split('\n');
-    let currentBar = 0;
-
-    // Helper: substring after the first ':' and optional space
-    const afterColon = (raw: string | undefined) => {
-      if (!raw) return '';
-      const idx = raw.indexOf(':');
-      if (idx === -1) return '';
-      const out = raw.slice(idx + 1);
-      return out.startsWith(' ') ? out.slice(1) : out;
-    };
-
-    for (let i = 0; i < lines.length; i++) {
-      const trimmed = lines[i].trim();
-      if (!trimmed.startsWith('Bar ')) continue;
-
-      const barMatch = trimmed.match(/^Bar\s+(\d+):?/);
-      if (!barMatch) continue;
-      currentBar = parseInt(barMatch[1], 10);
-
-      // Expect specific layout for each bar
-      const countLine = lines[i + 1] || '';
-      const hhClosedLine = lines[i + 2] || '';
-      const hhOpenLine = lines[i + 3] || '';
-      const snareLine = lines[i + 4] || '';
-      const kickLine = lines[i + 5] || '';
-
-      const countStr = afterColon(countLine);
-      const hhClosedStr = afterColon(hhClosedLine);
-      const hhOpenStr = afterColon(hhOpenLine);
-      const snareStr = afterColon(snareLine);
-      const kickStr = afterColon(kickLine);
-
-      // Derive the 8 beat column indices from the Count line by finding tokens 1 & 2 & 3 & 4 &
-      const beatPositions: number[] = [];
-      for (let idx = 0; idx < countStr.length; idx++) {
-        const ch = countStr[idx];
-        if (ch === '1' || ch === '2' || ch === '3' || ch === '4' || ch === '&') {
-          beatPositions.push(idx);
-          if (beatPositions.length === 8) break;
-        }
-      }
-      // Fallback to approximate spacing if Count line parsing fails
-      if (beatPositions.length !== 8) {
-        const len = Math.max(48, countStr.length || 48);
-        for (let k = 0; k < 8; k++) {
-          beatPositions[k] = Math.min(len - 1, Math.round((k / 7) * (len - 1)));
-        }
-      }
-
-      const barStart = (currentBar - 1) * 8;
-      const ensureLength = (arr: boolean[], length: number) => {
-        while (arr.length < length) arr.push(false);
-      };
-
-      const kickArray = pattern.kick as boolean[];
-      const snareArray = pattern.snare as boolean[];
-      const closedhatArray = pattern.closedhat as boolean[];
-      const openhatArray = pattern.openhat as boolean[];
-
-      ensureLength(kickArray, barStart + 8);
-      ensureLength(snareArray, barStart + 8);
-      ensureLength(closedhatArray, barStart + 8);
-      ensureLength(openhatArray, barStart + 8);
-
-      for (let pos = 0; pos < 8; pos++) {
-        const col = beatPositions[pos];
-        const kCh = kickStr[col];
-        const sCh = snareStr[col];
-        const hcCh = hhClosedStr[col];
-        const hoCh = hhOpenStr[col];
-
-        // Treat filled circle as a hit; also support x/o markers for hats
-        kickArray[barStart + pos] = kCh === '●';
-        snareArray[barStart + pos] = sCh === '●';
-        closedhatArray[barStart + pos] = hcCh === '●' || (hcCh && hcCh.toLowerCase() === 'x');
-        openhatArray[barStart + pos] = hoCh === '●' || (hoCh && hoCh.toLowerCase() === 'o');
-      }
-    }
-
-    const kickArray = pattern.kick as boolean[];
-    const snareArray = pattern.snare as boolean[];
-    const closedhatArray = pattern.closedhat as boolean[];
-    const openhatArray = pattern.openhat as boolean[];
-
-    pattern.length = Math.max(kickArray.length, snareArray.length, closedhatArray.length, openhatArray.length);
-    return pattern;
-  };
-
-  const loadPatternFromTextNotation = async (filePath: string): Promise<DrumPattern> => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const response = await fetch(filePath);
-      if (!response.ok) {
-        throw new Error(`Failed to load file: ${response.statusText}`);
-      }
-      const content = await response.text();
-      const pattern = parseTextNotation(content);
-      return pattern;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return {
     loadPatternFromCSV,
     loadPatternFromNotation,
     loadPatternFromFile,
-    loadPatternFromMXL,
-    loadPatternFromTextNotation,
     isLoading,
     error
   };
