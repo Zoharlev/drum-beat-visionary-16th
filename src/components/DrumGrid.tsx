@@ -115,9 +115,31 @@ export const DrumGrid = ({
             length: visibleSteps
           }, (_, i) => {
             const stepIndex = startStep + i;
+            let displayText = "";
+            let textStyle = "text-muted-foreground/60";
+            
+            // Show "1 & 2 & 3 & 4 &" pattern
+            if (stepIndex % 4 === 0) {
+              // Main beats: 1, 2, 3, 4
+              displayText = String(Math.floor(stepIndex / 4) + 1);
+              textStyle = "text-primary font-bold";
+            } else if (stepIndex % 4 === 2) {
+              // Off-beats: &
+              displayText = "&";
+              textStyle = "text-accent font-medium";
+            } else if (stepIndex % 4 === 1) {
+              // 16th note subdivision: e
+              displayText = "e";
+              textStyle = "text-muted-foreground/40 text-xs";
+            } else if (stepIndex % 4 === 3) {
+              // 16th note subdivision: a
+              displayText = "a";
+              textStyle = "text-muted-foreground/40 text-xs";
+            }
+            
             return (
-              <div key={stepIndex} className={cn("flex-1 text-center text-sm font-mono", stepIndex % 4 === 0 ? "text-primary font-bold" : "text-muted-foreground")}>
-                {stepIndex % 4 === 0 ? Math.floor(stepIndex / 4) + 1 : ""}
+              <div key={stepIndex} className={cn("flex-1 text-center text-sm font-mono", textStyle)}>
+                {displayText}
               </div>
             );
           })}
