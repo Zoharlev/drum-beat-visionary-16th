@@ -275,10 +275,24 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  const loadPatternFromMXL = async (mxlPath: string): Promise<DrumPattern> => {
+    try {
+      const { useMusicXMLParser } = await import('./useMusicXMLParser');
+      const { parseFromMXLPath } = useMusicXMLParser();
+      const { pattern } = await parseFromMXLPath(mxlPath);
+      return pattern;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load MXL pattern';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    }
+  };
+
   return {
     loadPatternFromCSV,
     loadPatternFromNotation,
     loadPatternFromFile,
+    loadPatternFromMXL,
     isLoading,
     error
   };
