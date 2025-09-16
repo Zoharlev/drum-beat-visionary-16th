@@ -294,7 +294,8 @@ export const useCSVPatternLoader = () => {
       length: 0,
       kick: [],
       snare: [],
-      hihat: []
+      closedhat: [],
+      openhat: []
     };
 
     const lines = content.split('\n');
@@ -317,12 +318,14 @@ export const useCSVPatternLoader = () => {
         // Ensure arrays are long enough
         const kickArray = pattern.kick as boolean[];
         const snareArray = pattern.snare as boolean[];
-        const hihatArray = pattern.hihat as boolean[];
+        const closedhatArray = pattern.closedhat as boolean[];
+        const openhatArray = pattern.openhat as boolean[];
         
         while (kickArray.length < barStartIndex + 8) {
           kickArray.push(false);
           snareArray.push(false);
-          hihatArray.push(false);
+          closedhatArray.push(false);
+          openhatArray.push(false);
         }
         
         // Parse each position in the bar
@@ -336,16 +339,19 @@ export const useCSVPatternLoader = () => {
           
           kickArray[barStartIndex + pos] = kickChar === '●';
           snareArray[barStartIndex + pos] = snareChar === '●';
-          hihatArray[barStartIndex + pos] = hihatChar === '●' || hihatChar === 'x' || hihatChar === 'o';
+          // x = closed hi-hat, o = open hi-hat
+          closedhatArray[barStartIndex + pos] = hihatChar === 'x' || hihatChar === '●';
+          openhatArray[barStartIndex + pos] = hihatChar === 'o';
         }
       }
     }
     
     const kickArray = pattern.kick as boolean[];
     const snareArray = pattern.snare as boolean[];
-    const hihatArray = pattern.hihat as boolean[];
+    const closedhatArray = pattern.closedhat as boolean[];
+    const openhatArray = pattern.openhat as boolean[];
     
-    pattern.length = Math.max(kickArray.length, snareArray.length, hihatArray.length);
+    pattern.length = Math.max(kickArray.length, snareArray.length, closedhatArray.length, openhatArray.length);
     return pattern;
   };
 

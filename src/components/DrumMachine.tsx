@@ -24,7 +24,8 @@ export const DrumMachine = () => {
     return {
       'Kick': new Array(16).fill(false),
       'Snare': new Array(16).fill(false),
-      'Hi-Hat': new Array(16).fill(false),
+      'closedhat': new Array(16).fill(false),
+      'openhat': new Array(16).fill(false),
       length: 16,
     };
   });
@@ -703,6 +704,7 @@ export const DrumMachine = () => {
       'kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
       'snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
       'hihat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
+      'closedhat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
       'openhat': { name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
     };
     
