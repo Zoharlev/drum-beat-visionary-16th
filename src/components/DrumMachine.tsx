@@ -24,7 +24,8 @@ export const DrumMachine = () => {
     return {
       'Kick': new Array(16).fill(false),
       'Snare': new Array(16).fill(false),
-      'Hi-Hat': new Array(16).fill(false),
+      'HH Closed': new Array(16).fill(false),
+      'HH Open': new Array(16).fill(false),
       length: 16,
     };
   });
@@ -103,10 +104,10 @@ export const DrumMachine = () => {
     if (!isListening || detectedBeats.length === 0) return null;
 
     const newPattern: DrumPattern = {
-      kick: new Array(pattern.length).fill(false),
-      snare: new Array(pattern.length).fill(false),
-      hihat: new Array(pattern.length).fill(false),
-      openhat: new Array(pattern.length).fill(false),
+      'Kick': new Array(pattern.length).fill(false),
+      'Snare': new Array(pattern.length).fill(false),
+      'HH Closed': new Array(pattern.length).fill(false),
+      'HH Open': new Array(pattern.length).fill(false),
       length: pattern.length,
     };
 
@@ -117,7 +118,16 @@ export const DrumMachine = () => {
       const stepPosition = Math.round(relativeTime / stepDuration) % pattern.length;
       
       if (stepPosition >= 0 && stepPosition < pattern.length && beat.confidence > 0.6) {
-        newPattern[beat.type][stepPosition] = true;
+        // Map detected beat types to instrument names
+        let instrumentKey = '';
+        if (beat.type === 'kick') instrumentKey = 'Kick';
+        else if (beat.type === 'snare') instrumentKey = 'Snare';
+        else if (beat.type === 'hihat') instrumentKey = 'HH Closed';
+        else if (beat.type === 'openhat') instrumentKey = 'HH Open';
+        
+        if (instrumentKey && newPattern[instrumentKey]) {
+          (newPattern[instrumentKey] as boolean[])[stepPosition] = true;
+        }
       }
     });
 

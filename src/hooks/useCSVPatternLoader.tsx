@@ -61,7 +61,8 @@ export const useCSVPatternLoader = () => {
 
   const parseNotationLine = (line: string): { instrument: string; positions: number[] } | null => {
     // Parse lines like "Snare:      ●                    ●               "
-    const match = line.match(/^(Hi-Hat|Snare|Kick):\s*(.*)$/);
+    // Also parse "HH Closed:" and "HH Open:" lines
+    const match = line.match(/^(Hi-Hat|Snare|Kick|HH Closed|HH Open):\s*(.*)$/);
     if (!match) return null;
     
     const [, instrument, notation] = match;
@@ -72,7 +73,8 @@ export const useCSVPatternLoader = () => {
     const positionSpacing = [7, 13, 19, 25, 31, 37, 43, 49]; // Approximate character positions for beats
     
     for (let i = 0; i < notation.length; i++) {
-      if (notation[i] === '●') {
+      // Check for different hit markers: ● for general hits, x for closed hi-hat, o for open hi-hat
+      if (notation[i] === '●' || notation[i] === 'x' || notation[i] === 'o') {
         // Find the closest beat position
         let closestPos = 0;
         let minDistance = Math.abs(i - positionSpacing[0]);
@@ -220,7 +222,7 @@ export const useCSVPatternLoader = () => {
       
       // Initialize pattern arrays
       const totalSteps = totalBars * 8; // 8 steps per bar
-      const instruments = ['Kick', 'Snare', 'Hi-Hat'];
+      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open'];
       
       for (const instrument of instruments) {
         pattern[instrument] = new Array(totalSteps).fill(false);
