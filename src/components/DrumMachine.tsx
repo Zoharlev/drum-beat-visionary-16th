@@ -63,12 +63,12 @@ export const DrumMachine = () => {
       try {
         let newPattern;
         try {
-          // Try new custom pattern first
-          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_custom_pattern.txt');
+          // Try new uploaded pattern first
+          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_with_hihat-2.txt');
         } catch (primaryError) {
           console.warn('Primary file failed, trying fallback:', primaryError);
           // Try fallback file
-          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_drum_notation_with_hihat.txt');
+          newPattern = await loadPatternFromTextNotation('/patterns/come_as_you_are_custom_pattern.txt');
         }
         
         setPattern(newPattern);
