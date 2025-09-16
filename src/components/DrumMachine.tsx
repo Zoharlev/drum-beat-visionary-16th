@@ -275,123 +275,151 @@ export const DrumMachine = () => {
       noise.stop(context.currentTime + duration);
       
     } else if (normalizedDrum.includes('snare') || normalizedDrum.includes('rim')) {
-      // Realistic snare with complex acoustic modeling
+      // Enhanced realistic snare with improved acoustic modeling
       
-      // Shell body resonance (multiple modes)
+      // 1. Shell body resonance with better tuning
       const shellOsc1 = context.createOscillator();
       const shellOsc2 = context.createOscillator();
       const shellOsc3 = context.createOscillator();
       const shellGain = context.createGain();
       
-      // Fundamental and overtones for shell body
-      shellOsc1.frequency.setValueAtTime(240, context.currentTime);
-      shellOsc1.frequency.exponentialRampToValueAtTime(100, context.currentTime + 0.04);
-      shellOsc1.frequency.exponentialRampToValueAtTime(85, context.currentTime + 0.08);
-      shellOsc1.type = 'triangle';
+      // Improved fundamental frequencies for realistic snare body
+      shellOsc1.frequency.setValueAtTime(220, context.currentTime);
+      shellOsc1.frequency.exponentialRampToValueAtTime(180, context.currentTime + 0.01);
+      shellOsc1.frequency.exponentialRampToValueAtTime(160, context.currentTime + 0.03);
+      shellOsc1.frequency.exponentialRampToValueAtTime(140, context.currentTime + 0.08);
+      shellOsc1.type = 'sine';
       
-      shellOsc2.frequency.setValueAtTime(180, context.currentTime);
-      shellOsc2.frequency.exponentialRampToValueAtTime(75, context.currentTime + 0.05);
-      shellOsc2.type = 'sine';
+      shellOsc2.frequency.setValueAtTime(340, context.currentTime);
+      shellOsc2.frequency.exponentialRampToValueAtTime(280, context.currentTime + 0.02);
+      shellOsc2.frequency.exponentialRampToValueAtTime(240, context.currentTime + 0.06);
+      shellOsc2.type = 'triangle';
       
-      shellOsc3.frequency.setValueAtTime(320, context.currentTime); // Higher overtone
-      shellOsc3.frequency.exponentialRampToValueAtTime(140, context.currentTime + 0.03);
+      shellOsc3.frequency.setValueAtTime(480, context.currentTime);
+      shellOsc3.frequency.exponentialRampToValueAtTime(380, context.currentTime + 0.015);
+      shellOsc3.frequency.exponentialRampToValueAtTime(320, context.currentTime + 0.04);
       shellOsc3.type = 'sawtooth';
       
       shellOsc1.connect(shellGain);
       shellOsc2.connect(shellGain);
       shellOsc3.connect(shellGain);
       
-      // Snare buzz (multiple filtered noise sources)
-      const buzzSize = context.sampleRate * 0.15;
+      // 2. Enhanced snare buzz with more realistic rattle
+      const buzzSize = context.sampleRate * 0.2;
       const buzzBuffer = context.createBuffer(1, buzzSize, context.sampleRate);
       const buzzData = buzzBuffer.getChannelData(0);
       
-      // Create realistic snare buzz pattern
+      // Create more authentic snare buzz with irregular pattern
       for (let i = 0; i < buzzSize; i++) {
-        const decay = Math.exp(-i / buzzSize * 6);
-        buzzData[i] = (Math.random() * 2 - 1) * decay;
+        const phase = i / buzzSize;
+        const decay = Math.exp(-phase * 8);
+        const flutter = 1 + Math.sin(phase * 150) * 0.3; // Wire flutter effect
+        const randomness = (Math.random() * 2 - 1) * 0.7 + (Math.random() * 2 - 1) * 0.3;
+        buzzData[i] = randomness * decay * flutter;
       }
       
       const buzz = context.createBufferSource();
       buzz.buffer = buzzBuffer;
       
-      // Multiple filters for snare character
-      const buzzHighpass = context.createBiquadFilter();
-      buzzHighpass.type = 'highpass';
-      buzzHighpass.frequency.setValueAtTime(1800, context.currentTime);
-      buzzHighpass.Q.setValueAtTime(0.7, context.currentTime);
+      // Improved snare buzz filtering chain
+      const buzzHighpass1 = context.createBiquadFilter();
+      buzzHighpass1.type = 'highpass';
+      buzzHighpass1.frequency.setValueAtTime(2200, context.currentTime);
+      buzzHighpass1.Q.setValueAtTime(0.8, context.currentTime);
       
       const buzzBandpass = context.createBiquadFilter();
       buzzBandpass.type = 'bandpass';
-      buzzBandpass.frequency.setValueAtTime(4500, context.currentTime);
-      buzzBandpass.Q.setValueAtTime(1.2, context.currentTime);
+      buzzBandpass.frequency.setValueAtTime(5200, context.currentTime);
+      buzzBandpass.Q.setValueAtTime(1.8, context.currentTime);
+      
+      const buzzHighpass2 = context.createBiquadFilter();
+      buzzHighpass2.type = 'highpass';
+      buzzHighpass2.frequency.setValueAtTime(8000, context.currentTime);
+      buzzHighpass2.Q.setValueAtTime(0.5, context.currentTime);
       
       const buzzGain = context.createGain();
-      buzz.connect(buzzHighpass);
-      buzzHighpass.connect(buzzBandpass);
-      buzzBandpass.connect(buzzGain);
+      buzz.connect(buzzHighpass1);
+      buzzHighpass1.connect(buzzBandpass);
+      buzzBandpass.connect(buzzHighpass2);
+      buzzHighpass2.connect(buzzGain);
       
-      // Stick attack transient
-      const attackNoise = context.createBuffer(1, context.sampleRate * 0.02, context.sampleRate);
+      // 3. Sharper stick attack transient
+      const attackNoise = context.createBuffer(1, context.sampleRate * 0.008, context.sampleRate);
       const attackData = attackNoise.getChannelData(0);
       
       for (let i = 0; i < attackData.length; i++) {
-        const envelope = Math.exp(-i / attackData.length * 20);
-        attackData[i] = (Math.random() * 2 - 1) * envelope;
+        const phase = i / attackData.length;
+        const envelope = Math.exp(-phase * 35); // Sharper attack
+        const crack = Math.sin(phase * 80) * 0.4; // Adding crack character
+        attackData[i] = ((Math.random() * 2 - 1) * 0.8 + crack) * envelope;
       }
       
       const attack = context.createBufferSource();
       attack.buffer = attackNoise;
       
-      const attackFilter = context.createBiquadFilter();
-      attackFilter.type = 'highpass';
-      attackFilter.frequency.setValueAtTime(3000, context.currentTime);
+      const attackFilter1 = context.createBiquadFilter();
+      attackFilter1.type = 'bandpass';
+      attackFilter1.frequency.setValueAtTime(4500, context.currentTime);
+      attackFilter1.Q.setValueAtTime(2.5, context.currentTime);
+      
+      const attackFilter2 = context.createBiquadFilter();
+      attackFilter2.type = 'highpass';
+      attackFilter2.frequency.setValueAtTime(6000, context.currentTime);
+      attackFilter2.Q.setValueAtTime(1, context.currentTime);
       
       const attackGain = context.createGain();
-      attack.connect(attackFilter);
-      attackFilter.connect(attackGain);
+      attack.connect(attackFilter1);
+      attackFilter1.connect(attackFilter2);
+      attackFilter2.connect(attackGain);
       
-      // Wooden rim sound component
+      // 4. Improved rim/wood component
       const rimOsc = context.createOscillator();
       const rimGain = context.createGain();
       
-      rimOsc.frequency.setValueAtTime(800, context.currentTime);
-      rimOsc.frequency.exponentialRampToValueAtTime(400, context.currentTime + 0.015);
+      rimOsc.frequency.setValueAtTime(1200, context.currentTime);
+      rimOsc.frequency.exponentialRampToValueAtTime(800, context.currentTime + 0.008);
+      rimOsc.frequency.exponentialRampToValueAtTime(600, context.currentTime + 0.02);
       rimOsc.type = 'square';
       
       rimOsc.connect(rimGain);
       
-      // Body resonance filtering
+      // 5. Enhanced filtering chain
       const bodyFilter = context.createBiquadFilter();
       bodyFilter.type = 'peaking';
-      bodyFilter.frequency.setValueAtTime(200, context.currentTime);
-      bodyFilter.Q.setValueAtTime(2, context.currentTime);
-      bodyFilter.gain.setValueAtTime(4, context.currentTime);
+      bodyFilter.frequency.setValueAtTime(180, context.currentTime);
+      bodyFilter.Q.setValueAtTime(1.8, context.currentTime);
+      bodyFilter.gain.setValueAtTime(6, context.currentTime);
       
-      // Presence boost for realism
+      const crackFilter = context.createBiquadFilter();
+      crackFilter.type = 'peaking';
+      crackFilter.frequency.setValueAtTime(3200, context.currentTime);
+      crackFilter.Q.setValueAtTime(2.2, context.currentTime);
+      crackFilter.gain.setValueAtTime(4, context.currentTime);
+      
       const presenceFilter = context.createBiquadFilter();
       presenceFilter.type = 'peaking';
-      presenceFilter.frequency.setValueAtTime(2500, context.currentTime);
-      presenceFilter.Q.setValueAtTime(1.5, context.currentTime);
+      presenceFilter.frequency.setValueAtTime(6800, context.currentTime);
+      presenceFilter.Q.setValueAtTime(1.2, context.currentTime);
       presenceFilter.gain.setValueAtTime(3, context.currentTime);
       
-      // Compression for punch
+      // 6. Improved compression for more punch
       const compressor = context.createDynamicsCompressor();
-      compressor.threshold.setValueAtTime(-20, context.currentTime);
-      compressor.knee.setValueAtTime(15, context.currentTime);
-      compressor.ratio.setValueAtTime(8, context.currentTime);
-      compressor.attack.setValueAtTime(0.001, context.currentTime);
-      compressor.release.setValueAtTime(0.1, context.currentTime);
+      compressor.threshold.setValueAtTime(-16, context.currentTime);
+      compressor.knee.setValueAtTime(8, context.currentTime);
+      compressor.ratio.setValueAtTime(12, context.currentTime);
+      compressor.attack.setValueAtTime(0.0005, context.currentTime);
+      compressor.release.setValueAtTime(0.08, context.currentTime);
       
-      // Mix all components
+      // 7. Signal routing with better balance
       const snarePreMix = context.createGain();
       shellGain.connect(bodyFilter);
       bodyFilter.connect(snarePreMix);
       buzzGain.connect(snarePreMix);
-      attackGain.connect(snarePreMix);
+      attackGain.connect(crackFilter);
+      crackFilter.connect(snarePreMix);
       rimGain.connect(snarePreMix);
       
-      // Process through presence and compression
+      // Processing chain
       snarePreMix.connect(presenceFilter);
       presenceFilter.connect(compressor);
       
@@ -399,169 +427,201 @@ export const DrumMachine = () => {
       compressor.connect(snareMix);
       snareMix.connect(context.destination);
       
-      // Realistic envelopes
-      const duration = 0.18;
+      // 8. Improved envelopes for more realistic decay
+      const duration = 0.16;
       
-      // Shell body envelope - natural drum decay
-      shellGain.gain.setValueAtTime(0.7, context.currentTime);
-      shellGain.gain.exponentialRampToValueAtTime(0.2, context.currentTime + 0.02);
-      shellGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.08);
+      // Shell body envelope with more natural curve
+      shellGain.gain.setValueAtTime(0, context.currentTime);
+      shellGain.gain.linearRampToValueAtTime(0.6, context.currentTime + 0.002);
+      shellGain.gain.exponentialRampToValueAtTime(0.35, context.currentTime + 0.015);
+      shellGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.1);
       
-      // Snare buzz envelope - characteristic buzz decay
-      buzzGain.gain.setValueAtTime(0.5, context.currentTime);
-      buzzGain.gain.linearRampToValueAtTime(0.4, context.currentTime + 0.005);
+      // Snare buzz envelope with authentic rattle decay
+      buzzGain.gain.setValueAtTime(0, context.currentTime);
+      buzzGain.gain.linearRampToValueAtTime(0.7, context.currentTime + 0.001);
+      buzzGain.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.003);
       buzzGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
-      // Attack transient envelope - very short and punchy
-      attackGain.gain.setValueAtTime(0.6, context.currentTime);
-      attackGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.01);
+      // Attack transient envelope - sharper and more punchy
+      attackGain.gain.setValueAtTime(0, context.currentTime);
+      attackGain.gain.linearRampToValueAtTime(0.8, context.currentTime + 0.0005);
+      attackGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.008);
       
       // Rim component envelope
-      rimGain.gain.setValueAtTime(0.25, context.currentTime);
-      rimGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.02);
+      rimGain.gain.setValueAtTime(0, context.currentTime);
+      rimGain.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.001);
+      rimGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.025);
       
       // Overall mix envelope
-      snareMix.gain.setValueAtTime(0.5, context.currentTime);
+      snareMix.gain.setValueAtTime(0.6, context.currentTime);
       snareMix.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
       // Start all sound sources
       shellOsc1.start(context.currentTime);
-      shellOsc1.stop(context.currentTime + 0.1);
+      shellOsc1.stop(context.currentTime + 0.12);
       shellOsc2.start(context.currentTime);
-      shellOsc2.stop(context.currentTime + 0.1);
+      shellOsc2.stop(context.currentTime + 0.08);
       shellOsc3.start(context.currentTime);
-      shellOsc3.stop(context.currentTime + 0.05);
+      shellOsc3.stop(context.currentTime + 0.06);
       
       buzz.start(context.currentTime);
       buzz.stop(context.currentTime + duration);
       
       attack.start(context.currentTime);
-      attack.stop(context.currentTime + 0.02);
+      attack.stop(context.currentTime + 0.01);
       
       rimOsc.start(context.currentTime);
-      rimOsc.stop(context.currentTime + 0.025);
+      rimOsc.stop(context.currentTime + 0.03);
       
     } else {
-      // Enhanced professional kick drum with realistic acoustic modeling
+      // Enhanced professional kick drum with ultra-realistic acoustic modeling
       
-      // 1. Beater attack transient (the click when beater hits drum)
-      const beaterNoise = context.createBuffer(1, context.sampleRate * 0.01, context.sampleRate);
+      // 1. Improved beater attack transient with sharper impact
+      const beaterNoise = context.createBuffer(1, context.sampleRate * 0.006, context.sampleRate);
       const beaterData = beaterNoise.getChannelData(0);
       
-      // Generate realistic beater impact noise
+      // Generate more realistic beater impact with click character
       for (let i = 0; i < beaterData.length; i++) {
-        const envelope = Math.exp(-i / beaterData.length * 25);
-        beaterData[i] = (Math.random() * 2 - 1) * envelope;
+        const phase = i / beaterData.length;
+        const envelope = Math.exp(-phase * 40); // Sharper attack
+        const click = Math.sin(phase * 120) * 0.3; // Beater click resonance
+        beaterData[i] = ((Math.random() * 2 - 1) * 0.8 + click) * envelope;
       }
       
       const beater = context.createBufferSource();
       beater.buffer = beaterNoise;
       
-      const beaterFilter = context.createBiquadFilter();
-      beaterFilter.type = 'bandpass';
-      beaterFilter.frequency.setValueAtTime(4000, context.currentTime);
-      beaterFilter.Q.setValueAtTime(2, context.currentTime);
+      const beaterFilter1 = context.createBiquadFilter();
+      beaterFilter1.type = 'bandpass';
+      beaterFilter1.frequency.setValueAtTime(5500, context.currentTime);
+      beaterFilter1.Q.setValueAtTime(3, context.currentTime);
+      
+      const beaterFilter2 = context.createBiquadFilter();
+      beaterFilter2.type = 'peaking';
+      beaterFilter2.frequency.setValueAtTime(3200, context.currentTime);
+      beaterFilter2.Q.setValueAtTime(2, context.currentTime);
+      beaterFilter2.gain.setValueAtTime(4, context.currentTime);
       
       const beaterGain = context.createGain();
-      beater.connect(beaterFilter);
-      beaterFilter.connect(beaterGain);
+      beater.connect(beaterFilter1);
+      beaterFilter1.connect(beaterFilter2);
+      beaterFilter2.connect(beaterGain);
       
-      // 2. Primary kick fundamental with realistic frequency sweep
+      // 2. Enhanced kick fundamental with more aggressive frequency sweep
       const kickOsc = context.createOscillator();
       const kickGain = context.createGain();
       
-      kickOsc.frequency.setValueAtTime(60, context.currentTime);
-      kickOsc.frequency.exponentialRampToValueAtTime(45, context.currentTime + 0.02);
-      kickOsc.frequency.exponentialRampToValueAtTime(32, context.currentTime + 0.08);
-      kickOsc.frequency.exponentialRampToValueAtTime(28, context.currentTime + 0.2);
+      kickOsc.frequency.setValueAtTime(72, context.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(48, context.currentTime + 0.008);
+      kickOsc.frequency.exponentialRampToValueAtTime(35, context.currentTime + 0.025);
+      kickOsc.frequency.exponentialRampToValueAtTime(28, context.currentTime + 0.08);
+      kickOsc.frequency.exponentialRampToValueAtTime(24, context.currentTime + 0.18);
       kickOsc.type = 'sine';
       
-      // 3. Sub-bass layer for deep punch
+      // 3. Deeper sub-bass layer with enhanced low-end
       const subOsc = context.createOscillator();
       const subGain = context.createGain();
       
-      subOsc.frequency.setValueAtTime(30, context.currentTime);
-      subOsc.frequency.exponentialRampToValueAtTime(22, context.currentTime + 0.04);
-      subOsc.frequency.exponentialRampToValueAtTime(16, context.currentTime + 0.12);
-      subOsc.frequency.exponentialRampToValueAtTime(14, context.currentTime + 0.25);
+      subOsc.frequency.setValueAtTime(36, context.currentTime);
+      subOsc.frequency.exponentialRampToValueAtTime(26, context.currentTime + 0.015);
+      subOsc.frequency.exponentialRampToValueAtTime(18, context.currentTime + 0.06);
+      subOsc.frequency.exponentialRampToValueAtTime(15, context.currentTime + 0.15);
+      subOsc.frequency.exponentialRampToValueAtTime(12, context.currentTime + 0.28);
       subOsc.type = 'sine';
       
-      // 4. Body resonance (drum shell harmonics)
+      // 4. Enhanced body resonance with more harmonic content
       const bodyOsc1 = context.createOscillator();
       const bodyOsc2 = context.createOscillator();
+      const bodyOsc3 = context.createOscillator();
       const bodyGain = context.createGain();
       
-      bodyOsc1.frequency.setValueAtTime(120, context.currentTime);
-      bodyOsc1.frequency.exponentialRampToValueAtTime(90, context.currentTime + 0.03);
-      bodyOsc1.frequency.exponentialRampToValueAtTime(65, context.currentTime + 0.1);
+      bodyOsc1.frequency.setValueAtTime(144, context.currentTime);
+      bodyOsc1.frequency.exponentialRampToValueAtTime(108, context.currentTime + 0.02);
+      bodyOsc1.frequency.exponentialRampToValueAtTime(84, context.currentTime + 0.08);
       bodyOsc1.type = 'triangle';
       
-      bodyOsc2.frequency.setValueAtTime(80, context.currentTime);
-      bodyOsc2.frequency.exponentialRampToValueAtTime(60, context.currentTime + 0.04);
+      bodyOsc2.frequency.setValueAtTime(96, context.currentTime);
+      bodyOsc2.frequency.exponentialRampToValueAtTime(72, context.currentTime + 0.03);
+      bodyOsc2.frequency.exponentialRampToValueAtTime(56, context.currentTime + 0.1);
       bodyOsc2.type = 'sawtooth';
+      
+      bodyOsc3.frequency.setValueAtTime(192, context.currentTime); // Higher harmonic
+      bodyOsc3.frequency.exponentialRampToValueAtTime(144, context.currentTime + 0.015);
+      bodyOsc3.frequency.exponentialRampToValueAtTime(112, context.currentTime + 0.05);
+      bodyOsc3.type = 'triangle';
       
       bodyOsc1.connect(bodyGain);
       bodyOsc2.connect(bodyGain);
+      bodyOsc3.connect(bodyGain);
       
-      // 5. Punch oscillator for attack
+      // 5. Enhanced punch oscillator with better attack character
       const punchOsc = context.createOscillator();
       const punchGain = context.createGain();
       
-      punchOsc.frequency.setValueAtTime(150, context.currentTime);
-      punchOsc.frequency.exponentialRampToValueAtTime(50, context.currentTime + 0.015);
+      punchOsc.frequency.setValueAtTime(180, context.currentTime);
+      punchOsc.frequency.exponentialRampToValueAtTime(120, context.currentTime + 0.005);
+      punchOsc.frequency.exponentialRampToValueAtTime(80, context.currentTime + 0.012);
+      punchOsc.frequency.exponentialRampToValueAtTime(45, context.currentTime + 0.025);
       punchOsc.type = 'square';
       
       punchOsc.connect(punchGain);
       
-      // 6. Professional filtering chain
+      // 6. Enhanced filtering chain for better tone shaping
       
-      // Kick drum body EQ
+      // Kick fundamental boost
       const kickEQ = context.createBiquadFilter();
       kickEQ.type = 'peaking';
-      kickEQ.frequency.setValueAtTime(60, context.currentTime);
-      kickEQ.Q.setValueAtTime(1.2, context.currentTime);
-      kickEQ.gain.setValueAtTime(4, context.currentTime);
+      kickEQ.frequency.setValueAtTime(65, context.currentTime);
+      kickEQ.Q.setValueAtTime(1.8, context.currentTime);
+      kickEQ.gain.setValueAtTime(6, context.currentTime);
       
-      // Sub-bass boost
+      // Sub-bass enhancement
       const subBoost = context.createBiquadFilter();
       subBoost.type = 'lowshelf';
-      subBoost.frequency.setValueAtTime(80, context.currentTime);
-      subBoost.gain.setValueAtTime(6, context.currentTime);
+      subBoost.frequency.setValueAtTime(85, context.currentTime);
+      subBoost.gain.setValueAtTime(8, context.currentTime);
       
-      // Attack presence boost
+      // Attack presence with better definition
       const presenceBoost = context.createBiquadFilter();
       presenceBoost.type = 'peaking';
-      presenceBoost.frequency.setValueAtTime(2500, context.currentTime);
-      presenceBoost.Q.setValueAtTime(1.5, context.currentTime);
-      presenceBoost.gain.setValueAtTime(3, context.currentTime);
+      presenceBoost.frequency.setValueAtTime(3200, context.currentTime);
+      presenceBoost.Q.setValueAtTime(2.5, context.currentTime);
+      presenceBoost.gain.setValueAtTime(5, context.currentTime);
       
-      // Mud removal
+      // Improved mud removal
       const mudCut = context.createBiquadFilter();
       mudCut.type = 'peaking';
-      mudCut.frequency.setValueAtTime(400, context.currentTime);
-      mudCut.Q.setValueAtTime(2, context.currentTime);
-      mudCut.gain.setValueAtTime(-4, context.currentTime);
+      mudCut.frequency.setValueAtTime(380, context.currentTime);
+      mudCut.Q.setValueAtTime(1.8, context.currentTime);
+      mudCut.gain.setValueAtTime(-6, context.currentTime);
       
-      // Professional compression for punch
+      // High-mid clarity
+      const clarityFilter = context.createBiquadFilter();
+      clarityFilter.type = 'peaking';
+      clarityFilter.frequency.setValueAtTime(1800, context.currentTime);
+      clarityFilter.Q.setValueAtTime(1.5, context.currentTime);
+      clarityFilter.gain.setValueAtTime(2, context.currentTime);
+      
+      // Enhanced compression for maximum punch
       const compressor = context.createDynamicsCompressor();
-      compressor.threshold.setValueAtTime(-12, context.currentTime);
-      compressor.knee.setValueAtTime(10, context.currentTime);
-      compressor.ratio.setValueAtTime(6, context.currentTime);
-      compressor.attack.setValueAtTime(0.001, context.currentTime);
-      compressor.release.setValueAtTime(0.05, context.currentTime);
+      compressor.threshold.setValueAtTime(-10, context.currentTime);
+      compressor.knee.setValueAtTime(6, context.currentTime);
+      compressor.ratio.setValueAtTime(8, context.currentTime);
+      compressor.attack.setValueAtTime(0.0003, context.currentTime);
+      compressor.release.setValueAtTime(0.04, context.currentTime);
       
-      // Wave shaping for harmonic saturation
+      // Improved wave shaping for character
       const saturator = context.createWaveShaper();
-      const satCurve = new Float32Array(256);
-      for (let i = 0; i < 256; i++) {
-        const x = (i - 128) / 128;
-        // Warm tube-like saturation
-        satCurve[i] = Math.tanh(x * 1.5) * 0.9;
+      const satCurve = new Float32Array(512);
+      for (let i = 0; i < 512; i++) {
+        const x = (i - 256) / 256;
+        // Enhanced asymmetric saturation for warmth
+        satCurve[i] = Math.tanh(x * 2.2) * 0.85 + Math.sin(x * 3.14159) * 0.1;
       }
       saturator.curve = satCurve;
       saturator.oversample = '4x';
       
-      // 7. Signal routing
+      // 7. Enhanced signal routing
       kickOsc.connect(kickGain);
       subOsc.connect(subGain);
       
@@ -574,10 +634,11 @@ export const DrumMachine = () => {
       bodyGain.connect(kickMix);
       punchGain.connect(kickMix);
       
-      // Processing chain
+      // Enhanced processing chain
       kickMix.connect(saturator);
       saturator.connect(mudCut);
-      mudCut.connect(presenceBoost);
+      mudCut.connect(clarityFilter);
+      clarityFilter.connect(presenceBoost);
       presenceBoost.connect(compressor);
       
       // Final mix
@@ -586,54 +647,62 @@ export const DrumMachine = () => {
       beaterGain.connect(finalKick);
       finalKick.connect(context.destination);
       
-      // 8. Realistic envelopes
-      const duration = 0.4;
+      // 8. Enhanced realistic envelopes with better curves
+      const duration = 0.35;
       
-      // Beater attack envelope (very short and punchy)
-      beaterGain.gain.setValueAtTime(0.4, context.currentTime);
-      beaterGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.008);
+      // Beater attack envelope - ultra-punchy
+      beaterGain.gain.setValueAtTime(0, context.currentTime);
+      beaterGain.gain.linearRampToValueAtTime(0.6, context.currentTime + 0.0003);
+      beaterGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.006);
       
-      // Main kick envelope (natural drum decay)
-      kickGain.gain.setValueAtTime(0.8, context.currentTime);
-      kickGain.gain.linearRampToValueAtTime(0.6, context.currentTime + 0.01);
-      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2);
+      // Main kick envelope with more natural curve
+      kickGain.gain.setValueAtTime(0, context.currentTime);
+      kickGain.gain.linearRampToValueAtTime(0.9, context.currentTime + 0.003);
+      kickGain.gain.exponentialRampToValueAtTime(0.4, context.currentTime + 0.02);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.18);
       
-      // Sub-bass envelope (longer for weight)
-      subGain.gain.setValueAtTime(0.7, context.currentTime);
-      subGain.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.02);
-      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.3);
+      // Sub-bass envelope for maximum weight
+      subGain.gain.setValueAtTime(0, context.currentTime);
+      subGain.gain.linearRampToValueAtTime(0.8, context.currentTime + 0.008);
+      subGain.gain.exponentialRampToValueAtTime(0.5, context.currentTime + 0.03);
+      subGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.28);
       
       // Body resonance envelope
-      bodyGain.gain.setValueAtTime(0.3, context.currentTime);
-      bodyGain.gain.linearRampToValueAtTime(0.2, context.currentTime + 0.01);
-      bodyGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.15);
+      bodyGain.gain.setValueAtTime(0, context.currentTime);
+      bodyGain.gain.linearRampToValueAtTime(0.4, context.currentTime + 0.005);
+      bodyGain.gain.exponentialRampToValueAtTime(0.2, context.currentTime + 0.025);
+      bodyGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.12);
       
-      // Punch envelope (very quick attack component)
-      punchGain.gain.setValueAtTime(0.5, context.currentTime);
-      punchGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.02);
+      // Punch envelope for sharp attack
+      punchGain.gain.setValueAtTime(0, context.currentTime);
+      punchGain.gain.linearRampToValueAtTime(0.7, context.currentTime + 0.002);
+      punchGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.018);
       
       // Final mix envelope
-      finalKick.gain.setValueAtTime(0.7, context.currentTime);
+      finalKick.gain.setValueAtTime(0.8, context.currentTime);
       finalKick.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
-      // 9. Start all sound sources
+      // 9. Start all sound sources with precise timing
       beater.start(context.currentTime);
-      beater.stop(context.currentTime + 0.01);
+      beater.stop(context.currentTime + 0.008);
       
       kickOsc.start(context.currentTime);
-      kickOsc.stop(context.currentTime + 0.25);
+      kickOsc.stop(context.currentTime + 0.2);
       
       subOsc.start(context.currentTime);
-      subOsc.stop(context.currentTime + 0.35);
+      subOsc.stop(context.currentTime + 0.3);
       
       bodyOsc1.start(context.currentTime);
-      bodyOsc1.stop(context.currentTime + 0.18);
+      bodyOsc1.stop(context.currentTime + 0.15);
       
       bodyOsc2.start(context.currentTime);
-      bodyOsc2.stop(context.currentTime + 0.15);
+      bodyOsc2.stop(context.currentTime + 0.12);
+      
+      bodyOsc3.start(context.currentTime);
+      bodyOsc3.stop(context.currentTime + 0.08);
       
       punchOsc.start(context.currentTime);
-      punchOsc.stop(context.currentTime + 0.025);
+      punchOsc.stop(context.currentTime + 0.02);
     }
   };
 
