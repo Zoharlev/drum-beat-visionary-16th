@@ -118,23 +118,16 @@ export const DrumGrid = ({
             let displayText = "";
             let textStyle = "text-muted-foreground/60";
             
-            // Show "1 & 2 & 3 & 4 &" pattern
-            if (stepIndex % 4 === 0) {
+            // Show 8-step bar: 1 & 2 & 3 & 4 &
+            const posInBar = stepIndex % 8;
+            if (posInBar % 2 === 0) {
               // Main beats: 1, 2, 3, 4
-              displayText = String(Math.floor(stepIndex / 4) + 1);
+              displayText = String(Math.floor(posInBar / 2) + 1);
               textStyle = "text-primary font-bold";
-            } else if (stepIndex % 4 === 2) {
+            } else {
               // Off-beats: &
               displayText = "&";
               textStyle = "text-accent font-medium";
-            } else if (stepIndex % 4 === 1) {
-              // 16th note subdivision: e
-              displayText = "e";
-              textStyle = "text-muted-foreground/40 text-xs";
-            } else if (stepIndex % 4 === 3) {
-              // 16th note subdivision: a
-              displayText = "a";
-              textStyle = "text-muted-foreground/40 text-xs";
             }
             
             return (
@@ -179,7 +172,7 @@ export const DrumGrid = ({
                           "flex-1 h-12 border-r border-grid-line last:border-r-0 transition-all duration-200",
                           "flex items-center justify-center group-hover:bg-muted/20",
                           stepIndex === currentStep && "bg-playhead/10",
-                          stepIndex % 4 === 0 && "border-r-2 border-primary/30"
+                          stepIndex % 2 === 0 && "border-r-2 border-primary/30"
                         )}
                       >
                         {active && (
@@ -204,12 +197,12 @@ export const DrumGrid = ({
         {/* Grid Enhancement */}
         <div className="absolute inset-6 pointer-events-none">
           {/* Vertical beat lines */}
-          {Array.from({ length: Math.ceil(visibleSteps / 4) }, (_, i) => (
+          {Array.from({ length: Math.ceil(visibleSteps / 2) }, (_, i) => (
             <div 
               key={i} 
               className="absolute top-0 bottom-0 border-l border-primary/20" 
               style={{
-                left: `${88 + i * (100 - 88 / visibleSteps) / (visibleSteps / 4)}%`
+                left: `${88 + i * (100 - 88 / visibleSteps) / (visibleSteps / 2)}%`
               }} 
             />
           ))}

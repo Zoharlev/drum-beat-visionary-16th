@@ -175,7 +175,7 @@ export const DrumMachine = () => {
   }, []);
 
   // Step timing based on BPM
-  const stepDuration = (60 / bpm / 4) * 1000; // 16th notes
+  const stepDuration = (60 / bpm / 2) * 1000; // 8th notes to match 8 steps/bar
 
   // Convert detected beats to pattern grid positions when listening
   const detectedPattern = useMemo(() => {
@@ -263,8 +263,8 @@ export const DrumMachine = () => {
         }
       });
 
-      // Play metronome on beat 1
-      if (metronomeEnabled && currentStep % 4 === 0) {
+      // Play metronome each beat (every 2 steps with 8 steps/bar)
+      if (metronomeEnabled && currentStep % 2 === 0) {
         playMetronome();
       }
     }

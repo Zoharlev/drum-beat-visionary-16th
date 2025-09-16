@@ -33,7 +33,7 @@ export const usePracticeSession = ({ targetPattern, bpm, toleranceMs = 100 }: Us
   const [detectedBeats, setDetectedBeats] = useState<DrumDetection[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const stepDuration = (60 / bpm / 4) * 1000; // 16th notes in ms
+  const stepDuration = (60 / bpm / 2) * 1000; // 8th notes in ms to match 8 steps/bar
 
   const startSession = useCallback(() => {
     setSessionActive(true);
