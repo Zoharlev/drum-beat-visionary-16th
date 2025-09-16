@@ -37,8 +37,12 @@ const drumLabels: {
     name: "Hi-Hat",
     symbol: "○"
   },
+  closedhat: {
+    name: "Hi-Hat (Closed)",
+    symbol: "○"
+  },
   openhat: {
-    name: "Open Hat",
+    name: "Hi-Hat (Open)",
     symbol: "◎"
   }
 };
