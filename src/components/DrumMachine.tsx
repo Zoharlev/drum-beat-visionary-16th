@@ -938,8 +938,6 @@ export const DrumMachine = () => {
               onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
               onTogglePlay={togglePlay}
               isPlaying={isPlaying}
-              onLoadPattern={loadCSVPattern}
-              isLoadingPattern={isLoadingPattern}
             />
 
           {/* Bottom Toolbar */}
