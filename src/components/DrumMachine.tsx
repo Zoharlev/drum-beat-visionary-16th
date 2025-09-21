@@ -32,6 +32,7 @@ export const DrumMachine = () => {
     };
   });
   const [backingTrackEnabled, setBackingTrackEnabled] = useState(false);
+  const [drumSoundsMuted, setDrumSoundsMuted] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -301,6 +302,9 @@ export const DrumMachine = () => {
   }, [isPlaying, toast]);
 
   const playDrumSound = (drum: string) => {
+    // Don't play drum sounds if they're muted
+    if (drumSoundsMuted) return;
+    
     if (!audioContextRef.current) {
       console.error('Audio context not available');
       return;
@@ -952,12 +956,15 @@ export const DrumMachine = () => {
                   onClick={() => {
                     const newState = !backingTrackEnabled;
                     setBackingTrackEnabled(newState);
+                    setDrumSoundsMuted(newState);
                     
-                    // Immediately control the backing track audio
+                    // Control backing track audio based on new state
                     if (backingTrackRef.current) {
                       if (newState && isPlaying) {
+                        // When enabled: play backing track, mute drums
                         backingTrackRef.current.play().catch(console.error);
                       } else {
+                        // When disabled: stop backing track, unmute drums
                         backingTrackRef.current.pause();
                       }
                     }
