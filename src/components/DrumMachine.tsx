@@ -915,7 +915,7 @@ export const DrumMachine = () => {
               </div>
 
               {/* Drum Listener Toggle */}
-              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+              <div className="hidden flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
                 <button
                   onClick={handleListenerToggle}
                   disabled={!isModelLoaded}
