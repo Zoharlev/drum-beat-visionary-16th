@@ -275,14 +275,101 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  const loadPatternFromBarNotation = async (notationContent: string): Promise<DrumPattern> => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const lines = notationContent.split('\n').map(line => line.trim());
+      
+      if (lines.length === 0) {
+        throw new Error('Empty notation file');
+      }
+
+      const instrumentData: { [key: string]: boolean[] } = {
+        kick: new Array(128).fill(false), // Support up to 16 bars * 8 steps = 128 total steps
+        snare: new Array(128).fill(false),
+        hihat: new Array(128).fill(false),
+        openhat: new Array(128).fill(false)
+      };
+
+      let currentBar = 0;
+      let currentBarStartStep = 0;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Check for bar markers
+        if (line.startsWith('Bar ')) {
+          const barMatch = line.match(/Bar (\d+):/);
+          if (barMatch) {
+            currentBar = parseInt(barMatch[1]) - 1; // Convert to 0-based
+            currentBarStartStep = currentBar * 8; // 8 steps per bar
+          }
+          continue;
+        }
+
+        // Parse instrument lines
+        if (line.startsWith('Hi-Hat:') || line.startsWith('Snare:') || line.startsWith('Kick:')) {
+          const instrumentName = line.split(':')[0].toLowerCase().replace('-', '');
+          const hitPattern = line.substring(line.indexOf(':') + 1);
+          
+          // Map instrument names
+          let targetInstrument = '';
+          if (instrumentName === 'hihat') {
+            targetInstrument = 'hihat';
+          } else if (instrumentName === 'snare') {
+            targetInstrument = 'snare';
+          } else if (instrumentName === 'kick') {
+            targetInstrument = 'kick';
+          }
+
+          if (targetInstrument && currentBarStartStep < 128) {
+            // Parse hits in this bar (8 positions: 1, &, 2, &, 3, &, 4, &)
+            const positions = [7, 13, 19, 25, 31, 37, 43, 49]; // Character positions for each beat
+            
+            for (let stepInBar = 0; stepInBar < 8 && currentBarStartStep + stepInBar < 128; stepInBar++) {
+              const charPos = positions[stepInBar];
+              if (charPos < hitPattern.length) {
+                const char = hitPattern[charPos];
+                if (char === '●' || char === 'x') {
+                  instrumentData[targetInstrument][currentBarStartStep + stepInBar] = true;
+                } else if (char === 'o' && targetInstrument === 'hihat') {
+                  // Use openhat for 'o' symbols
+                  instrumentData['openhat'][currentBarStartStep + stepInBar] = true;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Return only the first 16 steps (2 bars) for the drum machine
+      const result: DrumPattern = {
+        length: 16
+      };
+      Object.keys(instrumentData).forEach(instrument => {
+        result[instrument] = instrumentData[instrument].slice(0, 16);
+      });
+
+      return result;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to parse notation';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     try {
-      const response = await fetch('/patterns/come_as_you_are_drum_notation_with_hihat-6.txt');
+      const response = await fetch('/patterns/come_as_you_are_drum_notation_by_beat-2.txt');
       if (!response.ok) {
         throw new Error('Failed to load pattern file');
       }
       const notationContent = await response.text();
-      return loadPatternFromNotation(notationContent);
+      return loadPatternFromBarNotation(notationContent);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load pattern file';
       setError(errorMessage);
@@ -293,6 +380,7 @@ export const useCSVPatternLoader = () => {
   return {
     loadPatternFromCSV,
     loadPatternFromNotation,
+    loadPatternFromBarNotation,
     loadPatternFromFile,
     isLoading,
     error
