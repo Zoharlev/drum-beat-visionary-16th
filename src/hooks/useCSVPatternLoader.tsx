@@ -370,8 +370,8 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      if (!headerLine.includes('Offset (Beat),Instrument,Duration')) {
-        throw new Error('Invalid CSV format. Expected Offset (Beat),Instrument,Duration header');
+      if (!headerLine.includes('Count,Offset (Beat),Instrument,Duration')) {
+        throw new Error('Invalid CSV format. Expected Count,Offset (Beat),Instrument,Duration header');
       }
 
       // Find the maximum offset to determine pattern length
@@ -403,7 +403,7 @@ export const useCSVPatternLoader = () => {
         const line = lines[i].trim();
         if (!line) continue;
 
-        const [offsetStr, instrument, durationStr] = line.split(',');
+        const [count, offsetStr, instrument, durationStr] = line.split(',');
         const offset = parseFloat(offsetStr);
         
         if (isNaN(offset)) continue;
