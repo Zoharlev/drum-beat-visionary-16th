@@ -949,7 +949,19 @@ export const DrumMachine = () => {
               {/* Backing Track Toggle */}
               <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
                 <button
-                  onClick={() => setBackingTrackEnabled(!backingTrackEnabled)}
+                  onClick={() => {
+                    const newState = !backingTrackEnabled;
+                    setBackingTrackEnabled(newState);
+                    
+                    // Immediately control the backing track audio
+                    if (backingTrackRef.current) {
+                      if (newState && isPlaying) {
+                        backingTrackRef.current.play().catch(console.error);
+                      } else {
+                        backingTrackRef.current.pause();
+                      }
+                    }
+                  }}
                   className={cn(
                     "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
                     backingTrackEnabled ? "bg-blue-600" : "bg-gray-300"
