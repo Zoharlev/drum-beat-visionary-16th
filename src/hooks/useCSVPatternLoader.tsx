@@ -370,15 +370,32 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      if (!headerLine.includes('Bar,Count,Instrument')) {
-        throw new Error('Invalid CSV format. Expected Bar,Count,Instrument header');
+      if (!headerLine.includes('Offset (Beat),Instrument,Duration')) {
+        throw new Error('Invalid CSV format. Expected Offset (Beat),Instrument,Duration header');
       }
 
+      // Find the maximum offset to determine pattern length
+      let maxOffset = 0;
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        const [offsetStr] = line.split(',');
+        const offset = parseFloat(offsetStr);
+        if (!isNaN(offset)) {
+          maxOffset = Math.max(maxOffset, offset);
+        }
+      }
+      
+      // Calculate pattern length - each beat has 2 steps (on-beat and off-beat)
+      // Add extra length to accommodate all bars
+      const patternLength = Math.max(32, Math.ceil((maxOffset + 4) / 2) * 2);
+
       const pattern: DrumPattern = {
-        kick: new Array(16).fill(false),
-        snare: new Array(16).fill(false),
-        hihat: new Array(16).fill(false),
-        length: 16
+        kick: new Array(patternLength).fill(false),
+        snare: new Array(patternLength).fill(false),
+        hihat: new Array(patternLength).fill(false),
+        openhat: new Array(patternLength).fill(false),
+        length: patternLength
       };
 
       // Parse each line
@@ -386,40 +403,24 @@ export const useCSVPatternLoader = () => {
         const line = lines[i].trim();
         if (!line) continue;
 
-        const [barStr, count, instrument] = line.split(',');
+        const [offsetStr, instrument, durationStr] = line.split(',');
+        const offset = parseFloat(offsetStr);
         
-        // Convert count to step position (0-15 for 16 steps)
-        let stepIndex = 0;
+        if (isNaN(offset)) continue;
         
-        if (count === '1') {
-          stepIndex = 0;
-        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '1') {
-          stepIndex = 1;
-        } else if (count === '2') {
-          stepIndex = 4;
-        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '2') {
-          stepIndex = 5;
-        } else if (count === '3') {
-          stepIndex = 8;
-        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '3') {
-          stepIndex = 9;
-        } else if (count === '4') {
-          stepIndex = 12;
-        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '4') {
-          stepIndex = 13;
-        }
-
-        // Ensure step index is within bounds
-        stepIndex = stepIndex % 16;
+        // Convert beat offset to step index (2 steps per beat)
+        const stepIndex = Math.floor(offset * 2) % patternLength;
 
         // Map instrument to pattern
-        const instrumentKey = instrument.toLowerCase();
-        if (instrumentKey === 'kick') {
+        const instrumentName = instrument.trim().toLowerCase();
+        if (instrumentName === 'kick') {
           pattern.kick[stepIndex] = true;
-        } else if (instrumentKey === 'snare') {
+        } else if (instrumentName === 'snare') {
           pattern.snare[stepIndex] = true;
-        } else if (instrumentKey === 'hi-hat') {
+        } else if (instrumentName === 'hi-hat (closed)') {
           pattern.hihat[stepIndex] = true;
+        } else if (instrumentName === 'hi-hat (open)') {
+          pattern.openhat[stepIndex] = true;
         }
       }
 
