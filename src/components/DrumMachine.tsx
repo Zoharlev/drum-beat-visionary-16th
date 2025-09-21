@@ -1010,6 +1010,15 @@ export const DrumMachine = () => {
 
               {/* Play Controls */}
               <Button
+                variant={isPlaying ? "default" : "secondary"}
+                size="icon"
+                onClick={togglePlay}
+                className="h-12 w-12"
+              >
+                {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+              </Button>
+
+              <Button
                 variant="ghost"
                 size="icon"
                 onClick={reset}

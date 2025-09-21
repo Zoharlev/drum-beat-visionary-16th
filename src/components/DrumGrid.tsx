@@ -64,11 +64,16 @@ export const DrumGrid = ({
       {/* Controls */}
       <div className="flex items-center justify-end gap-2">
         <Button
-          variant="ghost"
+          variant={isPlaying ? "default" : "ghost"}
           onClick={onTogglePlay}
-          className="h-12 px-6 bg-primary/10 hover:bg-primary/20 rounded-[20px] text-xs"
+          className={cn(
+            "h-12 px-6 rounded-[20px] text-xs",
+            isPlaying 
+              ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+              : "bg-primary/10 hover:bg-primary/20"
+          )}
         >
-          PREVIEW
+          {isPlaying ? "STOP" : "PREVIEW"}
         </Button>
         <Button variant="outline" onClick={onClearPattern} className="flex items-center gap-2">
           <Trash2 className="h-4 w-4" />
