@@ -362,14 +362,85 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  const loadPatternFromNewCSV = async (csvContent: string): Promise<DrumPattern> => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const lines = csvContent.trim().split('\n');
+      const headerLine = lines[0];
+      
+      if (!headerLine.includes('Bar,Count,Instrument')) {
+        throw new Error('Invalid CSV format. Expected Bar,Count,Instrument header');
+      }
+
+      const pattern: DrumPattern = {
+        kick: new Array(16).fill(false),
+        snare: new Array(16).fill(false),
+        hihat: new Array(16).fill(false),
+        length: 16
+      };
+
+      // Parse each line
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        const [barStr, count, instrument] = line.split(',');
+        
+        // Convert count to step position (0-15 for 16 steps)
+        let stepIndex = 0;
+        
+        if (count === '1') {
+          stepIndex = 0;
+        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '1') {
+          stepIndex = 1;
+        } else if (count === '2') {
+          stepIndex = 4;
+        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '2') {
+          stepIndex = 5;
+        } else if (count === '3') {
+          stepIndex = 8;
+        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '3') {
+          stepIndex = 9;
+        } else if (count === '4') {
+          stepIndex = 12;
+        } else if (count === '&' && lines[i-1] && lines[i-1].split(',')[1] === '4') {
+          stepIndex = 13;
+        }
+
+        // Ensure step index is within bounds
+        stepIndex = stepIndex % 16;
+
+        // Map instrument to pattern
+        const instrumentKey = instrument.toLowerCase();
+        if (instrumentKey === 'kick') {
+          pattern.kick[stepIndex] = true;
+        } else if (instrumentKey === 'snare') {
+          pattern.snare[stepIndex] = true;
+        } else if (instrumentKey === 'hi-hat') {
+          pattern.hihat[stepIndex] = true;
+        }
+      }
+
+      return pattern;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to parse CSV';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     try {
-      const response = await fetch('/patterns/come_as_you_are_drum_notation_by_beat-2.txt');
+      const response = await fetch('/patterns/come_as_you_are_converted_from_txt.csv');
       if (!response.ok) {
         throw new Error('Failed to load pattern file');
       }
-      const notationContent = await response.text();
-      return loadPatternFromBarNotation(notationContent);
+      const csvContent = await response.text();
+      return loadPatternFromNewCSV(csvContent);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load pattern file';
       setError(errorMessage);
@@ -381,6 +452,7 @@ export const useCSVPatternLoader = () => {
     loadPatternFromCSV,
     loadPatternFromNotation,
     loadPatternFromBarNotation,
+    loadPatternFromNewCSV,
     loadPatternFromFile,
     isLoading,
     error
