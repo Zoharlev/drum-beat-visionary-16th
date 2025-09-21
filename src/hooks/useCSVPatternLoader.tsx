@@ -401,64 +401,67 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      // Accept flexible header formats
-      if (!headerLine.includes('Count') || !headerLine.includes('Offset') || !headerLine.includes('Instrument')) {
-        throw new Error(`Invalid CSV format. Expected columns: Count, Offset (Beat), Instrument, Duration. Got: ${headerLine}`);
+      // Check if this is count-based format (Count,Instrument,Duration) or offset-based
+      const isCountBased = headerLine.includes('Count') && !headerLine.includes('Offset');
+      const isOffsetBased = headerLine.includes('Count') && headerLine.includes('Offset') && headerLine.includes('Instrument');
+      
+      if (!isCountBased && !isOffsetBased) {
+        throw new Error(`Invalid CSV format. Expected either "Count,Instrument,Duration" or "Count,Offset (Beat),Instrument,Duration". Got: ${headerLine}`);
       }
 
-      // Find the maximum offset to determine pattern length dynamically
-      let maxOffset = 0;
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-        const columns = line.split(',');
-        if (columns.length >= 2) {
-          const offset = parseFloat(columns[1]); // Use second column (Offset)
-          if (!isNaN(offset)) {
-            maxOffset = Math.max(maxOffset, offset);
+      if (isCountBased) {
+        return loadPatternFromCountCSV(csvContent);
+      } else {
+        // Original offset-based loading
+        let maxOffset = 0;
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          const columns = line.split(',');
+          if (columns.length >= 2) {
+            const offset = parseFloat(columns[1]); // Use second column (Offset)
+            if (!isNaN(offset)) {
+              maxOffset = Math.max(maxOffset, offset);
+            }
           }
         }
-      }
-      
-      // Dynamic pattern length calculation - no modulo, preserve full song structure
-      const stepsPerBeat = 4; // 16th note resolution
-      const patternLength = Math.max(16, Math.ceil((maxOffset + 1) * stepsPerBeat));
-      console.log(`CSV Pattern: maxOffset=${maxOffset}, patternLength=${patternLength}`);
-
-      const pattern: DrumPattern = {
-        kick: new Array(patternLength).fill(false),
-        snare: new Array(patternLength).fill(false),
-        hihat: new Array(patternLength).fill(false),
-        openhat: new Array(patternLength).fill(false),
-        length: patternLength
-      };
-
-      // Parse each line and map to full pattern
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-
-        const columns = line.split(',');
-        if (columns.length < 3) continue;
-
-        const offset = parseFloat(columns[1]); // Offset (Beat) column
-        const instrument = columns[2].trim(); // Instrument column
         
-        if (isNaN(offset)) continue;
-        
-        // Convert beat offset to step index - NO MODULO, preserve full song
-        const stepIndex = Math.floor(offset * stepsPerBeat);
-        
-        if (stepIndex >= patternLength) continue; // Skip if beyond calculated length
+        const stepsPerBeat = 4; // 16th note resolution
+        const patternLength = Math.max(16, Math.ceil((maxOffset + 1) * stepsPerBeat));
 
-        // Map instrument using normalized names
-        const instrumentKey = normalizeInstrument(instrument);
-        if (pattern[instrumentKey] !== undefined) {
-          (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+        const pattern: DrumPattern = {
+          kick: new Array(patternLength).fill(false),
+          snare: new Array(patternLength).fill(false),
+          hihat: new Array(patternLength).fill(false),
+          openhat: new Array(patternLength).fill(false),
+          length: patternLength
+        };
+
+        // Parse each line and map to full pattern
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+
+          const columns = line.split(',');
+          if (columns.length < 3) continue;
+
+          const offset = parseFloat(columns[1]); // Offset (Beat) column
+          const instrument = columns[2].trim(); // Instrument column
+          
+          if (isNaN(offset)) continue;
+          
+          const stepIndex = Math.floor(offset * stepsPerBeat);
+          
+          if (stepIndex >= patternLength) continue;
+
+          const instrumentKey = normalizeInstrument(instrument);
+          if (pattern[instrumentKey] !== undefined) {
+            (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+          }
         }
-      }
 
-      return pattern;
+        return pattern;
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to parse CSV';
       setError(errorMessage);
@@ -468,11 +471,59 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  const loadPatternFromCountCSV = async (csvContent: string): Promise<DrumPattern> => {
+    const lines = csvContent.trim().split('\n');
+    
+    // Count total beats to determine pattern length
+    const totalBeats = lines.length - 1; // Subtract header
+    const stepsPerBar = 8; // 8 positions per bar (1, &, 2, &, 3, &, 4, &)
+    const totalBars = Math.ceil(totalBeats / stepsPerBar);
+    const patternLength = totalBars * stepsPerBar;
+
+    console.log(`Count CSV Pattern: totalBeats=${totalBeats}, totalBars=${totalBars}, patternLength=${patternLength}`);
+
+    const pattern: DrumPattern = {
+      kick: new Array(patternLength).fill(false),
+      snare: new Array(patternLength).fill(false),
+      hihat: new Array(patternLength).fill(false),
+      openhat: new Array(patternLength).fill(false),
+      length: patternLength
+    };
+
+    // Parse each data line - each line represents a sequential 8th note position
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      const columns = line.split(',');
+      if (columns.length < 3) continue;
+
+      const count = columns[0].trim();
+      const instrument = columns[1].trim();
+      
+      // Skip if no instrument specified
+      if (!instrument) continue;
+
+      // Each line represents a sequential step (8th note)
+      const stepIndex = i - 1; // 0-based step index (excluding header)
+
+      if (stepIndex < patternLength) {
+        const instrumentKey = normalizeInstrument(instrument);
+        if (pattern[instrumentKey] !== undefined) {
+          (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+        }
+      }
+    }
+
+    return pattern;
+  };
+
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     const baseUrl = import.meta.env.BASE_URL || '';
     
-    // Try the new full structure file first, fallback to converted file
+    // Try the new count-based file first, then other formats
     const filesToTry = [
+      'come_as_you_are_all_beats_full_-no_offset.csv',
       'come_as_you_are_full_structure.csv',
       'come_as_you_are_converted_from_txt.csv'
     ];
