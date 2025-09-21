@@ -370,8 +370,9 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      if (!headerLine.includes('Count,Offset (Beat),Instrument,Duration')) {
-        throw new Error('Invalid CSV format. Expected Count,Offset (Beat),Instrument,Duration header');
+      // Accept both header formats
+      if (!headerLine.includes('Count') || !headerLine.includes('Offset') || !headerLine.includes('Instrument')) {
+        throw new Error('Invalid CSV format. Expected columns: Count, Offset (Beat), Instrument, Duration');
       }
 
       // Find the maximum offset to determine pattern length
@@ -379,16 +380,20 @@ export const useCSVPatternLoader = () => {
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
-        const [offsetStr] = line.split(',');
-        const offset = parseFloat(offsetStr);
-        if (!isNaN(offset)) {
-          maxOffset = Math.max(maxOffset, offset);
+        const columns = line.split(',');
+        if (columns.length >= 2) {
+          const offset = parseFloat(columns[1]); // Use second column (Offset)
+          if (!isNaN(offset)) {
+            maxOffset = Math.max(maxOffset, offset);
+          }
         }
       }
       
-      // Calculate pattern length - each beat has 2 steps (on-beat and off-beat)
-      // Add extra length to accommodate all bars
-      const patternLength = Math.max(32, Math.ceil((maxOffset + 4) / 2) * 2);
+      // Calculate pattern length - convert beats to 16th note steps (4 steps per beat)
+      // For long patterns, use a reasonable maximum or scale appropriately
+      const beatsPerPattern = 16; // Standard 4/4 bar = 16 beats, adjust as needed
+      const stepsPerBeat = 4; // 16th note resolution
+      const patternLength = beatsPerPattern * stepsPerBeat; // 64 steps for 16 beats
 
       const pattern: DrumPattern = {
         kick: new Array(patternLength).fill(false),
@@ -403,16 +408,20 @@ export const useCSVPatternLoader = () => {
         const line = lines[i].trim();
         if (!line) continue;
 
-        const [count, offsetStr, instrument, durationStr] = line.split(',');
-        const offset = parseFloat(offsetStr);
+        const columns = line.split(',');
+        if (columns.length < 3) continue;
+
+        const offset = parseFloat(columns[1]); // Offset (Beat) column
+        const instrument = columns[2].trim(); // Instrument column
         
         if (isNaN(offset)) continue;
         
-        // Convert beat offset to step index (2 steps per beat)
-        const stepIndex = Math.floor(offset * 2) % patternLength;
+        // Convert beat offset to step index (4 steps per beat for 16th note resolution)
+        // Map the long pattern to our shorter loop by using modulo
+        const stepIndex = Math.floor((offset * stepsPerBeat)) % patternLength;
 
         // Map instrument to pattern
-        const instrumentName = instrument.trim().toLowerCase();
+        const instrumentName = instrument.toLowerCase();
         if (instrumentName === 'kick') {
           pattern.kick[stepIndex] = true;
         } else if (instrumentName === 'snare') {
