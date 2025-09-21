@@ -362,6 +362,37 @@ export const useCSVPatternLoader = () => {
     }
   };
 
+  // Helper function to normalize instrument names
+  const normalizeInstrument = (instrument: string): string => {
+    const normalized = instrument.toLowerCase().trim();
+    
+    // Kick drum mappings
+    if (normalized === 'kick' || normalized === 'kick drum' || normalized === 'bass drum') {
+      return 'kick';
+    }
+    
+    // Snare drum mappings  
+    if (normalized === 'snare' || normalized === 'snare drum') {
+      return 'snare';
+    }
+    
+    // Closed hi-hat mappings
+    if (normalized === 'hi-hat (closed)' || normalized === 'hi hat (closed)' || 
+        normalized === 'hh closed' || normalized === 'hihat' || 
+        normalized === 'closed hat' || normalized === 'hi-hat') {
+      return 'hihat';
+    }
+    
+    // Open hi-hat mappings
+    if (normalized === 'hi-hat (open)' || normalized === 'hi hat (open)' || 
+        normalized === 'hh open' || normalized === 'open hat' || 
+        normalized === 'open hihat') {
+      return 'openhat';
+    }
+    
+    return normalized;
+  };
+
   const loadPatternFromNewCSV = async (csvContent: string): Promise<DrumPattern> => {
     setIsLoading(true);
     setError(null);
@@ -370,12 +401,12 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      // Accept both header formats
+      // Accept flexible header formats
       if (!headerLine.includes('Count') || !headerLine.includes('Offset') || !headerLine.includes('Instrument')) {
-        throw new Error('Invalid CSV format. Expected columns: Count, Offset (Beat), Instrument, Duration');
+        throw new Error(`Invalid CSV format. Expected columns: Count, Offset (Beat), Instrument, Duration. Got: ${headerLine}`);
       }
 
-      // Find the maximum offset to determine pattern length
+      // Find the maximum offset to determine pattern length dynamically
       let maxOffset = 0;
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
@@ -389,11 +420,10 @@ export const useCSVPatternLoader = () => {
         }
       }
       
-      // Calculate pattern length - convert beats to 16th note steps (4 steps per beat)
-      // For long patterns, use a reasonable maximum or scale appropriately
-      const beatsPerPattern = 16; // Standard 4/4 bar = 16 beats, adjust as needed
+      // Dynamic pattern length calculation - no modulo, preserve full song structure
       const stepsPerBeat = 4; // 16th note resolution
-      const patternLength = beatsPerPattern * stepsPerBeat; // 64 steps for 16 beats
+      const patternLength = Math.max(16, Math.ceil((maxOffset + 1) * stepsPerBeat));
+      console.log(`CSV Pattern: maxOffset=${maxOffset}, patternLength=${patternLength}`);
 
       const pattern: DrumPattern = {
         kick: new Array(patternLength).fill(false),
@@ -403,7 +433,7 @@ export const useCSVPatternLoader = () => {
         length: patternLength
       };
 
-      // Parse each line
+      // Parse each line and map to full pattern
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
@@ -416,20 +446,15 @@ export const useCSVPatternLoader = () => {
         
         if (isNaN(offset)) continue;
         
-        // Convert beat offset to step index (4 steps per beat for 16th note resolution)
-        // Map the long pattern to our shorter loop by using modulo
-        const stepIndex = Math.floor((offset * stepsPerBeat)) % patternLength;
+        // Convert beat offset to step index - NO MODULO, preserve full song
+        const stepIndex = Math.floor(offset * stepsPerBeat);
+        
+        if (stepIndex >= patternLength) continue; // Skip if beyond calculated length
 
-        // Map instrument to pattern
-        const instrumentName = instrument.toLowerCase();
-        if (instrumentName === 'kick') {
-          pattern.kick[stepIndex] = true;
-        } else if (instrumentName === 'snare') {
-          pattern.snare[stepIndex] = true;
-        } else if (instrumentName === 'hi-hat (closed)') {
-          pattern.hihat[stepIndex] = true;
-        } else if (instrumentName === 'hi-hat (open)') {
-          pattern.openhat[stepIndex] = true;
+        // Map instrument using normalized names
+        const instrumentKey = normalizeInstrument(instrument);
+        if (pattern[instrumentKey] !== undefined) {
+          (pattern[instrumentKey] as boolean[])[stepIndex] = true;
         }
       }
 
@@ -444,18 +469,30 @@ export const useCSVPatternLoader = () => {
   };
 
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
-    try {
-      const response = await fetch('/patterns/come_as_you_are_converted_from_txt.csv');
-      if (!response.ok) {
-        throw new Error('Failed to load pattern file');
+    const baseUrl = import.meta.env.BASE_URL || '';
+    
+    // Try the new full structure file first, fallback to converted file
+    const filesToTry = [
+      'come_as_you_are_full_structure.csv',
+      'come_as_you_are_converted_from_txt.csv'
+    ];
+    
+    for (const fileName of filesToTry) {
+      try {
+        const response = await fetch(`${baseUrl}patterns/${fileName}`);
+        if (response.ok) {
+          const csvContent = await response.text();
+          console.log(`Loaded pattern from: ${fileName}`);
+          return loadPatternFromNewCSV(csvContent);
+        }
+      } catch (err) {
+        console.log(`Failed to load ${fileName}, trying next...`);
       }
-      const csvContent = await response.text();
-      return loadPatternFromNewCSV(csvContent);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load pattern file';
-      setError(errorMessage);
-      throw new Error(errorMessage);
     }
+    
+    const errorMessage = 'Failed to load any pattern files';
+    setError(errorMessage);
+    throw new Error(errorMessage);
   };
 
   return {

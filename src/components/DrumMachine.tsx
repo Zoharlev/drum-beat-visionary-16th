@@ -20,7 +20,7 @@ export const DrumMachine = () => {
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
-  const [patternLength, setPatternLength] = useState<8 | 16>(16);
+  const [patternLength, setPatternLength] = useState<number>(16);
   const [pattern, setPattern] = useState<DrumPattern>(() => {
     const initialLength = 16;
     return {
@@ -654,6 +654,10 @@ export const DrumMachine = () => {
       const newPattern = await loadPatternFromFile();
       setPattern(newPattern);
       
+      // Reset playback state for the new pattern
+      setCurrentStep(0);
+      setCurrentView(0); // Reset to first view
+      
       // Analyze loaded pattern to show component info
       const activeComponents: string[] = [];
       let totalBeats = 0;
@@ -674,15 +678,18 @@ export const DrumMachine = () => {
       });
       
       toast({
-        title: "Pattern Loaded",
-        description: `Found ${activeComponents.length} drum components with ${totalBeats} beats`,
+        title: "Pattern Loaded Successfully",
+        description: `${newPattern.length} steps, ${activeComponents.length} instruments, ${totalBeats} hits total`,
       });
     } catch (error) {
+      // Show the actual error message from the hook
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load drum pattern';
       toast({
-        title: "Error",
-        description: "Failed to load drum pattern",
+        title: "Failed to Load Pattern",
+        description: errorMessage,
         variant: "destructive",
       });
+      console.error('CSV loading error:', error);
     }
   };
 
