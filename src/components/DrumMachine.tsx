@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music, Volume2, VolumeX } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
 import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
@@ -32,6 +32,7 @@ export const DrumMachine = () => {
     };
   });
   const [backingTrackEnabled, setBackingTrackEnabled] = useState(false);
+  const [drumSoundsMuted, setDrumSoundsMuted] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -301,6 +302,11 @@ export const DrumMachine = () => {
   }, [isPlaying, toast]);
 
   const playDrumSound = (drum: string) => {
+    // Return early if drum sounds are muted
+    if (drumSoundsMuted) {
+      return;
+    }
+
     if (!audioContextRef.current) {
       console.error('Audio context not available');
       return;
@@ -944,6 +950,33 @@ export const DrumMachine = () => {
                     />
                   </div>
                 )}
+              </div>
+
+              {/* Drum Mute Toggle */}
+              <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
+                <button
+                  onClick={() => setDrumSoundsMuted(!drumSoundsMuted)}
+                  className={cn(
+                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2",
+                    drumSoundsMuted ? "bg-red-600" : "bg-gray-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
+                      drumSoundsMuted ? "translate-x-5" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                
+                {/* Volume Icon */}
+                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: drumSoundsMuted ? '#ff6b6b' : '#786C7D' }}>
+                  {drumSoundsMuted ? (
+                    <VolumeX className="h-4 w-4 text-white" />
+                  ) : (
+                    <Volume2 className="h-4 w-4 text-white" />
+                  )}
+                </div>
               </div>
 
               {/* Backing Track Toggle */}
