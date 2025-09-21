@@ -523,6 +523,7 @@ export const useCSVPatternLoader = () => {
     
     // Try the new count-based file first, then other formats
     const filesToTry = [
+      'come_as_you_are_corrected_mapping-2.csv',
       'come_as_you_are_corrected_mapping.csv',
       'come_as_you_are_all_beats_full_-no_offset.csv',
       'come_as_you_are_full_structure.csv',
