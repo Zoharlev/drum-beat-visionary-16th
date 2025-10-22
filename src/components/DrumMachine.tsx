@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music, Volume2, VolumeX, Grid3x3, Piano } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { DrumPianoRoll } from "./DrumPianoRoll";
 import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
 import { useDrumListener } from "@/hooks/useDrumListener";
@@ -17,6 +18,7 @@ export const DrumMachine = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentView, setCurrentView] = useState(0);
+  const [displayMode, setDisplayMode] = useState<'grid' | 'piano'>('grid');
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
@@ -867,7 +869,30 @@ export const DrumMachine = () => {
             onViewChange={setCurrentView}
           />
 
-          {/* Drum Grid */}
+          {/* Display Mode Toggle */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Button
+              variant={displayMode === 'grid' ? "default" : "outline"}
+              size="sm"
+              onClick={() => setDisplayMode('grid')}
+              className="gap-2"
+            >
+              <Grid3x3 className="h-4 w-4" />
+              Grid View
+            </Button>
+            <Button
+              variant={displayMode === 'piano' ? "default" : "outline"}
+              size="sm"
+              onClick={() => setDisplayMode('piano')}
+              className="gap-2"
+            >
+              <Piano className="h-4 w-4" />
+              Piano Roll
+            </Button>
+          </div>
+
+          {/* Drum Display - Grid or Piano Roll */}
+          {displayMode === 'grid' ? (
             <DrumGrid
               pattern={displayPattern}
               currentStep={currentStep}
@@ -882,6 +907,22 @@ export const DrumMachine = () => {
               onLoadPattern={loadCSVPattern}
               isLoadingPattern={isLoadingPattern}
             />
+          ) : (
+            <DrumPianoRoll
+              pattern={displayPattern}
+              currentStep={currentStep}
+              currentView={currentView}
+              stepsPerView={patternLength}
+              onStepToggle={toggleStep}
+              onClearPattern={clearPattern}
+              metronomeEnabled={metronomeEnabled}
+              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+              onTogglePlay={togglePlay}
+              isPlaying={isPlaying}
+              onLoadPattern={loadCSVPattern}
+              isLoadingPattern={isLoadingPattern}
+            />
+          )}
 
           {/* Bottom Toolbar */}
           <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
