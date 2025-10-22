@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, RotateCcw, Settings, Plus, Minus, Mic, MicOff, Music, Volume2, VolumeX, Grid3x3, Music2 } from "lucide-react";
 import { DrumGrid } from "./DrumGrid";
+import { DrumNotation } from "./DrumNotation";
 import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
 import { useDrumListener } from "@/hooks/useDrumListener";
@@ -21,6 +22,7 @@ export const DrumMachine = () => {
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
   const [patternLength, setPatternLength] = useState<number>(16);
+  const [displayMode, setDisplayMode] = useState<'grid' | 'notation'>('grid');
   const [pattern, setPattern] = useState<DrumPattern>(() => {
     const initialLength = 16;
     return {
@@ -867,7 +869,30 @@ export const DrumMachine = () => {
             onViewChange={setCurrentView}
           />
 
-          {/* Drum Grid */}
+          {/* Display Mode Toggle */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Button
+              variant={displayMode === 'grid' ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setDisplayMode('grid')}
+              className="flex items-center gap-2"
+            >
+              <Grid3x3 className="h-4 w-4" />
+              Grid View
+            </Button>
+            <Button
+              variant={displayMode === 'notation' ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setDisplayMode('notation')}
+              className="flex items-center gap-2"
+            >
+              <Music2 className="h-4 w-4" />
+              Notation View
+            </Button>
+          </div>
+
+          {/* Drum Display */}
+          {displayMode === 'grid' ? (
             <DrumGrid
               pattern={displayPattern}
               currentStep={currentStep}
@@ -882,6 +907,22 @@ export const DrumMachine = () => {
               onLoadPattern={loadCSVPattern}
               isLoadingPattern={isLoadingPattern}
             />
+          ) : (
+            <DrumNotation
+              pattern={displayPattern}
+              currentStep={currentStep}
+              currentView={currentView}
+              stepsPerView={patternLength}
+              onStepToggle={toggleStep}
+              onClearPattern={clearPattern}
+              metronomeEnabled={metronomeEnabled}
+              onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
+              onTogglePlay={togglePlay}
+              isPlaying={isPlaying}
+              onLoadPattern={loadCSVPattern}
+              isLoadingPattern={isLoadingPattern}
+            />
+          )}
 
           {/* Bottom Toolbar */}
           <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
