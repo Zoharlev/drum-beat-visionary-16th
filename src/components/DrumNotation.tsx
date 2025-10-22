@@ -20,12 +20,12 @@ interface DrumNotationProps {
   isLoadingPattern?: boolean;
 }
 
-// Drum positions on the staff (1 = bottom line, 9 = top line)
-const drumPositions: { [key: string]: { line: number; noteType: 'note' | 'x' | 'open' } } = {
-  'Kick': { line: 1, noteType: 'note' },
-  'Snare': { line: 5, noteType: 'x' },
-  'HH Closed': { line: 9, noteType: 'note' },
-  'HH Open': { line: 9, noteType: 'open' },
+// Drum positions on the staff (absolute Y coordinates aligned with staff lines)
+const drumPositions: { [key: string]: { y: number; noteType: 'note' | 'x' | 'open' } } = {
+  'Kick': { y: 120, noteType: 'note' },      // Bottom staff line
+  'Snare': { y: 80, noteType: 'x' },         // Middle staff line
+  'HH Closed': { y: 40, noteType: 'note' },  // Top staff line
+  'HH Open': { y: 40, noteType: 'open' },    // Top staff line
 };
 
 export const DrumNotation = ({
@@ -319,7 +319,7 @@ export const DrumNotation = ({
                 if (!active) return null;
                 
                 const x = 60 + (i * 920) / visibleSteps;
-                const y = 140 - (drumInfo.line - 1) * 10;
+                const y = drumInfo.y;
                 
                 return (
                   <g
@@ -349,7 +349,7 @@ export const DrumNotation = ({
               if (!steps || steps[stepIndex]) return null;
               
               const x = 60 + (i * 920) / visibleSteps;
-              const y = 140 - (drumInfo.line - 1) * 10;
+              const y = drumInfo.y;
               
               return (
                 <circle
@@ -367,10 +367,10 @@ export const DrumNotation = ({
         </svg>
 
         {/* Drum labels on the left */}
-        <div className="absolute left-2 top-28 space-y-3 text-xs text-muted-foreground">
-          <div style={{ marginTop: '90px' }}>HH</div>
-          <div style={{ marginTop: '18px' }}>Snare</div>
-          <div style={{ marginTop: '18px' }}>Kick</div>
+        <div className="absolute left-2 top-8 text-xs text-muted-foreground">
+          <div style={{ marginTop: '32px' }}>HH</div>
+          <div style={{ marginTop: '32px' }}>Snare</div>
+          <div style={{ marginTop: '32px' }}>Kick</div>
         </div>
       </div>
     </div>
