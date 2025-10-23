@@ -30,6 +30,7 @@ export const DrumMachine = () => {
       'Snare': new Array(initialLength).fill(false),
       'HH Closed': new Array(initialLength).fill(false),
       'HH Open': new Array(initialLength).fill(false),
+      'Tom': new Array(initialLength).fill(false),
       length: initialLength,
     };
   });
@@ -43,6 +44,7 @@ export const DrumMachine = () => {
   const kickBufferRef = useRef<AudioBuffer | null>(null);
   const hhOpenBufferRef = useRef<AudioBuffer | null>(null);
   const hhClosedBufferRef = useRef<AudioBuffer | null>(null);
+  const tomBufferRef = useRef<AudioBuffer | null>(null);
   const backingTrackRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
@@ -155,6 +157,21 @@ export const DrumMachine = () => {
     }
   };
 
+  // Load Tom sample
+  const loadTomBuffer = async () => {
+    if (audioContextRef.current && !tomBufferRef.current) {
+      try {
+        // Using snare sample for tom for now (can be replaced with actual tom sample)
+        const response = await fetch('/samples/snare-acoustic-raw-2.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        tomBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load Tom sample:', error);
+      }
+    }
+  };
+
   // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -162,6 +179,7 @@ export const DrumMachine = () => {
     loadKickBuffer();
     loadHHOpenBuffer();
     loadHHClosedBuffer();
+    loadTomBuffer();
     
     // Initialize backing track
     backingTrackRef.current = new Audio('/samples/come_as_you_are_backing_track.mp3');
@@ -189,6 +207,7 @@ export const DrumMachine = () => {
       'Snare': new Array(patternLength).fill(false),
       'HH Closed': new Array(patternLength).fill(false),
       'HH Open': new Array(patternLength).fill(false),
+      'Tom': new Array(patternLength).fill(false),
       length: patternLength,
     };
 
@@ -469,6 +488,42 @@ export const DrumMachine = () => {
         console.warn('Snare sample not loaded yet');
       }
       
+    } else if (normalizedDrum.includes('tom')) {
+      // Play loaded tom sample
+      if (tomBufferRef.current) {
+        const source = context.createBufferSource();
+        source.buffer = tomBufferRef.current;
+        
+        // Add some EQ to make it sound more tom-like
+        const gainNode = context.createGain();
+        const lowEQ = context.createBiquadFilter();
+        const midEQ = context.createBiquadFilter();
+        
+        // Lower pitch feel for tom
+        lowEQ.type = 'lowshelf';
+        lowEQ.frequency.setValueAtTime(200, context.currentTime);
+        lowEQ.gain.setValueAtTime(3, context.currentTime);
+        
+        // Mid scoop for tom character
+        midEQ.type = 'peaking';
+        midEQ.frequency.setValueAtTime(1500, context.currentTime);
+        midEQ.Q.setValueAtTime(2, context.currentTime);
+        midEQ.gain.setValueAtTime(-3, context.currentTime);
+        
+        // Signal chain
+        source.connect(lowEQ);
+        lowEQ.connect(midEQ);
+        midEQ.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Volume
+        gainNode.gain.setValueAtTime(0.65, context.currentTime);
+        
+        source.start(context.currentTime);
+      } else {
+        console.warn('Tom sample not loaded yet');
+      }
+      
     } else {
       // Play loaded kick sample
       if (kickBufferRef.current) {
@@ -589,10 +644,12 @@ export const DrumMachine = () => {
       'Kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
       'Snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
       'Hi-Hat': { name: 'Hi-Hat', symbol: '○', color: 'text-blue-500' },
+      'Tom': { name: 'Tom-tom', symbol: '●', color: 'text-purple-500' },
       'kick': { name: 'Kick Drum', symbol: '●', color: 'text-red-500' },
       'snare': { name: 'Snare Drum', symbol: '×', color: 'text-orange-500' },
       'hihat': { name: 'Hi-Hat (Closed)', symbol: '○', color: 'text-blue-500' },
-      'openhat': { name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' }
+      'openhat': { name: 'Hi-Hat (Open)', symbol: '◎', color: 'text-cyan-500' },
+      'tom': { name: 'Tom-tom', symbol: '●', color: 'text-purple-500' }
     };
     
     return drumMap[instrument] || { name: instrument, symbol: '●', color: 'text-gray-500' };

@@ -123,16 +123,26 @@ export const DrumGrid = ({
             let displayText = "";
             let textStyle = "text-muted-foreground/60";
             
-            // Show 8-step bar: 1 & 2 & 3 & 4 &
-            const posInBar = stepIndex % 8;
-            if (posInBar % 2 === 0) {
+            // Show 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
+            const posInBar = stepIndex % 16;
+            const beatPosition = posInBar % 4;
+            
+            if (beatPosition === 0) {
               // Main beats: 1, 2, 3, 4
-              displayText = String(Math.floor(posInBar / 2) + 1);
+              displayText = String(Math.floor(posInBar / 4) + 1);
               textStyle = "text-primary font-bold";
-            } else {
-              // Off-beats: &
+            } else if (beatPosition === 1) {
+              // 16th note "e"
+              displayText = "e";
+              textStyle = "text-muted-foreground/70 font-medium";
+            } else if (beatPosition === 2) {
+              // 8th note "&"
               displayText = "&";
               textStyle = "text-accent font-medium";
+            } else if (beatPosition === 3) {
+              // 16th note "a"
+              displayText = "a";
+              textStyle = "text-muted-foreground/70 font-medium";
             }
             
             return (
