@@ -21,11 +21,25 @@ interface DrumNotationProps {
 }
 
 // Drum positions on the staff (absolute Y coordinates aligned with staff lines)
+// Supports both title-case (manual) and lowercase (CSV) naming conventions
 const drumPositions: { [key: string]: { y: number; noteType: 'note' | 'x' | 'open' } } = {
-  'Kick': { y: 120, noteType: 'note' },      // Bottom staff line
-  'Snare': { y: 80, noteType: 'x' },         // Middle staff line
-  'HH Closed': { y: 40, noteType: 'note' },  // Top staff line
-  'HH Open': { y: 40, noteType: 'open' },    // Top staff line
+  // Kick drum (bottom staff line) - filled notehead
+  'Kick': { y: 120, noteType: 'note' },
+  'kick': { y: 120, noteType: 'note' },
+  
+  // Snare drum (middle staff line) - filled notehead
+  'Snare': { y: 80, noteType: 'note' },
+  'snare': { y: 80, noteType: 'note' },
+  
+  // Closed hi-hat (top staff line) - X notehead
+  'HH Closed': { y: 40, noteType: 'x' },
+  'Hi-Hat': { y: 40, noteType: 'x' },
+  'hihat': { y: 40, noteType: 'x' },
+  
+  // Open hi-hat (top staff line) - X notehead with circle above
+  'HH Open': { y: 40, noteType: 'open' },
+  'Hi-Hat (Open)': { y: 40, noteType: 'open' },
+  'openhat': { y: 40, noteType: 'open' },
 };
 
 export const DrumNotation = ({
@@ -54,7 +68,7 @@ export const DrumNotation = ({
     const isCurrentStep = stepIndex === currentStep;
     
     if (drumInfo.noteType === 'x') {
-      // X-shaped note for snare
+      // X-shaped notehead for closed hi-hat
       return (
         <g key={`${drum}-${stepIndex}`}>
           <line
@@ -96,14 +110,15 @@ export const DrumNotation = ({
         </g>
       );
     } else if (drumInfo.noteType === 'open') {
-      // Open circle for open hi-hat
+      // Open hi-hat: X notehead with small circle above (classic notation)
       return (
         <g key={`${drum}-${stepIndex}`}>
-          <circle
-            cx={x}
-            cy={y}
-            r="6"
-            fill="none"
+          {/* X notehead */}
+          <line
+            x1={x - 6}
+            y1={y - 6}
+            x2={x + 6}
+            y2={y + 6}
             stroke="currentColor"
             strokeWidth="2"
             className={cn(
@@ -112,12 +127,38 @@ export const DrumNotation = ({
             )}
           />
           <line
+            x1={x - 6}
+            y1={y + 6}
+            x2={x + 6}
+            y2={y - 6}
+            stroke="currentColor"
+            strokeWidth="2"
+            className={cn(
+              "transition-all",
+              isCurrentStep ? "text-playhead" : "text-note-active"
+            )}
+          />
+          {/* Stem */}
+          <line
             x1={x}
             y1={y + 6}
             x2={x}
             y2={y - 30}
             stroke="currentColor"
             strokeWidth="2"
+            className={cn(
+              "transition-all",
+              isCurrentStep ? "text-playhead" : "text-note-active"
+            )}
+          />
+          {/* Small circle above to indicate "open" */}
+          <circle
+            cx={x}
+            cy={y - 18}
+            r="4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
             className={cn(
               "transition-all",
               isCurrentStep ? "text-playhead" : "text-note-active"
@@ -209,18 +250,20 @@ export const DrumNotation = ({
             <svg width="20" height="20" viewBox="0 0 20 20">
               <ellipse cx="10" cy="10" rx="7" ry="5" fill="currentColor" className="text-note-active" />
             </svg>
-            <span>Kick / Closed HH</span>
+            <span>Kick / Snare</span>
           </div>
           <div className="flex items-center gap-2">
             <svg width="20" height="20" viewBox="0 0 20 20">
               <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" strokeWidth="2" className="text-note-active" />
               <line x1="4" y1="16" x2="16" y2="4" stroke="currentColor" strokeWidth="2" className="text-note-active" />
             </svg>
-            <span>Snare</span>
+            <span>Closed HH</span>
           </div>
           <div className="flex items-center gap-2">
             <svg width="20" height="20" viewBox="0 0 20 20">
-              <circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" strokeWidth="2" className="text-note-active" />
+              <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" strokeWidth="2" className="text-note-active" />
+              <line x1="4" y1="16" x2="16" y2="4" stroke="currentColor" strokeWidth="2" className="text-note-active" />
+              <circle cx="10" cy="6" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-note-active" />
             </svg>
             <span>Open HH</span>
           </div>
