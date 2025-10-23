@@ -390,11 +390,6 @@ export const useCSVPatternLoader = () => {
       return 'openhat';
     }
     
-    // Tom-tom mappings
-    if (normalized === 'tom-tom' || normalized === 'tom tom' || normalized === 'tom') {
-      return 'tom';
-    }
-    
     return normalized;
   };
 
@@ -406,20 +401,15 @@ export const useCSVPatternLoader = () => {
       const lines = csvContent.trim().split('\n');
       const headerLine = lines[0];
       
-      // Check if this is the advanced format with 16th notes and multiple instruments per beat
-      const isAdvancedFormat = headerLine.includes('Count') && headerLine.includes('Instrument 1') && headerLine.includes('Instrument 2');
-      
       // Check if this is count-based format (Count,Instrument,Duration) or offset-based
-      const isCountBased = headerLine.includes('Count') && !headerLine.includes('Offset') && !isAdvancedFormat;
+      const isCountBased = headerLine.includes('Count') && !headerLine.includes('Offset');
       const isOffsetBased = headerLine.includes('Count') && headerLine.includes('Offset') && headerLine.includes('Instrument');
       
-      if (!isCountBased && !isOffsetBased && !isAdvancedFormat) {
-        throw new Error(`Invalid CSV format. Expected either "Count,Instrument,Duration", "Count,Offset (Beat),Instrument,Duration", or "Count,Instrument 1, Instrument 2". Got: ${headerLine}`);
+      if (!isCountBased && !isOffsetBased) {
+        throw new Error(`Invalid CSV format. Expected either "Count,Instrument,Duration" or "Count,Offset (Beat),Instrument,Duration". Got: ${headerLine}`);
       }
 
-      if (isAdvancedFormat) {
-        return loadPatternFromAdvancedCountCSV(csvContent);
-      } else if (isCountBased) {
+      if (isCountBased) {
         return loadPatternFromCountCSV(csvContent);
       } else {
         // Original offset-based loading
@@ -528,78 +518,11 @@ export const useCSVPatternLoader = () => {
     return pattern;
   };
 
-  const loadPatternFromAdvancedCountCSV = async (csvContent: string): Promise<DrumPattern> => {
-    const lines = csvContent.trim().split('\n');
-    
-    // Count total 16th notes to determine pattern length (16 steps per bar)
-    const totalLines = lines.length - 1; // Subtract header
-    const stepsPerBar = 16; // 16 positions per bar (1 e & a 2 e & a 3 e & a 4 e & a)
-    const totalBars = Math.ceil(totalLines / stepsPerBar);
-    const patternLength = totalBars * stepsPerBar;
-
-    console.log(`Advanced Count CSV Pattern: totalLines=${totalLines}, totalBars=${totalBars}, patternLength=${patternLength}`);
-
-    const pattern: DrumPattern = {
-      kick: new Array(patternLength).fill(false),
-      snare: new Array(patternLength).fill(false),
-      hihat: new Array(patternLength).fill(false),
-      openhat: new Array(patternLength).fill(false),
-      tom: new Array(patternLength).fill(false),
-      length: patternLength
-    };
-
-    // Parse each data line - each line represents a sequential 16th note position
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      const columns = line.split(',');
-      if (columns.length < 3) continue;
-
-      const count = columns[0].trim();
-      const instrument1 = columns[1].trim();
-      const instrument2 = columns[2] ? columns[2].trim() : '';
-      
-      // Skip if no instruments specified
-      if (!instrument1 && !instrument2) continue;
-
-      // Each line represents a sequential step (16th note)
-      const stepIndex = i - 1; // 0-based step index (excluding header)
-
-      if (stepIndex < patternLength) {
-        // Process Instrument 1 column - may contain comma-separated instruments
-        if (instrument1) {
-          const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
-          instruments1.forEach(inst => {
-            const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined) {
-              (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-            }
-          });
-        }
-
-        // Process Instrument 2 column - may contain comma-separated instruments
-        if (instrument2) {
-          const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
-          instruments2.forEach(inst => {
-            const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined) {
-              (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-            }
-          });
-        }
-      }
-    }
-
-    return pattern;
-  };
-
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     const baseUrl = import.meta.env.BASE_URL || '';
     
-    // Try the advanced format first, then other formats
+    // Try the new count-based file first, then other formats
     const filesToTry = [
-      'come_as_you_are_drums_beat_count_advanced.csv',
       'come_as_you_are_corrected_mapping-2.csv',
       'come_as_you_are_corrected_mapping.csv',
       'come_as_you_are_all_beats_full_-no_offset.csv',
