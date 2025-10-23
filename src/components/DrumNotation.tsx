@@ -27,6 +27,11 @@ const drumPositions: { [key: string]: { y: number; noteType: 'note' | 'x' | 'ope
   'Kick': { y: 120, noteType: 'note' },
   'kick': { y: 120, noteType: 'note' },
   
+  // Tom-tom (between snare and kick) - filled notehead
+  'Tom': { y: 100, noteType: 'note' },
+  'tom': { y: 100, noteType: 'note' },
+  'tom-tom': { y: 100, noteType: 'note' },
+  
   // Snare drum (middle staff line) - filled notehead
   'Snare': { y: 80, noteType: 'note' },
   'snare': { y: 80, noteType: 'note' },
@@ -250,7 +255,7 @@ export const DrumNotation = ({
             <svg width="20" height="20" viewBox="0 0 20 20">
               <ellipse cx="10" cy="10" rx="7" ry="5" fill="currentColor" className="text-note-active" />
             </svg>
-            <span>Kick / Snare</span>
+            <span>Kick / Snare / Tom</span>
           </div>
           <div className="flex items-center gap-2">
             <svg width="20" height="20" viewBox="0 0 20 20">
@@ -413,7 +418,8 @@ export const DrumNotation = ({
         <div className="absolute left-2 top-8 text-xs text-muted-foreground">
           <div style={{ marginTop: '32px' }}>HH</div>
           <div style={{ marginTop: '32px' }}>Snare</div>
-          <div style={{ marginTop: '32px' }}>Kick</div>
+          <div style={{ marginTop: '12px' }}>Tom</div>
+          <div style={{ marginTop: '12px' }}>Kick</div>
         </div>
       </div>
     </div>

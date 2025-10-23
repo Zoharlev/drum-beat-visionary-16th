@@ -1,0 +1,1553 @@
+Count,Instrument 1, Instrument 2
+1,,
+e,,
+&,,
+a,,
+2,,
+e,,
+&,,
+a,,
+3,,
+e,,
+&,,
+a,,
+4,,
+e,,
+&,,
+a,,
+1,,
+e,,
+&,,
+a,,
+2,,
+e,,
+&,,
+a,,
+3,,
+e,,
+&,,
+a,,
+4,,
+e,,
+&,,
+a,,
+1,,
+e,,
+&,,
+a,,
+2,,
+e,,
+&,,
+a,,
+3,,
+e,,
+&,,
+a,,
+4,,
+e,,
+&,,
+a,,
+1,,
+e,,
+&,,
+a,,
+2,,
+e,,
+&,,
+a,,
+3,,
+e,,
+&,Hi-Hat (Closed),
+a,Hi-Hat (Closed),
+4,Snare Drum,
+e,Snare Drum,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Snare Drum, Bass Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Snare Drum, Bass Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Bass Drum
+a,Snare Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum,
+e,Bass Drum,
+&,Bass Drum,
+a,Bass Drum,
+3,Hi-Hat (Closed),
+e,Hi-Hat (Closed),
+&,Snare Drum,
+a,Hi-Hat (Open),
+4,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Hi-Hat (Open), Snare Drum
+a,Hi-Hat (Open), Snare Drum
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+3,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+1,Snare Drum, Hi-Hat (Open)
+e,Snare Drum, Hi-Hat (Open)
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+2,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+3,Snare Drum,
+e,Snare Drum,
+&,Snare Drum, Hi-Hat (Open)
+a,Snare Drum, Hi-Hat (Open)
+4,Snare Drum, Bass Drum
+e,Snare Drum, Bass Drum
+&,Bass Drum, Snare Drum
+a,Bass Drum, Snare Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+2,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+3,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+4,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+4,Bass Drum, Hi-Hat (Open)
+e,Hi-Hat (Open), Bass Drum
+&,Hi-Hat (Open), Bass Drum
+a,Hi-Hat (Open), Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+2,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+3,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+4,Bass Drum, Bass Drum
+e,Bass Drum,
+&,Hi-Hat (Open),
+a,Hi-Hat (Open),
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,,
+e,,
+&,Bass Drum,
+a,Bass Drum,
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+2,Bass Drum, Bass Drum
+e,Bass Drum, Bass Drum
+&,Bass Drum, Bass Drum
+a,Bass Drum, Bass Drum
+3,Bass Drum, Hi-Hat (Open)
+e,Bass Drum, Hi-Hat (Open)
+&,Bass Drum, Hi-Hat (Open)
+a,Bass Drum, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom,
+e,Tom-tom,
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+3,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+4,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+3,Tom-tom, Bass Drum
+e,Tom-tom, Bass Drum
+&,Tom-tom, Bass Drum
+a,Tom-tom, Bass Drum
+4,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+1,Tom-tom, Hi-Hat (Open)
+e,Tom-tom, Hi-Hat (Open)
+&,Tom-tom, Hi-Hat (Open)
+a,Tom-tom, Hi-Hat (Open)
+2,,
+e,,
+&,,
+a,,
+3,,
+e,,
+&,,
+a,,
+4,,
+e,,
+&,,
+a,,
