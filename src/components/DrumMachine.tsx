@@ -195,8 +195,9 @@ export const DrumMachine = () => {
     };
   }, []);
 
-  // Step timing based on BPM
-  const stepDuration = (60 / bpm / 2) * 1000; // 8th notes to match 8 steps/bar
+  // Step timing based on BPM - detect 16th vs 8th notes based on pattern length
+  const divisor = pattern.length % 16 === 0 && pattern.length >= 16 ? 4 : 2;
+  const stepDuration = (60 / bpm / divisor) * 1000;
 
   // Convert detected beats to pattern grid positions when listening
   const detectedPattern = useMemo(() => {
