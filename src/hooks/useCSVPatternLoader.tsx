@@ -554,11 +554,12 @@ export const useCSVPatternLoader = () => {
       if (!line) continue;
 
       const columns = line.split(',');
-      if (columns.length < 3) continue;
+      if (columns.length < 4) continue;
 
       const count = columns[0].trim();
-      const instrument1 = columns[1].trim();
-      const instrument2 = columns[2] ? columns[2].trim() : '';
+      // Column 1 is Offset, columns 2 and 3 are instruments
+      const instrument1 = columns[2].trim();
+      const instrument2 = columns[3] ? columns[3].trim() : '';
       
       // Skip if no instruments specified
       if (!instrument1 && !instrument2) continue;
