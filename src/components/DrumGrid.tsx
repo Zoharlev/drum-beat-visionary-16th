@@ -46,6 +46,26 @@ const drumLabels: {
   tom: {
     name: "Tom",
     symbol: "◆"
+  },
+  "HH Closed": {
+    name: "Hi-Hat",
+    symbol: "○"
+  },
+  "HH Open": {
+    name: "Open Hat",
+    symbol: "◎"
+  },
+  Kick: {
+    name: "Kick",
+    symbol: "●"
+  },
+  Snare: {
+    name: "Snare",
+    symbol: "×"
+  },
+  Tom: {
+    name: "Tom",
+    symbol: "◆"
   }
 };
 export const DrumGrid = ({

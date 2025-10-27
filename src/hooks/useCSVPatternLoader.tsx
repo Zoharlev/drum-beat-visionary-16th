@@ -689,10 +689,10 @@ export const useCSVPatternLoader = () => {
   const loadPatternFromFile = async (): Promise<DrumPattern> => {
     const baseUrl = import.meta.env.BASE_URL || '';
     
-    // Try the new quarter beats format first, then other formats
+    // Try the advanced beat count format first (supports multiple instruments per step)
     const filesToTry = [
-      'come_as_you_are_drums_quarter_beats_with_subdivision.csv',
       'come_as_you_are_drums_beat_count_advanced.csv',
+      'come_as_you_are_drums_quarter_beats_with_subdivision.csv',
       'come_as_you_are_corrected_mapping-2.csv',
       'come_as_you_are_corrected_mapping.csv',
       'come_as_you_are_all_beats_full_-no_offset.csv',
