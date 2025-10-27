@@ -140,58 +140,69 @@ export const DrumGrid = ({
         )}
 
         {/* Beat Numbers */}
-        <div className="flex mb-4">
-          <div className="w-20"></div>
-          {Array.from({
-            length: visibleSteps
-          }, (_, i) => {
-            const stepIndex = startStep + i;
-            let displayText = "";
-            let textStyle = "text-muted-foreground/60";
-            
-            // If we have subdivision data from the CSV, use it
-            if (pattern.subdivisions && pattern.subdivisions[stepIndex]) {
-              const count = pattern.subdivisions[stepIndex];
-              displayText = count;
+        <div className="flex mb-4 flex-col gap-1">
+          <div className="flex">
+            <div className="w-20 text-xs text-muted-foreground/50">Step#</div>
+            {Array.from({ length: visibleSteps }, (_, i) => {
+              const stepIndex = startStep + i;
+              return (
+                <div key={`step-${stepIndex}`} className="flex-1 text-center text-[10px] font-mono text-muted-foreground/40">
+                  {stepIndex}
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex">
+            <div className="w-20 text-xs text-muted-foreground/50">Count</div>
+            {Array.from({ length: visibleSteps }, (_, i) => {
+              const stepIndex = startStep + i;
+              let displayText = "";
+              let textStyle = "text-muted-foreground/60";
               
-              // Style based on count type
-              if (count === '1' || count === '2' || count === '3' || count === '4') {
-                textStyle = "text-primary font-bold";
-              } else if (count === '&') {
-                textStyle = "text-accent font-medium";
-              } else if (count === 'e' || count === 'a') {
-                textStyle = "text-muted-foreground/70 font-medium";
+              // If we have subdivision data from the CSV, use it
+              if (pattern.subdivisions && pattern.subdivisions[stepIndex]) {
+                const count = pattern.subdivisions[stepIndex];
+                displayText = count;
+                
+                // Style based on count type
+                if (count === '1' || count === '2' || count === '3' || count === '4') {
+                  textStyle = "text-primary font-bold";
+                } else if (count === '&') {
+                  textStyle = "text-accent font-medium";
+                } else if (count === 'e' || count === 'a') {
+                  textStyle = "text-muted-foreground/70 font-medium";
+                }
+              } else {
+                // Fallback to 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
+                const posInBar = stepIndex % 16;
+                const beatPosition = posInBar % 4;
+                
+                if (beatPosition === 0) {
+                  // Main beats: 1, 2, 3, 4
+                  displayText = String(Math.floor(posInBar / 4) + 1);
+                  textStyle = "text-primary font-bold";
+                } else if (beatPosition === 1) {
+                  // 16th note "e"
+                  displayText = "e";
+                  textStyle = "text-muted-foreground/70 font-medium";
+                } else if (beatPosition === 2) {
+                  // 8th note "&"
+                  displayText = "&";
+                  textStyle = "text-accent font-medium";
+                } else if (beatPosition === 3) {
+                  // 16th note "a"
+                  displayText = "a";
+                  textStyle = "text-muted-foreground/70 font-medium";
+                }
               }
-            } else {
-              // Fallback to 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
-              const posInBar = stepIndex % 16;
-              const beatPosition = posInBar % 4;
               
-              if (beatPosition === 0) {
-                // Main beats: 1, 2, 3, 4
-                displayText = String(Math.floor(posInBar / 4) + 1);
-                textStyle = "text-primary font-bold";
-              } else if (beatPosition === 1) {
-                // 16th note "e"
-                displayText = "e";
-                textStyle = "text-muted-foreground/70 font-medium";
-              } else if (beatPosition === 2) {
-                // 8th note "&"
-                displayText = "&";
-                textStyle = "text-accent font-medium";
-              } else if (beatPosition === 3) {
-                // 16th note "a"
-                displayText = "a";
-                textStyle = "text-muted-foreground/70 font-medium";
-              }
-            }
-            
-            return (
-              <div key={stepIndex} className={cn("flex-1 text-center text-sm font-mono", textStyle)}>
-                {displayText}
-              </div>
-            );
-          })}
+              return (
+                <div key={stepIndex} className={cn("flex-1 text-center text-sm font-mono", textStyle)}>
+                  {displayText}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Drum Rows */}
@@ -266,6 +277,22 @@ export const DrumGrid = ({
       </div>
 
       {/* Pattern Info */}
+      {pattern.subdivisions && (
+        <div className="mt-4 p-4 bg-muted/30 rounded-lg text-sm">
+          <div className="font-medium mb-2">CSV Pattern Loaded:</div>
+          <div className="grid grid-cols-2 gap-4 text-muted-foreground">
+            <div>
+              <span className="font-mono">Subdivisions:</span> ✓ Loaded ({pattern.subdivisions.filter(Boolean).length} beats)
+            </div>
+            <div>
+              <span className="font-mono">Offsets:</span> {pattern.offsets ? `✓ Loaded (${pattern.offsets.length} steps)` : '✗ Not available'}
+            </div>
+            <div className="col-span-2">
+              <span className="font-mono">Pattern Length:</span> {pattern.length} steps
+            </div>
+          </div>
+        </div>
+      )}
       
     </div>;
 };
