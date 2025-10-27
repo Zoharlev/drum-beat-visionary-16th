@@ -16,17 +16,19 @@ interface DrumPattern {
   offsets?: number[]; // Store precise offset timing for each step
 }
 
-// Map CSV drum components to our drum types
+// Map CSV drum components to our drum types (using DrumMachine keys)
 const drumComponentMap: Record<string, string> = {
   'F': 'Kick',           // F might be kick/bass drum
   'C': 'Snare',          // C might be snare
-  'E': 'Hi-Hat',          // E might be hihat
-  'D': 'Hi-Hat',          // D might be hihat variation
-  'A': 'openhat',        // A might be open hihat
+  'E': 'HH Closed',      // E might be hihat
+  'D': 'HH Closed',      // D might be hihat variation
+  'A': 'HH Open',        // A might be open hihat
   'Bass Drum': 'Kick',   // Full name mapping
   'Snare Drum': 'Snare', // Full name mapping
-  'Hi-Hat': 'Hi-Hat',     // Full name mapping
-  'Open Hi-Hat': 'openhat', // Full name mapping
+  'Hi-Hat': 'HH Closed', // Full name mapping
+  'Open Hi-Hat': 'HH Open', // Full name mapping
+  'Tom-tom': 'Tom',      // Tom mapping
+  'Tom': 'Tom'           // Tom mapping
 };
 
 export const useCSVPatternLoader = () => {
@@ -289,10 +291,11 @@ export const useCSVPatternLoader = () => {
       }
 
       const instrumentData: { [key: string]: boolean[] } = {
-        kick: new Array(128).fill(false), // Support up to 16 bars * 8 steps = 128 total steps
-        snare: new Array(128).fill(false),
-        hihat: new Array(128).fill(false),
-        openhat: new Array(128).fill(false)
+        'Kick': new Array(128).fill(false), // Support up to 16 bars * 8 steps = 128 total steps
+        'Snare': new Array(128).fill(false),
+        'HH Closed': new Array(128).fill(false),
+        'HH Open': new Array(128).fill(false),
+        'Tom': new Array(128).fill(false)
       };
 
       let currentBar = 0;
@@ -316,14 +319,14 @@ export const useCSVPatternLoader = () => {
           const instrumentName = line.split(':')[0].toLowerCase().replace('-', '');
           const hitPattern = line.substring(line.indexOf(':') + 1);
           
-          // Map instrument names
+          // Map instrument names to DrumMachine keys
           let targetInstrument = '';
           if (instrumentName === 'hihat') {
-            targetInstrument = 'hihat';
+            targetInstrument = 'HH Closed';
           } else if (instrumentName === 'snare') {
-            targetInstrument = 'snare';
+            targetInstrument = 'Snare';
           } else if (instrumentName === 'kick') {
-            targetInstrument = 'kick';
+            targetInstrument = 'Kick';
           }
 
           if (targetInstrument && currentBarStartStep < 128) {
@@ -336,9 +339,9 @@ export const useCSVPatternLoader = () => {
                 const char = hitPattern[charPos];
                 if (char === '●' || char === 'x') {
                   instrumentData[targetInstrument][currentBarStartStep + stepInBar] = true;
-                } else if (char === 'o' && targetInstrument === 'hihat') {
-                  // Use openhat for 'o' symbols
-                  instrumentData['openhat'][currentBarStartStep + stepInBar] = true;
+                } else if (char === 'o' && instrumentName === 'hihat') {
+                  // Use 'HH Open' for 'o' symbols
+                  instrumentData['HH Open'][currentBarStartStep + stepInBar] = true;
                 }
               }
             }
@@ -364,37 +367,37 @@ export const useCSVPatternLoader = () => {
     }
   };
 
-  // Helper function to normalize instrument names
+  // Helper function to normalize instrument names to match DrumMachine keys
   const normalizeInstrument = (instrument: string): string => {
     const normalized = instrument.toLowerCase().trim();
     
-    // Kick drum mappings
+    // Kick drum mappings - use 'Kick' to match DrumMachine
     if (normalized === 'kick' || normalized === 'kick drum' || normalized === 'bass drum') {
-      return 'kick';
+      return 'Kick';
     }
     
-    // Snare drum mappings  
+    // Snare drum mappings - use 'Snare' to match DrumMachine
     if (normalized === 'snare' || normalized === 'snare drum') {
-      return 'snare';
+      return 'Snare';
     }
     
-    // Closed hi-hat mappings
+    // Closed hi-hat mappings - use 'HH Closed' to match DrumMachine
     if (normalized === 'hi-hat (closed)' || normalized === 'hi hat (closed)' || 
         normalized === 'hh closed' || normalized === 'hihat' || 
         normalized === 'closed hat' || normalized === 'hi-hat') {
-      return 'hihat';
+      return 'HH Closed';
     }
     
-    // Open hi-hat mappings
+    // Open hi-hat mappings - use 'HH Open' to match DrumMachine
     if (normalized === 'hi-hat (open)' || normalized === 'hi hat (open)' || 
         normalized === 'hh open' || normalized === 'open hat' || 
         normalized === 'open hihat') {
-      return 'openhat';
+      return 'HH Open';
     }
     
-    // Tom-tom mappings
+    // Tom-tom mappings - use 'Tom' to match DrumMachine
     if (normalized === 'tom-tom' || normalized === 'tom tom' || normalized === 'tom') {
-      return 'tom';
+      return 'Tom';
     }
     
     return normalized;
@@ -442,10 +445,11 @@ export const useCSVPatternLoader = () => {
         const patternLength = Math.max(16, Math.ceil((maxOffset + 1) * stepsPerBeat));
 
         const pattern: DrumPattern = {
-          kick: new Array(patternLength).fill(false),
-          snare: new Array(patternLength).fill(false),
-          hihat: new Array(patternLength).fill(false),
-          openhat: new Array(patternLength).fill(false),
+          'Kick': new Array(patternLength).fill(false),
+          'Snare': new Array(patternLength).fill(false),
+          'HH Closed': new Array(patternLength).fill(false),
+          'HH Open': new Array(patternLength).fill(false),
+          'Tom': new Array(patternLength).fill(false),
           length: patternLength
         };
 
@@ -495,10 +499,11 @@ export const useCSVPatternLoader = () => {
     console.log(`Count CSV Pattern: totalBeats=${totalBeats}, totalBars=${totalBars}, patternLength=${patternLength}`);
 
     const pattern: DrumPattern = {
-      kick: new Array(patternLength).fill(false),
-      snare: new Array(patternLength).fill(false),
-      hihat: new Array(patternLength).fill(false),
-      openhat: new Array(patternLength).fill(false),
+      'Kick': new Array(patternLength).fill(false),
+      'Snare': new Array(patternLength).fill(false),
+      'HH Closed': new Array(patternLength).fill(false),
+      'HH Open': new Array(patternLength).fill(false),
+      'Tom': new Array(patternLength).fill(false),
       length: patternLength
     };
 
@@ -542,11 +547,11 @@ export const useCSVPatternLoader = () => {
     console.log(`Advanced Count CSV Pattern: totalLines=${totalLines}, totalBars=${totalBars}, patternLength=${patternLength}`);
 
     const pattern: DrumPattern = {
-      kick: new Array(patternLength).fill(false),
-      snare: new Array(patternLength).fill(false),
-      hihat: new Array(patternLength).fill(false),
-      openhat: new Array(patternLength).fill(false),
-      tom: new Array(patternLength).fill(false),
+      'Kick': new Array(patternLength).fill(false),
+      'Snare': new Array(patternLength).fill(false),
+      'HH Closed': new Array(patternLength).fill(false),
+      'HH Open': new Array(patternLength).fill(false),
+      'Tom': new Array(patternLength).fill(false),
       subdivisions: new Array(patternLength).fill(''),
       offsets: new Array(patternLength).fill(0),
       length: patternLength
