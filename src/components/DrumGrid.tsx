@@ -42,6 +42,10 @@ const drumLabels: {
   openhat: {
     name: "Open Hat",
     symbol: "◎"
+  },
+  tom: {
+    name: "Tom",
+    symbol: "◆"
   }
 };
 export const DrumGrid = ({
@@ -177,7 +181,7 @@ export const DrumGrid = ({
           
           const drumInfo = drumLabels[drumKey] || { 
             name: drumKey, 
-            symbol: drumKey === 'Kick' ? '●' : drumKey === 'Snare' ? '×' : drumKey === 'Hi-Hat' ? '○' : '●' 
+            symbol: drumKey === 'Kick' ? '●' : drumKey === 'Snare' ? '×' : drumKey === 'Hi-Hat' ? '○' : drumKey === 'Tom' ? '◆' : '●' 
           };
           
           return (
