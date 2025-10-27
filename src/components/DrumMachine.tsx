@@ -287,11 +287,13 @@ export const DrumMachine = () => {
   useEffect(() => {
     if (isPlaying) {
       // Play sounds for active notes at current step
-      Object.entries(displayPattern).forEach(([drum, steps]) => {
-        if (steps[currentStep]) {
-          playDrumSound(drum);
-        }
-      });
+      Object.entries(displayPattern)
+        .filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets')
+        .forEach(([drum, steps]) => {
+          if (Array.isArray(steps) && steps[currentStep]) {
+            playDrumSound(drum);
+          }
+        });
 
       // Play metronome each beat (every 2 steps with 8 steps/bar)
       if (metronomeEnabled && currentStep % 2 === 0) {
