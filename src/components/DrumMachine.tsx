@@ -197,14 +197,9 @@ export const DrumMachine = () => {
     };
   }, []);
 
-  // Step timing based on BPM - count quarter notes from subdivisions
-  // Count how many times "1" appears in subdivisions - that's the number of beats
-  const numberOfBeats = pattern.subdivisions 
-    ? pattern.subdivisions.filter(s => s === '1').length 
-    : (pattern.length / 4); // fallback: assume 4 steps per beat
-  
-  // At 120 BPM, each beat = 500ms. stepDuration = (beat duration) / (steps per beat)
-  const stepDuration = (60 / bpm) * (numberOfBeats / pattern.length) * 1000;
+  // Step timing based on BPM where 1 Beat = 4 Steps
+  // At 120 BPM: each beat = 500ms, each step = 125ms
+  const stepDuration = (60 / bpm / 4) * 1000;
 
   // Convert detected beats to pattern grid positions when listening
   const detectedPattern = useMemo(() => {
@@ -295,13 +290,9 @@ export const DrumMachine = () => {
           }
         });
 
-      // Play metronome on each beat boundary
-      if (metronomeEnabled) {
-        const beats = numberOfBeats || Math.max(1, Math.floor(pattern.length / 4));
-        const stepsPerBeat = Math.max(1, Math.round(pattern.length / beats));
-        if (currentStep % stepsPerBeat === 0) {
-          playMetronome();
-        }
+      // Play metronome on each beat (every 4 steps)
+      if (metronomeEnabled && currentStep % 4 === 0) {
+        playMetronome();
       }
     }
   }, [currentStep, isPlaying, displayPattern, metronomeEnabled]);
