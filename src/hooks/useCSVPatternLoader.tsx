@@ -640,6 +640,14 @@ export const useCSVPatternLoader = () => {
       
       if (stepIndex >= patternLength) continue;
 
+      // Debug logging for step 66
+      if (stepIndex === 66) {
+        console.log(`📍 Step 66 Debug:`);
+        console.log(`   Line ${i}: count="${count}", bar=${currentBar}, pos=${positionInBar}`);
+        console.log(`   Raw columns:`, columns);
+        console.log(`   instrument1="${instrument1}", instrument2="${instrument2}"`);
+      }
+
       // Store subdivision label
       (pattern.subdivisions as string[])[stepIndex] = count;
       (pattern.offsets as number[])[stepIndex] = stepIndex / 4; // Quarter beat offset
@@ -649,6 +657,9 @@ export const useCSVPatternLoader = () => {
         const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
         instruments1.forEach(inst => {
           const instrumentKey = normalizeInstrument(inst);
+          if (stepIndex === 66) {
+            console.log(`   ✅ Inst1: "${inst}" → "${instrumentKey}" (exists: ${pattern[instrumentKey] !== undefined})`);
+          }
           if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
             (pattern[instrumentKey] as boolean[])[stepIndex] = true;
           }
@@ -660,12 +671,17 @@ export const useCSVPatternLoader = () => {
         const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
         instruments2.forEach(inst => {
           const instrumentKey = normalizeInstrument(inst);
+          if (stepIndex === 66) {
+            console.log(`   ✅ Inst2: "${inst}" → "${instrumentKey}" (exists: ${pattern[instrumentKey] !== undefined})`);
+          }
           if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
             (pattern[instrumentKey] as boolean[])[stepIndex] = true;
           }
         });
       }
     }
+
+    console.log(`🎵 Pattern loaded. Step 66 - Tom: ${pattern['Tom'][66]}, HH Open: ${pattern['HH Open'][66]}`);
 
     return pattern;
   };
