@@ -1,0 +1,1553 @@
+QuarterBass Drumeat Count,Offset (Quarter LenSnare Drumth),Instrument1,Instrument2,Instrument1 Duration,Instrument2 Duration,Beat Subdivision
+1,0,,,,,
+2,0.25,,,,,
+3,0.5,,,,,
+4,0.75,,,,,
+5,1,,,,,
+6,1.25,,,,,
+7,1.5,,,,,
+8,1.75,,,,,
+9,2,,,,,
+10,2.25,,,,,
+11,2.5,,,,,
+12,2.75,,,,,
+13,3,,,,,
+14,3.25,,,,,
+15,3.5,,,,,
+16,3.75,,,,,
+17,4,,,,,
+18,4.25,,,,,
+19,4.5,,,,,
+20,4.75,,,,,
+21,5,,,,,
+22,5.25,,,,,
+23,5.5,,,,,
+24,5.75,,,,,
+25,6,,,,,
+26,6.25,,,,,
+27,6.5,,,,,
+28,6.75,,,,,
+29,7,,,,,
+30,7.25,,,,,
+31,7.5,,,,,
+32,7.75,,,,,
+33,8,,,,,
+34,8.25,,,,,
+35,8.5,,,,,
+36,8.75,,,,,
+37,9,,,,,
+38,9.25,,,,,
+39,9.5,,,,,
+40,9.75,,,,,
+41,10,,,,,
+42,10.25,,,,,
+43,10.5,,,,,
+44,10.75,,,,,
+45,11,,,,,
+46,11.25,,,,,
+47,11.5,,,,,
+48,11.75,,,,,
+49,12,,,,,
+50,12.25,,,,,
+51,12.5,,,,,
+52,12.75,,,,,
+53,13,,,,,
+54,13.25,,,,,
+55,13.5,,,,,
+56,13.75,,,,,
+57,14,,,,,
+58,14.25,,,,,
+59,14.5,Hi-Hat (Closed),,[0.5],,3rd Quarter
+60,14.75,,,,,
+61,15,Snare Drum,,[0.5],,1st Quarter
+62,15.25,,,,,
+63,15.5,Bass Drum,,[0.5],,3rd Quarter
+64,15.75,,,,,
+65,16,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+66,16.25,,,,,
+67,16.5,,,,,
+68,16.75,,,,,
+69,17,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+70,17.25,,,,,
+71,17.5,Snare Drum,,[0.5],,3rd Quarter
+72,17.75,,,,,
+73,18,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+74,18.25,,,,,
+75,18.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+76,18.75,,,,,
+77,19,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+78,19.25,,,,,
+79,19.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+80,19.75,,,,,
+81,20,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+82,20.25,,,,,
+83,20.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+84,20.75,,,,,
+85,21,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+86,21.25,,,,,
+87,21.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+88,21.75,,,,,
+89,22,Snare Drum,,[0.5],,1st Quarter
+90,22.25,,,,,
+91,22.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+92,22.75,,,,,
+93,23,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+94,23.25,,,,,
+95,23.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+96,23.75,,,,,
+97,24,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+98,24.25,,,,,
+99,24.5,Snare Drum,,[0.5],,3rd Quarter
+100,24.75,,,,,
+101,25,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+102,25.25,,,,,
+103,25.5,Snare Drum,,[0.5],,3rd Quarter
+104,25.75,,,,,
+105,26,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+106,26.25,,,,,
+107,26.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+108,26.75,,,,,
+109,27,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+110,27.25,,,,,
+111,27.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+112,27.75,,,,,
+113,28,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+114,28.25,,,,,
+115,28.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+116,28.75,,,,,
+117,29,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+118,29.25,,,,,
+119,29.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+120,29.75,,,,,
+121,30,Snare Drum,,[0.5],,1st Quarter
+122,30.25,,,,,
+123,30.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+124,30.75,,,,,
+125,31,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+126,31.25,,,,,
+127,31.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+128,31.75,,,,,
+129,32,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+130,32.25,,,,,
+131,32.5,,,,,
+132,32.75,,,,,
+133,33,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+134,33.25,,,,,
+135,33.5,Snare Drum,,[0.5],,3rd Quarter
+136,33.75,,,,,
+137,34,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+138,34.25,,,,,
+139,34.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+140,34.75,,,,,
+141,35,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+142,35.25,,,,,
+143,35.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+144,35.75,,,,,
+145,36,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+146,36.25,,,,,
+147,36.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+148,36.75,,,,,
+149,37,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+150,37.25,,,,,
+151,37.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+152,37.75,,,,,
+153,38,Snare Drum,,[0.5],,1st Quarter
+154,38.25,,,,,
+155,38.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+156,38.75,,,,,
+157,39,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+158,39.25,,,,,
+159,39.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+160,39.75,,,,,
+161,40,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+162,40.25,,,,,
+163,40.5,Snare Drum,,[0.5],,3rd Quarter
+164,40.75,,,,,
+165,41,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+166,41.25,,,,,
+167,41.5,Snare Drum,,[0.5],,3rd Quarter
+168,41.75,,,,,
+169,42,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+170,42.25,,,,,
+171,42.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+172,42.75,,,,,
+173,43,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+174,43.25,,,,,
+175,43.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+176,43.75,,,,,
+177,44,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+178,44.25,,,,,
+179,44.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+180,44.75,,,,,
+181,45,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+182,45.25,,,,,
+183,45.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+184,45.75,,,,,
+185,46,Snare Drum,,[0.5],,1st Quarter
+186,46.25,,,,,
+187,46.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+188,46.75,,,,,
+189,47,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+190,47.25,,,,,
+191,47.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+192,47.75,,,,,
+193,48,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+194,48.25,,,,,
+195,48.5,Snare Drum,,[0.5],,3rd Quarter
+196,48.75,,,,,
+197,49,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+198,49.25,,,,,
+199,49.5,Snare Drum,,[0.5],,3rd Quarter
+200,49.75,,,,,
+201,50,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+202,50.25,,,,,
+203,50.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+204,50.75,,,,,
+205,51,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+206,51.25,,,,,
+207,51.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+208,51.75,,,,,
+209,52,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+210,52.25,,,,,
+211,52.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+212,52.75,,,,,
+213,53,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+214,53.25,,,,,
+215,53.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+216,53.75,,,,,
+217,54,Snare Drum,,[0.5],,1st Quarter
+218,54.25,,,,,
+219,54.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+220,54.75,,,,,
+221,55,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+222,55.25,,,,,
+223,55.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+224,55.75,,,,,
+225,56,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+226,56.25,,,,,
+227,56.5,Snare Drum,,[0.5],,3rd Quarter
+228,56.75,,,,,
+229,57,Snare Drum,Bass Drum,[0.5, 0.75],1st Quarter
+230,57.25,,,,,
+231,57.5,Snare Drum,,[0.5],,3rd Quarter
+232,57.75,B,,[0.25],,4th Quarter
+233,58,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+234,58.25,,,,,
+235,58.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+236,58.75,,,,,
+237,59,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+238,59.25,,,,,
+239,59.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+240,59.75,,,,,
+241,60,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+242,60.25,,,,,
+243,60.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+244,60.75,,,,,
+245,61,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+246,61.25,,,,,
+247,61.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+248,61.75,,,,,
+249,62,Snare Drum,,[0.5],,1st Quarter
+250,62.25,,,,,
+251,62.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+252,62.75,,,,,
+253,63,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+254,63.25,,,,,
+255,63.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+256,63.75,,,,,
+257,64,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+258,64.25,,,,,
+259,64.5,,,,,
+260,64.75,,,,,
+261,65,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+262,65.25,,,,,
+263,65.5,Snare Drum,,[0.5],,3rd Quarter
+264,65.75,,,,,
+265,66,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+266,66.25,,,,,
+267,66.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+268,66.75,,,,,
+269,67,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+270,67.25,,,,,
+271,67.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+272,67.75,,,,,
+273,68,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+274,68.25,,,,,
+275,68.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+276,68.75,,,,,
+277,69,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+278,69.25,,,,,
+279,69.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+280,69.75,,,,,
+281,70,Snare Drum,,[0.5],,1st Quarter
+282,70.25,,,,,
+283,70.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+284,70.75,,,,,
+285,71,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+286,71.25,,,,,
+287,71.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+288,71.75,,,,,
+289,72,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+290,72.25,,,,,
+291,72.5,Snare Drum,,[0.5],,3rd Quarter
+292,72.75,,,,,
+293,73,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+294,73.25,,,,,
+295,73.5,Snare Drum,,[0.5],,3rd Quarter
+296,73.75,,,,,
+297,74,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+298,74.25,,,,,
+299,74.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+300,74.75,,,,,
+301,75,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+302,75.25,,,,,
+303,75.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+304,75.75,,,,,
+305,76,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+306,76.25,,,,,
+307,76.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+308,76.75,,,,,
+309,77,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+310,77.25,,,,,
+311,77.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+312,77.75,,,,,
+313,78,Snare Drum,,[0.5],,1st Quarter
+314,78.25,,,,,
+315,78.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+316,78.75,,,,,
+317,79,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+318,79.25,,,,,
+319,79.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+320,79.75,,,,,
+321,80,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+322,80.25,,,,,
+323,80.5,,,,,
+324,80.75,,,,,
+325,81,Tom-tom,Bass Drum,[0.5, 1.0],1st Quarter
+326,81.25,,,,,
+327,81.5,Snare Drum,,[0.5],,3rd Quarter
+328,81.75,,,,,
+329,82,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+330,82.25,,,,,
+331,82.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+332,82.75,,,,,
+333,83,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+334,83.25,,,,,
+335,83.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+336,83.75,,,,,
+337,84,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+338,84.25,,,,,
+339,84.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+340,84.75,,,,,
+341,85,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+342,85.25,,,,,
+343,85.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+344,85.75,,,,,
+345,86,Snare Drum,,[0.5],,1st Quarter
+346,86.25,,,,,
+347,86.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+348,86.75,,,,,
+349,87,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+350,87.25,,,,,
+351,87.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+352,87.75,,,,,
+353,88,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+354,88.25,,,,,
+355,88.5,Snare Drum,,[0.5],,3rd Quarter
+356,88.75,,,,,
+357,89,Snare Drum,Bass Drum,[0.5, 0.75],1st Quarter
+358,89.25,,,,,
+359,89.5,Snare Drum,,[0.5],,3rd Quarter
+360,89.75,B,,[0.25],,4th Quarter
+361,90,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+362,90.25,,,,,
+363,90.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+364,90.75,,,,,
+365,91,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+366,91.25,,,,,
+367,91.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+368,91.75,,,,,
+369,92,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+370,92.25,,,,,
+371,92.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+372,92.75,,,,,
+373,93,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+374,93.25,,,,,
+375,93.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+376,93.75,,,,,
+377,94,Snare Drum,,[0.5],,1st Quarter
+378,94.25,,,,,
+379,94.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+380,94.75,,,,,
+381,95,Snare Drum,Bass Drum,[1.0, 1.0],1st Quarter
+382,95.25,,,,,
+383,95.5,,,,,
+384,95.75,,,,,
+385,96,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+386,96.25,,,,,
+387,96.5,,,,,
+388,96.75,,,,,
+389,97,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+390,97.25,,,,,
+391,97.5,,,,,
+392,97.75,,,,,
+393,98,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+394,98.25,,,,,
+395,98.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+396,98.75,,,,,
+397,99,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+398,99.25,,,,,
+399,99.5,,,,,
+400,99.75,,,,,
+401,100,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+402,100.25,,,,,
+403,100.5,,,,,
+404,100.75,,,,,
+405,101,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+406,101.25,B,,[0.25],,2nd Quarter
+407,101.5,B,,[0.25],,3rd Quarter
+408,101.75,B,,[0.25],,4th Quarter
+409,102,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+410,102.25,B,,[0.25],,2nd Quarter
+411,102.5,B,,[0.25],,3rd Quarter
+412,102.75,B,,[0.25],,4th Quarter
+413,103,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+414,103.25,B,,[0.25],,2nd Quarter
+415,103.5,B,,[0.25],,3rd Quarter
+416,103.75,B,,[0.25],,4th Quarter
+417,104,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+418,104.25,,,,,
+419,104.5,,,,,
+420,104.75,,,,,
+421,105,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+422,105.25,,,,,
+423,105.5,,,,,
+424,105.75,,,,,
+425,106,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+426,106.25,,,,,
+427,106.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+428,106.75,,,,,
+429,107,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+430,107.25,,,,,
+431,107.5,,,,,
+432,107.75,,,,,
+433,108,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+434,108.25,,,,,
+435,108.5,,,,,
+436,108.75,,,,,
+437,109,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+438,109.25,B,,[0.25],,2nd Quarter
+439,109.5,B,,[0.25],,3rd Quarter
+440,109.75,B,,[0.25],,4th Quarter
+441,110,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+442,110.25,B,,[0.25],,2nd Quarter
+443,110.5,B,,[0.25],,3rd Quarter
+444,110.75,B,,[0.25],,4th Quarter
+445,111,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+446,111.25,B,,[0.25],,2nd Quarter
+447,111.5,B,,[0.25],,3rd Quarter
+448,111.75,B,,[0.25],,4th Quarter
+449,112,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+450,112.25,,,,,
+451,112.5,,,,,
+452,112.75,,,,,
+453,113,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+454,113.25,,,,,
+455,113.5,,,,,
+456,113.75,,,,,
+457,114,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+458,114.25,,,,,
+459,114.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+460,114.75,,,,,
+461,115,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+462,115.25,,,,,
+463,115.5,,,,,
+464,115.75,,,,,
+465,116,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+466,116.25,,,,,
+467,116.5,,,,,
+468,116.75,,,,,
+469,117,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+470,117.25,B,,[0.25],,2nd Quarter
+471,117.5,B,,[0.25],,3rd Quarter
+472,117.75,B,,[0.25],,4th Quarter
+473,118,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+474,118.25,B,,[0.25],,2nd Quarter
+475,118.5,B,,[0.25],,3rd Quarter
+476,118.75,B,,[0.25],,4th Quarter
+477,119,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+478,119.25,B,,[0.25],,2nd Quarter
+479,119.5,B,,[0.25],,3rd Quarter
+480,119.75,B,,[0.25],,4th Quarter
+481,120,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+482,120.25,,,,,
+483,120.5,,,,,
+484,120.75,,,,,
+485,121,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+486,121.25,,,,,
+487,121.5,,,,,
+488,121.75,,,,,
+489,122,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+490,122.25,,,,,
+491,122.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+492,122.75,,,,,
+493,123,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+494,123.25,,,,,
+495,123.5,,,,,
+496,123.75,,,,,
+497,124,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+498,124.25,,,,,
+499,124.5,,,,,
+500,124.75,,,,,
+501,125,B,,[0.25],,1st Quarter
+502,125.25,B,,[0.25],,2nd Quarter
+503,125.5,B,,[0.25],,3rd Quarter
+504,125.75,B,,[0.25],,4th Quarter
+505,126,Hi-Hat (Closed),,[0.25],,1st Quarter
+506,126.25,Hi-Hat (Closed),,[0.25],,2nd Quarter
+507,126.5,Snare Drum,,[0.25],,3rd Quarter
+508,126.75,Hi-Hat (Open),,[0.25],,4th Quarter
+509,127,B,Bass Drum,[0.0, 1.0],1st Quarter
+510,127.25,,,,,
+511,127.5,,,,,
+512,127.75,,,,,
+513,128,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+514,128.25,,,,,
+515,128.5,,,,,
+516,128.75,,,,,
+517,129,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+518,129.25,,,,,
+519,129.5,Snare Drum,,[0.5],,3rd Quarter
+520,129.75,,,,,
+521,130,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+522,130.25,,,,,
+523,130.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+524,130.75,,,,,
+525,131,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+526,131.25,,,,,
+527,131.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+528,131.75,,,,,
+529,132,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+530,132.25,,,,,
+531,132.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+532,132.75,,,,,
+533,133,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+534,133.25,,,,,
+535,133.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+536,133.75,,,,,
+537,134,Snare Drum,,[0.5],,1st Quarter
+538,134.25,,,,,
+539,134.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+540,134.75,,,,,
+541,135,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+542,135.25,,,,,
+543,135.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+544,135.75,,,,,
+545,136,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+546,136.25,,,,,
+547,136.5,Snare Drum,,[0.5],,3rd Quarter
+548,136.75,,,,,
+549,137,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+550,137.25,,,,,
+551,137.5,Snare Drum,,[0.5],,3rd Quarter
+552,137.75,,,,,
+553,138,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+554,138.25,,,,,
+555,138.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+556,138.75,,,,,
+557,139,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+558,139.25,,,,,
+559,139.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+560,139.75,,,,,
+561,140,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+562,140.25,,,,,
+563,140.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+564,140.75,,,,,
+565,141,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+566,141.25,,,,,
+567,141.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+568,141.75,,,,,
+569,142,Snare Drum,,[0.5],,1st Quarter
+570,142.25,,,,,
+571,142.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+572,142.75,,,,,
+573,143,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+574,143.25,,,,,
+575,143.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+576,143.75,,,,,
+577,144,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+578,144.25,,,,,
+579,144.5,Snare Drum,,[0.5],,3rd Quarter
+580,144.75,,,,,
+581,145,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+582,145.25,,,,,
+583,145.5,Snare Drum,,[0.5],,3rd Quarter
+584,145.75,,,,,
+585,146,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+586,146.25,,,,,
+587,146.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+588,146.75,,,,,
+589,147,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+590,147.25,,,,,
+591,147.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+592,147.75,,,,,
+593,148,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+594,148.25,,,,,
+595,148.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+596,148.75,,,,,
+597,149,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+598,149.25,,,,,
+599,149.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+600,149.75,,,,,
+601,150,Snare Drum,,[0.5],,1st Quarter
+602,150.25,,,,,
+603,150.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+604,150.75,,,,,
+605,151,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+606,151.25,,,,,
+607,151.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+608,151.75,,,,,
+609,152,Snare Drum, Hi-Hat (Open),[0.5, 1.0],1st Quarter
+610,152.25,,,,,
+611,152.5,Snare Drum,,[0.5],,3rd Quarter
+612,152.75,,,,,
+613,153,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+614,153.25,,,,,
+615,153.5,Snare Drum,,[0.5],,3rd Quarter
+616,153.75,,,,,
+617,154,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+618,154.25,,,,,
+619,154.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+620,154.75,,,,,
+621,155,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+622,155.25,,,,,
+623,155.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+624,155.75,,,,,
+625,156,Snare Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+626,156.25,,,,,
+627,156.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+628,156.75,,,,,
+629,157,Snare Drum,Bass Drum,[0.5, 0.5],1st Quarter
+630,157.25,,,,,
+631,157.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+632,157.75,,,,,
+633,158,Snare Drum,,[0.5],,1st Quarter
+634,158.25,,,,,
+635,158.5,Snare Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+636,158.75,,,,,
+637,159,Snare Drum,Bass Drum,[0.5, 1.0],1st Quarter
+638,159.25,,,,,
+639,159.5,Snare Drum,,[0.5],,3rd Quarter
+640,159.75,,,,,
+641,160,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+642,160.25,,,,,
+643,160.5,,,,,
+644,160.75,,,,,
+645,161,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+646,161.25,,,,,
+647,161.5,,,,,
+648,161.75,,,,,
+649,162,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+650,162.25,,,,,
+651,162.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+652,162.75,,,,,
+653,163,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+654,163.25,,,,,
+655,163.5,,,,,
+656,163.75,,,,,
+657,164,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+658,164.25,,,,,
+659,164.5,,,,,
+660,164.75,,,,,
+661,165,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+662,165.25,B,,[0.25],,2nd Quarter
+663,165.5,B,,[0.25],,3rd Quarter
+664,165.75,B,,[0.25],,4th Quarter
+665,166,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+666,166.25,B,,[0.25],,2nd Quarter
+667,166.5,B,,[0.25],,3rd Quarter
+668,166.75,B,,[0.25],,4th Quarter
+669,167,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+670,167.25,B,,[0.25],,2nd Quarter
+671,167.5,B,,[0.25],,3rd Quarter
+672,167.75,B,,[0.25],,4th Quarter
+673,168,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+674,168.25,,,,,
+675,168.5,,,,,
+676,168.75,,,,,
+677,169,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+678,169.25,,,,,
+679,169.5,,,,,
+680,169.75,,,,,
+681,170,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+682,170.25,,,,,
+683,170.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+684,170.75,,,,,
+685,171,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+686,171.25,,,,,
+687,171.5,,,,,
+688,171.75,,,,,
+689,172,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+690,172.25,,,,,
+691,172.5,,,,,
+692,172.75,,,,,
+693,173,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+694,173.25,B,,[0.25],,2nd Quarter
+695,173.5,B,,[0.25],,3rd Quarter
+696,173.75,B,,[0.25],,4th Quarter
+697,174,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+698,174.25,B,,[0.25],,2nd Quarter
+699,174.5,B,,[0.25],,3rd Quarter
+700,174.75,B,,[0.25],,4th Quarter
+701,175,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+702,175.25,B,,[0.25],,2nd Quarter
+703,175.5,B,,[0.25],,3rd Quarter
+704,175.75,B,,[0.25],,4th Quarter
+705,176,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+706,176.25,,,,,
+707,176.5,,,,,
+708,176.75,,,,,
+709,177,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+710,177.25,,,,,
+711,177.5,,,,,
+712,177.75,,,,,
+713,178,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+714,178.25,,,,,
+715,178.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+716,178.75,,,,,
+717,179,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+718,179.25,,,,,
+719,179.5,,,,,
+720,179.75,,,,,
+721,180,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+722,180.25,,,,,
+723,180.5,,,,,
+724,180.75,,,,,
+725,181,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+726,181.25,B,,[0.25],,2nd Quarter
+727,181.5,B,,[0.25],,3rd Quarter
+728,181.75,B,,[0.25],,4th Quarter
+729,182,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+730,182.25,B,,[0.25],,2nd Quarter
+731,182.5,B,,[0.25],,3rd Quarter
+732,182.75,B,,[0.25],,4th Quarter
+733,183,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+734,183.25,B,,[0.25],,2nd Quarter
+735,183.5,B,,[0.25],,3rd Quarter
+736,183.75,B,,[0.25],,4th Quarter
+737,184,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+738,184.25,,,,,
+739,184.5,,,,,
+740,184.75,,,,,
+741,185,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+742,185.25,,,,,
+743,185.5,,,,,
+744,185.75,,,,,
+745,186,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+746,186.25,,,,,
+747,186.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+748,186.75,,,,,
+749,187,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+750,187.25,,,,,
+751,187.5,,,,,
+752,187.75,,,,,
+753,188,B,Bass Drum,[0.0, 0.5],1st Quarter
+754,188.25,,,,,
+755,188.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+756,188.75,,,,,
+757,189,B,Bass Drum,[0.0, 0.5],1st Quarter
+758,189.25,,,,,
+759,189.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+760,189.75,,,,,
+761,190,B,Bass Drum,[0.0, 0.5],1st Quarter
+762,190.25,,,,,
+763,190.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+764,190.75,,,,,
+765,191,B,Bass Drum,[0.0, 0.5],1st Quarter
+766,191.25,,,,,
+767,191.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+768,191.75,,,,,
+769,192,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+770,192.25,,,,,
+771,192.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+772,192.75,,,,,
+773,193,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+774,193.25,,,,,
+775,193.5,Bass Drum,,[0.5],,3rd Quarter
+776,193.75,,,,,
+777,194,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+778,194.25,,,,,
+779,194.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+780,194.75,,,,,
+781,195,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+782,195.25,,,,,
+783,195.5,Bass Drum,,[0.5],,3rd Quarter
+784,195.75,,,,,
+785,196,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+786,196.25,,,,,
+787,196.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+788,196.75,,,,,
+789,197,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+790,197.25,,,,,
+791,197.5,Bass Drum,,[0.5],,3rd Quarter
+792,197.75,,,,,
+793,198,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+794,198.25,,,,,
+795,198.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+796,198.75,,,,,
+797,199,,,,,
+798,199.25,,,,,
+799,199.5,B,,[0.25],,3rd Quarter
+800,199.75,B,,[0.25],,4th Quarter
+801,200,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+802,200.25,,,,,
+803,200.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+804,200.75,,,,,
+805,201,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+806,201.25,,,,,
+807,201.5,Bass Drum,,[0.5],,3rd Quarter
+808,201.75,,,,,
+809,202,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+810,202.25,,,,,
+811,202.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+812,202.75,,,,,
+813,203,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+814,203.25,,,,,
+815,203.5,Bass Drum,,[0.5],,3rd Quarter
+816,203.75,,,,,
+817,204,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+818,204.25,,,,,
+819,204.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+820,204.75,,,,,
+821,205,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+822,205.25,,,,,
+823,205.5,Bass Drum,,[0.5],,3rd Quarter
+824,205.75,,,,,
+825,206,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+826,206.25,,,,,
+827,206.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+828,206.75,,,,,
+829,207,,,,,
+830,207.25,,,,,
+831,207.5,B,,[0.25],,3rd Quarter
+832,207.75,B,,[0.25],,4th Quarter
+833,208,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+834,208.25,,,,,
+835,208.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+836,208.75,,,,,
+837,209,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+838,209.25,,,,,
+839,209.5,Bass Drum,,[0.5],,3rd Quarter
+840,209.75,,,,,
+841,210,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+842,210.25,,,,,
+843,210.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+844,210.75,,,,,
+845,211,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+846,211.25,,,,,
+847,211.5,Bass Drum,,[0.5],,3rd Quarter
+848,211.75,,,,,
+849,212,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+850,212.25,,,,,
+851,212.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+852,212.75,,,,,
+853,213,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+854,213.25,,,,,
+855,213.5,Bass Drum,,[0.5],,3rd Quarter
+856,213.75,,,,,
+857,214,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+858,214.25,,,,,
+859,214.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+860,214.75,,,,,
+861,215,,,,,
+862,215.25,,,,,
+863,215.5,B,,[0.25],,3rd Quarter
+864,215.75,B,,[0.25],,4th Quarter
+865,216,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+866,216.25,,,,,
+867,216.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+868,216.75,,,,,
+869,217,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+870,217.25,,,,,
+871,217.5,Bass Drum,,[0.5],,3rd Quarter
+872,217.75,,,,,
+873,218,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+874,218.25,,,,,
+875,218.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+876,218.75,,,,,
+877,219,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+878,219.25,,,,,
+879,219.5,Bass Drum,,[0.5],,3rd Quarter
+880,219.75,,,,,
+881,220,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+882,220.25,,,,,
+883,220.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+884,220.75,,,,,
+885,221,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+886,221.25,,,,,
+887,221.5,Bass Drum,,[0.5],,3rd Quarter
+888,221.75,,,,,
+889,222,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+890,222.25,,,,,
+891,222.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+892,222.75,,,,,
+893,223,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+894,223.25,,,,,
+895,223.5,,,,,
+896,223.75,,,,,
+897,224,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+898,224.25,,,,,
+899,224.5,,,,,
+900,224.75,,,,,
+901,225,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+902,225.25,,,,,
+903,225.5,,,,,
+904,225.75,B,,[0.25],,4th Quarter
+905,226,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+906,226.25,,,,,
+907,226.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+908,226.75,,,,,
+909,227,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+910,227.25,,,,,
+911,227.5,,,,,
+912,227.75,,,,,
+913,228,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+914,228.25,,,,,
+915,228.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+916,228.75,,,,,
+917,229,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+918,229.25,,,,,
+919,229.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+920,229.75,,,,,
+921,230,Tom-tom,,[1.0],,1st Quarter
+922,230.25,,,,,
+923,230.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+924,230.75,,,,,
+925,231,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+926,231.25,,,,,
+927,231.5,,,,,
+928,231.75,,,,,
+929,232,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+930,232.25,,,,,
+931,232.5,,,,,
+932,232.75,,,,,
+933,233,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+934,233.25,,,,,
+935,233.5,,,,,
+936,233.75,B,,[0.25],,4th Quarter
+937,234,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+938,234.25,,,,,
+939,234.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+940,234.75,,,,,
+941,235,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+942,235.25,,,,,
+943,235.5,,,,,
+944,235.75,,,,,
+945,236,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+946,236.25,,,,,
+947,236.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+948,236.75,,,,,
+949,237,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+950,237.25,,,,,
+951,237.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+952,237.75,,,,,
+953,238,Tom-tom,,[1.0],,1st Quarter
+954,238.25,,,,,
+955,238.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+956,238.75,,,,,
+957,239,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+958,239.25,,,,,
+959,239.5,,,,,
+960,239.75,,,,,
+961,240,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+962,240.25,,,,,
+963,240.5,,,,,
+964,240.75,,,,,
+965,241,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+966,241.25,,,,,
+967,241.5,,,,,
+968,241.75,B,,[0.25],,4th Quarter
+969,242,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+970,242.25,,,,,
+971,242.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+972,242.75,,,,,
+973,243,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+974,243.25,,,,,
+975,243.5,,,,,
+976,243.75,,,,,
+977,244,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+978,244.25,,,,,
+979,244.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+980,244.75,,,,,
+981,245,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+982,245.25,,,,,
+983,245.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+984,245.75,,,,,
+985,246,Tom-tom,,[1.0],,1st Quarter
+986,246.25,,,,,
+987,246.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+988,246.75,,,,,
+989,247,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+990,247.25,,,,,
+991,247.5,,,,,
+992,247.75,,,,,
+993,248,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+994,248.25,,,,,
+995,248.5,,,,,
+996,248.75,,,,,
+997,249,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+998,249.25,,,,,
+999,249.5,,,,,
+1000,249.75,B,,[0.25],,4th Quarter
+1001,250,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1002,250.25,,,,,
+1003,250.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1004,250.75,,,,,
+1005,251,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1006,251.25,,,,,
+1007,251.5,,,,,
+1008,251.75,,,,,
+1009,252,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1010,252.25,,,,,
+1011,252.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1012,252.75,,,,,
+1013,253,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1014,253.25,,,,,
+1015,253.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1016,253.75,,,,,
+1017,254,Tom-tom,,[1.0],,1st Quarter
+1018,254.25,,,,,
+1019,254.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1020,254.75,,,,,
+1021,255,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1022,255.25,,,,,
+1023,255.5,,,,,
+1024,255.75,,,,,
+1025,256,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1026,256.25,,,,,
+1027,256.5,,,,,
+1028,256.75,,,,,
+1029,257,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1030,257.25,,,,,
+1031,257.5,,,,,
+1032,257.75,B,,[0.25],,4th Quarter
+1033,258,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1034,258.25,,,,,
+1035,258.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1036,258.75,,,,,
+1037,259,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1038,259.25,,,,,
+1039,259.5,,,,,
+1040,259.75,,,,,
+1041,260,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1042,260.25,,,,,
+1043,260.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1044,260.75,,,,,
+1045,261,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1046,261.25,,,,,
+1047,261.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1048,261.75,,,,,
+1049,262,Tom-tom,,[1.0],,1st Quarter
+1050,262.25,,,,,
+1051,262.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1052,262.75,,,,,
+1053,263,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1054,263.25,,,,,
+1055,263.5,,,,,
+1056,263.75,,,,,
+1057,264,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1058,264.25,,,,,
+1059,264.5,,,,,
+1060,264.75,,,,,
+1061,265,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1062,265.25,,,,,
+1063,265.5,,,,,
+1064,265.75,B,,[0.25],,4th Quarter
+1065,266,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1066,266.25,,,,,
+1067,266.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1068,266.75,,,,,
+1069,267,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1070,267.25,,,,,
+1071,267.5,,,,,
+1072,267.75,,,,,
+1073,268,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1074,268.25,,,,,
+1075,268.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1076,268.75,,,,,
+1077,269,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1078,269.25,,,,,
+1079,269.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1080,269.75,,,,,
+1081,270,Tom-tom,,[1.0],,1st Quarter
+1082,270.25,,,,,
+1083,270.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1084,270.75,,,,,
+1085,271,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1086,271.25,,,,,
+1087,271.5,,,,,
+1088,271.75,,,,,
+1089,272,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1090,272.25,,,,,
+1091,272.5,,,,,
+1092,272.75,,,,,
+1093,273,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1094,273.25,,,,,
+1095,273.5,,,,,
+1096,273.75,,,,,
+1097,274,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1098,274.25,,,,,
+1099,274.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1100,274.75,,,,,
+1101,275,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1102,275.25,,,,,
+1103,275.5,,,,,
+1104,275.75,,,,,
+1105,276,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1106,276.25,,,,,
+1107,276.5,,,,,
+1108,276.75,,,,,
+1109,277,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1110,277.25,B,,[0.25],,2nd Quarter
+1111,277.5,B,,[0.25],,3rd Quarter
+1112,277.75,B,,[0.25],,4th Quarter
+1113,278,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1114,278.25,B,,[0.25],,2nd Quarter
+1115,278.5,B,,[0.25],,3rd Quarter
+1116,278.75,B,,[0.25],,4th Quarter
+1117,279,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1118,279.25,B,,[0.25],,2nd Quarter
+1119,279.5,B,,[0.25],,3rd Quarter
+1120,279.75,B,,[0.25],,4th Quarter
+1121,280,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1122,280.25,,,,,
+1123,280.5,,,,,
+1124,280.75,,,,,
+1125,281,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1126,281.25,,,,,
+1127,281.5,,,,,
+1128,281.75,,,,,
+1129,282,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1130,282.25,,,,,
+1131,282.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1132,282.75,,,,,
+1133,283,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1134,283.25,,,,,
+1135,283.5,,,,,
+1136,283.75,,,,,
+1137,284,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1138,284.25,,,,,
+1139,284.5,,,,,
+1140,284.75,,,,,
+1141,285,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1142,285.25,B,,[0.25],,2nd Quarter
+1143,285.5,B,,[0.25],,3rd Quarter
+1144,285.75,B,,[0.25],,4th Quarter
+1145,286,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1146,286.25,B,,[0.25],,2nd Quarter
+1147,286.5,B,,[0.25],,3rd Quarter
+1148,286.75,B,,[0.25],,4th Quarter
+1149,287,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1150,287.25,B,,[0.25],,2nd Quarter
+1151,287.5,B,,[0.25],,3rd Quarter
+1152,287.75,B,,[0.25],,4th Quarter
+1153,288,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1154,288.25,,,,,
+1155,288.5,,,,,
+1156,288.75,,,,,
+1157,289,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1158,289.25,,,,,
+1159,289.5,,,,,
+1160,289.75,,,,,
+1161,290,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1162,290.25,,,,,
+1163,290.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1164,290.75,,,,,
+1165,291,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1166,291.25,,,,,
+1167,291.5,,,,,
+1168,291.75,,,,,
+1169,292,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1170,292.25,,,,,
+1171,292.5,,,,,
+1172,292.75,,,,,
+1173,293,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1174,293.25,B,,[0.25],,2nd Quarter
+1175,293.5,B,,[0.25],,3rd Quarter
+1176,293.75,B,,[0.25],,4th Quarter
+1177,294,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1178,294.25,B,,[0.25],,2nd Quarter
+1179,294.5,B,,[0.25],,3rd Quarter
+1180,294.75,B,,[0.25],,4th Quarter
+1181,295,B, Hi-Hat (Open),[0.25, 1.0],1st Quarter
+1182,295.25,B,,[0.25],,2nd Quarter
+1183,295.5,B,,[0.25],,3rd Quarter
+1184,295.75,B,,[0.25],,4th Quarter
+1185,296,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1186,296.25,,,,,
+1187,296.5,,,,,
+1188,296.75,,,,,
+1189,297,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1190,297.25,,,,,
+1191,297.5,,,,,
+1192,297.75,,,,,
+1193,298,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1194,298.25,,,,,
+1195,298.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1196,298.75,,,,,
+1197,299,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1198,299.25,,,,,
+1199,299.5,,,,,
+1200,299.75,,,,,
+1201,300,B,Bass Drum,[0.0, 0.5],1st Quarter
+1202,300.25,,,,,
+1203,300.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1204,300.75,,,,,
+1205,301,B,Bass Drum,[0.0, 0.5],1st Quarter
+1206,301.25,,,,,
+1207,301.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1208,301.75,,,,,
+1209,302,B,Bass Drum,[0.0, 0.5],1st Quarter
+1210,302.25,,,,,
+1211,302.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1212,302.75,,,,,
+1213,303,B,Bass Drum,[0.0, 0.5],1st Quarter
+1214,303.25,,,,,
+1215,303.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1216,303.75,,,,,
+1217,304,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1218,304.25,,,,,
+1219,304.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1220,304.75,,,,,
+1221,305,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1222,305.25,,,,,
+1223,305.5,Bass Drum,,[0.5],,3rd Quarter
+1224,305.75,,,,,
+1225,306,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1226,306.25,,,,,
+1227,306.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1228,306.75,,,,,
+1229,307,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1230,307.25,,,,,
+1231,307.5,Bass Drum,,[0.5],,3rd Quarter
+1232,307.75,,,,,
+1233,308,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1234,308.25,,,,,
+1235,308.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1236,308.75,,,,,
+1237,309,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1238,309.25,,,,,
+1239,309.5,Bass Drum,,[0.5],,3rd Quarter
+1240,309.75,,,,,
+1241,310,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1242,310.25,,,,,
+1243,310.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1244,310.75,,,,,
+1245,311,,,,,
+1246,311.25,,,,,
+1247,311.5,B,,[0.25],,3rd Quarter
+1248,311.75,B,,[0.25],,4th Quarter
+1249,312,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1250,312.25,,,,,
+1251,312.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1252,312.75,,,,,
+1253,313,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1254,313.25,,,,,
+1255,313.5,Bass Drum,,[0.5],,3rd Quarter
+1256,313.75,,,,,
+1257,314,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1258,314.25,,,,,
+1259,314.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1260,314.75,,,,,
+1261,315,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1262,315.25,,,,,
+1263,315.5,Bass Drum,,[0.5],,3rd Quarter
+1264,315.75,,,,,
+1265,316,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1266,316.25,,,,,
+1267,316.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1268,316.75,,,,,
+1269,317,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1270,317.25,,,,,
+1271,317.5,Bass Drum,,[0.5],,3rd Quarter
+1272,317.75,,,,,
+1273,318,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1274,318.25,,,,,
+1275,318.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1276,318.75,,,,,
+1277,319,,,,,
+1278,319.25,,,,,
+1279,319.5,B,,[0.25],,3rd Quarter
+1280,319.75,B,,[0.25],,4th Quarter
+1281,320,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1282,320.25,,,,,
+1283,320.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1284,320.75,,,,,
+1285,321,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1286,321.25,,,,,
+1287,321.5,Bass Drum,,[0.5],,3rd Quarter
+1288,321.75,,,,,
+1289,322,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1290,322.25,,,,,
+1291,322.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1292,322.75,,,,,
+1293,323,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1294,323.25,,,,,
+1295,323.5,Bass Drum,,[0.5],,3rd Quarter
+1296,323.75,,,,,
+1297,324,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1298,324.25,,,,,
+1299,324.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1300,324.75,,,,,
+1301,325,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1302,325.25,,,,,
+1303,325.5,Bass Drum,,[0.5],,3rd Quarter
+1304,325.75,,,,,
+1305,326,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1306,326.25,,,,,
+1307,326.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1308,326.75,,,,,
+1309,327,,,,,
+1310,327.25,,,,,
+1311,327.5,B,,[0.25],,3rd Quarter
+1312,327.75,B,,[0.25],,4th Quarter
+1313,328,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1314,328.25,,,,,
+1315,328.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1316,328.75,,,,,
+1317,329,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1318,329.25,,,,,
+1319,329.5,Bass Drum,,[0.5],,3rd Quarter
+1320,329.75,,,,,
+1321,330,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1322,330.25,,,,,
+1323,330.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1324,330.75,,,,,
+1325,331,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1326,331.25,,,,,
+1327,331.5,Bass Drum,,[0.5],,3rd Quarter
+1328,331.75,,,,,
+1329,332,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1330,332.25,,,,,
+1331,332.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1332,332.75,,,,,
+1333,333,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1334,333.25,,,,,
+1335,333.5,Bass Drum,,[0.5],,3rd Quarter
+1336,333.75,,,,,
+1337,334,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1338,334.25,,,,,
+1339,334.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1340,334.75,,,,,
+1341,335,,,,,
+1342,335.25,,,,,
+1343,335.5,B,,[0.25],,3rd Quarter
+1344,335.75,B,,[0.25],,4th Quarter
+1345,336,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1346,336.25,,,,,
+1347,336.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1348,336.75,,,,,
+1349,337,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1350,337.25,,,,,
+1351,337.5,Bass Drum,,[0.5],,3rd Quarter
+1352,337.75,,,,,
+1353,338,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1354,338.25,,,,,
+1355,338.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1356,338.75,,,,,
+1357,339,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1358,339.25,,,,,
+1359,339.5,Bass Drum,,[0.5],,3rd Quarter
+1360,339.75,,,,,
+1361,340,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1362,340.25,,,,,
+1363,340.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1364,340.75,,,,,
+1365,341,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1366,341.25,,,,,
+1367,341.5,Bass Drum,,[0.5],,3rd Quarter
+1368,341.75,,,,,
+1369,342,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1370,342.25,,,,,
+1371,342.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1372,342.75,,,,,
+1373,343,,,,,
+1374,343.25,,,,,
+1375,343.5,B,,[0.25],,3rd Quarter
+1376,343.75,B,,[0.25],,4th Quarter
+1377,344,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1378,344.25,,,,,
+1379,344.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1380,344.75,,,,,
+1381,345,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1382,345.25,,,,,
+1383,345.5,Bass Drum,,[0.5],,3rd Quarter
+1384,345.75,,,,,
+1385,346,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1386,346.25,,,,,
+1387,346.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1388,346.75,,,,,
+1389,347,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1390,347.25,,,,,
+1391,347.5,Bass Drum,,[0.5],,3rd Quarter
+1392,347.75,,,,,
+1393,348,Tom-tom, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1394,348.25,,,,,
+1395,348.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1396,348.75,,,,,
+1397,349,Bass Drum,Bass Drum,[0.5, 1.0],1st Quarter
+1398,349.25,,,,,
+1399,349.5,Bass Drum,,[0.5],,3rd Quarter
+1400,349.75,,,,,
+1401,350,Bass Drum, Hi-Hat (Open),[0.5, 0.5],1st Quarter
+1402,350.25,,,,,
+1403,350.5,Bass Drum, Hi-Hat (Open),[0.5, 0.5],3rd Quarter
+1404,350.75,,,,,
+1405,351,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1406,351.25,,,,,
+1407,351.5,,,,,
+1408,351.75,,,,,
+1409,352,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1410,352.25,,,,,
+1411,352.5,,,,,
+1412,352.75,,,,,
+1413,353,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1414,353.25,,,,,
+1415,353.5,,,,,
+1416,353.75,B,,[0.25],,4th Quarter
+1417,354,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1418,354.25,,,,,
+1419,354.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1420,354.75,,,,,
+1421,355,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1422,355.25,,,,,
+1423,355.5,,,,,
+1424,355.75,,,,,
+1425,356,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1426,356.25,,,,,
+1427,356.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1428,356.75,,,,,
+1429,357,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1430,357.25,,,,,
+1431,357.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1432,357.75,,,,,
+1433,358,Tom-tom,,[1.0],,1st Quarter
+1434,358.25,,,,,
+1435,358.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1436,358.75,,,,,
+1437,359,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1438,359.25,,,,,
+1439,359.5,,,,,
+1440,359.75,,,,,
+1441,360,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1442,360.25,,,,,
+1443,360.5,,,,,
+1444,360.75,,,,,
+1445,361,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1446,361.25,,,,,
+1447,361.5,,,,,
+1448,361.75,B,,[0.25],,4th Quarter
+1449,362,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1450,362.25,,,,,
+1451,362.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1452,362.75,,,,,
+1453,363,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1454,363.25,,,,,
+1455,363.5,,,,,
+1456,363.75,,,,,
+1457,364,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1458,364.25,,,,,
+1459,364.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1460,364.75,,,,,
+1461,365,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1462,365.25,,,,,
+1463,365.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1464,365.75,,,,,
+1465,366,Tom-tom,,[1.0],,1st Quarter
+1466,366.25,,,,,
+1467,366.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1468,366.75,,,,,
+1469,367,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1470,367.25,,,,,
+1471,367.5,,,,,
+1472,367.75,,,,,
+1473,368,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1474,368.25,,,,,
+1475,368.5,,,,,
+1476,368.75,,,,,
+1477,369,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1478,369.25,,,,,
+1479,369.5,,,,,
+1480,369.75,B,,[0.25],,4th Quarter
+1481,370,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1482,370.25,,,,,
+1483,370.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1484,370.75,,,,,
+1485,371,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1486,371.25,,,,,
+1487,371.5,,,,,
+1488,371.75,,,,,
+1489,372,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1490,372.25,,,,,
+1491,372.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1492,372.75,,,,,
+1493,373,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1494,373.25,,,,,
+1495,373.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1496,373.75,,,,,
+1497,374,Tom-tom,,[1.0],,1st Quarter
+1498,374.25,,,,,
+1499,374.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1500,374.75,,,,,
+1501,375,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1502,375.25,,,,,
+1503,375.5,,,,,
+1504,375.75,,,,,
+1505,376,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1506,376.25,,,,,
+1507,376.5,,,,,
+1508,376.75,,,,,
+1509,377,Tom-tom,Bass Drum,[1.0, 0.75],1st Quarter
+1510,377.25,,,,,
+1511,377.5,,,,,
+1512,377.75,B,,[0.25],,4th Quarter
+1513,378,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1514,378.25,,,,,
+1515,378.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1516,378.75,,,,,
+1517,379,Tom-tom,Bass Drum,[1.0, 1.0],1st Quarter
+1518,379.25,,,,,
+1519,379.5,,,,,
+1520,379.75,,,,,
+1521,380,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1522,380.25,,,,,
+1523,380.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1524,380.75,,,,,
+1525,381,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1526,381.25,,,,,
+1527,381.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1528,381.75,,,,,
+1529,382,Tom-tom,Bass Drum,[1.0, 0.5],1st Quarter
+1530,382.25,,,,,
+1531,382.5,B,,[0.5],,3rd Quarter
+1532,382.75,,,,,
+1533,383,Tom-tom, Hi-Hat (Open),[1.0, 0.5],1st Quarter
+1534,383.25,,,,,
+1535,383.5,Hi-Hat (Open),,[0.5],,3rd Quarter
+1536,383.75,,,,,
+1537,384,Tom-tom, Hi-Hat (Open),[1.0, 1.0],1st Quarter
+1538,384.25,,,,,
+1539,384.5,,,,,
+1540,384.75,,,,,
+1541,385,,,,,
+1542,385.25,,,,,
+1543,385.5,,,,,
+1544,385.75,,,,,
+1545,386,,,,,
+1546,386.25,,,,,
+1547,386.5,,,,,
+1548,386.75,,,,,
+1549,387,,,,,
+1550,387.25,,,,,
+1551,387.5,,,,,
+1552,387.75,,,,,

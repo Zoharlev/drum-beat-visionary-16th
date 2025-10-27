@@ -557,7 +557,7 @@ export const useCSVPatternLoader = () => {
       if (columns.length < 4) continue;
 
       const count = columns[0].trim();
-      // Column 1 is Offset, columns 2 and 3 are instruments
+      // Column 1 is Offset, columns 2 and 3 are Instrument1 and Instrument2
       const instrument1 = columns[2].trim();
       const instrument2 = columns[3] ? columns[3].trim() : '';
       
@@ -600,7 +600,7 @@ export const useCSVPatternLoader = () => {
     
     // Try the new quarter beats format first, then other formats
     const filesToTry = [
-      'come_as_you_are_drums_quarter_beats_with_duration.csv',
+      'come_as_you_are_drums_quarter_beats_with_subdivision.csv',
       'come_as_you_are_drums_beat_count_advanced.csv',
       'come_as_you_are_corrected_mapping-2.csv',
       'come_as_you_are_corrected_mapping.csv',
