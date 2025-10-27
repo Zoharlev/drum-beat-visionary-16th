@@ -295,9 +295,13 @@ export const DrumMachine = () => {
           }
         });
 
-      // Play metronome each beat (every 2 steps with 8 steps/bar)
-      if (metronomeEnabled && currentStep % 2 === 0) {
-        playMetronome();
+      // Play metronome on each beat boundary
+      if (metronomeEnabled) {
+        const beats = numberOfBeats || Math.max(1, Math.floor(pattern.length / 4));
+        const stepsPerBeat = Math.max(1, Math.round(pattern.length / beats));
+        if (currentStep % stepsPerBeat === 0) {
+          playMetronome();
+        }
       }
     }
   }, [currentStep, isPlaying, displayPattern, metronomeEnabled]);
