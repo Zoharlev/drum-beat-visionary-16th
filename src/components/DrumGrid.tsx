@@ -151,17 +151,16 @@ export const DrumGrid = ({
             
             // If we have subdivision data from the CSV, use it
             if (pattern.subdivisions && pattern.subdivisions[stepIndex]) {
-              const subdivision = pattern.subdivisions[stepIndex];
-              // Extract just the subdivision part (e.g., "1st Quarter" -> "1st", "3rd Quarter" -> "3rd")
-              const subdivisionMatch = subdivision.match(/(\d+(?:st|nd|rd|th))\s+Quarter/);
-              if (subdivisionMatch) {
-                displayText = subdivisionMatch[1];
-                // Highlight 1st quarter more prominently
-                if (subdivision.includes('1st Quarter')) {
-                  textStyle = "text-primary font-bold";
-                } else {
-                  textStyle = "text-accent/80 font-medium";
-                }
+              const count = pattern.subdivisions[stepIndex];
+              displayText = count;
+              
+              // Style based on count type
+              if (count === '1' || count === '2' || count === '3' || count === '4') {
+                textStyle = "text-primary font-bold";
+              } else if (count === '&') {
+                textStyle = "text-accent font-medium";
+              } else if (count === 'e' || count === 'a') {
+                textStyle = "text-muted-foreground/70 font-medium";
               }
             } else {
               // Fallback to 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
