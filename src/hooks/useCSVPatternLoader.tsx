@@ -538,13 +538,59 @@ export const useCSVPatternLoader = () => {
   const loadPatternFromAdvancedCountCSV = async (csvContent: string): Promise<DrumPattern> => {
     const lines = csvContent.trim().split('\n');
     
-    // Count total quarter beat subdivisions to determine pattern length
-    const totalLines = lines.length - 1; // Subtract header
-    const stepsPerBar = 16; // 16 positions per bar (4 quarter beats × 4 subdivisions)
-    const totalBars = Math.ceil(totalLines / stepsPerBar);
-    const patternLength = totalBars * stepsPerBar;
+    // Helper function to get position within a bar based on count and current beat
+    const getPositionInBar = (count: string, currentBeat: number): number => {
+      const beatBase = (currentBeat - 1) * 4; // Each beat has 4 subdivisions
+      switch (count) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+          return beatBase;
+        case 'e':
+          return beatBase + 1;
+        case '&':
+          return beatBase + 2;
+        case 'a':
+          return beatBase + 3;
+        default:
+          return -1;
+      }
+    };
 
-    console.log(`Advanced Count CSV Pattern: totalLines=${totalLines}, totalBars=${totalBars}, patternLength=${patternLength}`);
+    // First pass: count total bars to determine pattern length
+    let barCount = 0;
+    let currentBeat = 1;
+    let lastCount = '';
+    
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      const columns = line.split(',');
+      if (columns.length < 1) continue;
+      
+      const count = columns[0].trim();
+      
+      // Track which beat we're on (1, 2, 3, or 4)
+      if (count === '1') currentBeat = 1;
+      else if (count === '2') currentBeat = 2;
+      else if (count === '3') currentBeat = 3;
+      else if (count === '4') currentBeat = 4;
+      
+      // When we see beat '1' after beat '4', we've started a new bar
+      if (count === '1' && lastCount === 'a' && currentBeat === 1) {
+        barCount++;
+      }
+      lastCount = count;
+    }
+    // Add 1 for the final bar
+    if (lastCount !== '') barCount++;
+    
+    const stepsPerBar = 16; // 16 positions per bar (4 beats × 4 subdivisions)
+    const patternLength = barCount * stepsPerBar;
+
+    console.log(`Advanced Count CSV Pattern: barCount=${barCount}, patternLength=${patternLength}`);
 
     const pattern: DrumPattern = {
       'Kick': new Array(patternLength).fill(false),
@@ -557,49 +603,67 @@ export const useCSVPatternLoader = () => {
       length: patternLength
     };
 
-    // Parse each data line - each line represents a sequential quarter beat subdivision
+    // Second pass: parse instrument data
+    let currentBar = 0;
+    currentBeat = 1;
+    lastCount = '';
+    
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
 
       const columns = line.split(',');
-      if (columns.length < 7) continue;
+      if (columns.length < 2) continue;
 
       const count = columns[0].trim();
-      const offset = parseFloat(columns[1].trim()); // Offset (Quarter Length)
-      const instrument1 = columns[2].trim();
-      const instrument2 = columns[3] ? columns[3].trim() : '';
-      const subdivision = columns[6] ? columns[6].trim() : ''; // Beat Subdivision
+      const instrument1 = columns[1] ? columns[1].trim() : '';
+      const instrument2 = columns[2] ? columns[2].trim() : '';
       
-      // Each line represents a sequential step (quarter beat subdivision)
-      const stepIndex = i - 1; // 0-based step index (excluding header)
+      // Track which beat we're on (1, 2, 3, or 4)
+      if (count === '1') currentBeat = 1;
+      else if (count === '2') currentBeat = 2;
+      else if (count === '3') currentBeat = 3;
+      else if (count === '4') currentBeat = 4;
+      
+      // When we see beat '1' after beat '4' subdivision 'a', we've started a new bar
+      if (count === '1' && lastCount === 'a' && currentBeat === 1 && i > 1) {
+        currentBar++;
+      }
+      lastCount = count;
+      
+      // Get position within current bar
+      const positionInBar = getPositionInBar(count, currentBeat);
+      if (positionInBar === -1) continue;
+      
+      // Calculate absolute step index
+      const stepIndex = (currentBar * stepsPerBar) + positionInBar;
+      
+      if (stepIndex >= patternLength) continue;
 
-      if (stepIndex < patternLength) {
-        // Store subdivision label and offset for this step
-        (pattern.subdivisions as string[])[stepIndex] = subdivision;
-        (pattern.offsets as number[])[stepIndex] = offset;
+      // Store subdivision label
+      (pattern.subdivisions as string[])[stepIndex] = count;
+      (pattern.offsets as number[])[stepIndex] = stepIndex / 4; // Quarter beat offset
 
-        // Process Instrument 1 column - may contain comma-separated instruments
-        if (instrument1) {
-          const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
-          instruments1.forEach(inst => {
-            const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
-              (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-            }
-          });
-        }
+      // Process Instrument 1 column - may contain comma-separated instruments
+      if (instrument1) {
+        const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
+        instruments1.forEach(inst => {
+          const instrumentKey = normalizeInstrument(inst);
+          if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
+            (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+          }
+        });
+      }
 
-        // Process Instrument 2 column - may contain comma-separated instruments
-        if (instrument2) {
-          const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
-          instruments2.forEach(inst => {
-            const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
-              (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-            }
-          });
-        }
+      // Process Instrument 2 column - may contain comma-separated instruments
+      if (instrument2) {
+        const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
+        instruments2.forEach(inst => {
+          const instrumentKey = normalizeInstrument(inst);
+          if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
+            (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+          }
+        });
       }
     }
 
