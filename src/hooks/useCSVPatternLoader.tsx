@@ -10,8 +10,10 @@ interface CSVDrumRow {
 }
 
 interface DrumPattern {
-  [key: string]: boolean[] | number;
+  [key: string]: boolean[] | number | string[] | number[];
   length: number;
+  subdivisions?: string[]; // Store subdivision labels for each step
+  offsets?: number[]; // Store precise offset timing for each step
 }
 
 // Map CSV drum components to our drum types
@@ -531,9 +533,9 @@ export const useCSVPatternLoader = () => {
   const loadPatternFromAdvancedCountCSV = async (csvContent: string): Promise<DrumPattern> => {
     const lines = csvContent.trim().split('\n');
     
-    // Count total 16th notes to determine pattern length (16 steps per bar)
+    // Count total quarter beat subdivisions to determine pattern length
     const totalLines = lines.length - 1; // Subtract header
-    const stepsPerBar = 16; // 16 positions per bar (1 e & a 2 e & a 3 e & a 4 e & a)
+    const stepsPerBar = 16; // 16 positions per bar (4 quarter beats × 4 subdivisions)
     const totalBars = Math.ceil(totalLines / stepsPerBar);
     const patternLength = totalBars * stepsPerBar;
 
@@ -545,35 +547,39 @@ export const useCSVPatternLoader = () => {
       hihat: new Array(patternLength).fill(false),
       openhat: new Array(patternLength).fill(false),
       tom: new Array(patternLength).fill(false),
+      subdivisions: new Array(patternLength).fill(''),
+      offsets: new Array(patternLength).fill(0),
       length: patternLength
     };
 
-    // Parse each data line - each line represents a sequential 16th note position
+    // Parse each data line - each line represents a sequential quarter beat subdivision
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
 
       const columns = line.split(',');
-      if (columns.length < 4) continue;
+      if (columns.length < 7) continue;
 
       const count = columns[0].trim();
-      // Column 1 is Offset, columns 2 and 3 are Instrument1 and Instrument2
+      const offset = parseFloat(columns[1].trim()); // Offset (Quarter Length)
       const instrument1 = columns[2].trim();
       const instrument2 = columns[3] ? columns[3].trim() : '';
+      const subdivision = columns[6] ? columns[6].trim() : ''; // Beat Subdivision
       
-      // Skip if no instruments specified
-      if (!instrument1 && !instrument2) continue;
-
-      // Each line represents a sequential step (16th note)
+      // Each line represents a sequential step (quarter beat subdivision)
       const stepIndex = i - 1; // 0-based step index (excluding header)
 
       if (stepIndex < patternLength) {
+        // Store subdivision label and offset for this step
+        (pattern.subdivisions as string[])[stepIndex] = subdivision;
+        (pattern.offsets as number[])[stepIndex] = offset;
+
         // Process Instrument 1 column - may contain comma-separated instruments
         if (instrument1) {
           const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
           instruments1.forEach(inst => {
             const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined) {
+            if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
               (pattern[instrumentKey] as boolean[])[stepIndex] = true;
             }
           });
@@ -584,7 +590,7 @@ export const useCSVPatternLoader = () => {
           const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
           instruments2.forEach(inst => {
             const instrumentKey = normalizeInstrument(inst);
-            if (pattern[instrumentKey] !== undefined) {
+            if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
               (pattern[instrumentKey] as boolean[])[stepIndex] = true;
             }
           });

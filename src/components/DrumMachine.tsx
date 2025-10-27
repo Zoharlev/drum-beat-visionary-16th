@@ -10,8 +10,10 @@ import { useCSVPatternLoader } from "@/hooks/useCSVPatternLoader";
 import { cn } from "@/lib/utils";
 
 interface DrumPattern {
-  [key: string]: boolean[] | number;
+  [key: string]: boolean[] | number | string[] | number[];
   length: number;
+  subdivisions?: string[];
+  offsets?: number[];
 }
 
 export const DrumMachine = () => {

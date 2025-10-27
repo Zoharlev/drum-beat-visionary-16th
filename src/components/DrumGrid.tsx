@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 
 interface DrumGridProps {
   pattern: {
-    [key: string]: boolean[] | number;
+    [key: string]: boolean[] | number | string[] | number[];
     length: number;
+    subdivisions?: string[];
+    offsets?: number[];
   };
   currentStep: number;
   currentView?: number;
@@ -123,26 +125,42 @@ export const DrumGrid = ({
             let displayText = "";
             let textStyle = "text-muted-foreground/60";
             
-            // Show 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
-            const posInBar = stepIndex % 16;
-            const beatPosition = posInBar % 4;
-            
-            if (beatPosition === 0) {
-              // Main beats: 1, 2, 3, 4
-              displayText = String(Math.floor(posInBar / 4) + 1);
-              textStyle = "text-primary font-bold";
-            } else if (beatPosition === 1) {
-              // 16th note "e"
-              displayText = "e";
-              textStyle = "text-muted-foreground/70 font-medium";
-            } else if (beatPosition === 2) {
-              // 8th note "&"
-              displayText = "&";
-              textStyle = "text-accent font-medium";
-            } else if (beatPosition === 3) {
-              // 16th note "a"
-              displayText = "a";
-              textStyle = "text-muted-foreground/70 font-medium";
+            // If we have subdivision data from the CSV, use it
+            if (pattern.subdivisions && pattern.subdivisions[stepIndex]) {
+              const subdivision = pattern.subdivisions[stepIndex];
+              // Extract just the subdivision part (e.g., "1st Quarter" -> "1st", "3rd Quarter" -> "3rd")
+              const subdivisionMatch = subdivision.match(/(\d+(?:st|nd|rd|th))\s+Quarter/);
+              if (subdivisionMatch) {
+                displayText = subdivisionMatch[1];
+                // Highlight 1st quarter more prominently
+                if (subdivision.includes('1st Quarter')) {
+                  textStyle = "text-primary font-bold";
+                } else {
+                  textStyle = "text-accent/80 font-medium";
+                }
+              }
+            } else {
+              // Fallback to 16-step bar: 1 e & a 2 e & a 3 e & a 4 e & a
+              const posInBar = stepIndex % 16;
+              const beatPosition = posInBar % 4;
+              
+              if (beatPosition === 0) {
+                // Main beats: 1, 2, 3, 4
+                displayText = String(Math.floor(posInBar / 4) + 1);
+                textStyle = "text-primary font-bold";
+              } else if (beatPosition === 1) {
+                // 16th note "e"
+                displayText = "e";
+                textStyle = "text-muted-foreground/70 font-medium";
+              } else if (beatPosition === 2) {
+                // 8th note "&"
+                displayText = "&";
+                textStyle = "text-accent font-medium";
+              } else if (beatPosition === 3) {
+                // 16th note "a"
+                displayText = "a";
+                textStyle = "text-muted-foreground/70 font-medium";
+              }
             }
             
             return (

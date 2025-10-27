@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 
 interface DrumNotationProps {
   pattern: {
-    [key: string]: boolean[] | number;
+    [key: string]: boolean[] | number | string[] | number[];
     length: number;
+    subdivisions?: string[];
+    offsets?: number[];
   };
   currentStep: number;
   currentView?: number;
