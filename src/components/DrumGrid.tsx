@@ -220,7 +220,7 @@ export const DrumGrid = ({
         </div>
 
         {/* Drum Rows */}
-        {Object.entries(pattern).filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets').map(([drumKey, steps]) => {
+        {Object.entries(pattern).filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections').map(([drumKey, steps]) => {
           if (!Array.isArray(steps)) return null;
           
           const drumInfo = drumLabels[drumKey] || { 

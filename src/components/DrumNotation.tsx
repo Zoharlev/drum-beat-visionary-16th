@@ -369,7 +369,7 @@ export const DrumNotation = ({
 
           {/* Notes */}
           {Object.entries(pattern)
-            .filter(([key]) => key !== 'length')
+            .filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections')
             .map(([drumKey, steps]) => {
               if (!Array.isArray(steps)) return null;
               

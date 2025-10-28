@@ -736,14 +736,16 @@ export const DrumMachine = () => {
     const newPattern: DrumPattern = { length: newLength };
     
     Object.keys(pattern).forEach(key => {
-      if (key !== 'length') {
+      if (key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections') {
         const oldSteps = pattern[key] as boolean[];
-        if (newLength === 8) {
-          // Take first 8 steps when going from 16 to 8
-          newPattern[key] = oldSteps.slice(0, 8);
-        } else {
-          // Extend to 16 steps when going from 8 to 16, duplicating the pattern
-          newPattern[key] = [...oldSteps, ...oldSteps];
+        if (Array.isArray(oldSteps)) {
+          if (newLength === 8) {
+            // Take first 8 steps when going from 16 to 8
+            newPattern[key] = oldSteps.slice(0, 8);
+          } else {
+            // Extend to 16 steps when going from 8 to 16, duplicating the pattern
+            newPattern[key] = [...oldSteps, ...oldSteps];
+          }
         }
       }
     });
@@ -769,7 +771,7 @@ export const DrumMachine = () => {
     
     // Clear all instrument patterns
     Object.keys(pattern).forEach(key => {
-      if (key !== 'length') {
+      if (key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections') {
         clearedPattern[key] = new Array(patternLength).fill(false);
       }
     });
@@ -796,7 +798,7 @@ export const DrumMachine = () => {
       let totalBeats = 0;
       
       Object.entries(newPattern).forEach(([drumType, steps]) => {
-        if (drumType !== 'length' && Array.isArray(steps)) {
+        if (drumType !== 'length' && drumType !== 'subdivisions' && drumType !== 'offsets' && drumType !== 'sections' && Array.isArray(steps)) {
           const activeSteps = (steps as boolean[]).filter(Boolean).length;
           if (activeSteps > 0) {
             activeComponents.push(drumType);
@@ -872,7 +874,7 @@ export const DrumMachine = () => {
             <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
             <div className="space-y-2">
               {/* Drum Info */}
-              {Object.keys(displayPattern).filter(key => key !== 'length').map((instrument) => {
+              {Object.keys(displayPattern).filter(key => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections').map((instrument) => {
                 const steps = displayPattern[instrument] as boolean[];
                 if (!Array.isArray(steps)) return null;
                 
@@ -936,7 +938,7 @@ export const DrumMachine = () => {
             <div className="bg-card border border-border rounded-lg p-4">
               <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
               <div className="space-y-2">
-                {Object.keys(displayPattern).filter(key => key !== 'length').map((instrument) => {
+                {Object.keys(displayPattern).filter(key => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections').map((instrument) => {
                   const steps = displayPattern[instrument] as boolean[];
                   if (!Array.isArray(steps)) return null;
                   
