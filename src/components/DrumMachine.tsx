@@ -152,7 +152,7 @@ export const DrumMachine = () => {
   const loadHHClosedBuffer = async () => {
     if (audioContextRef.current && !hhClosedBufferRef.current) {
       try {
-        const response = await fetch('/samples/cloed-hi-hat-808-rome.wav');
+        const response = await fetch('/samples/closed-hi-hat-new.wav?v=20251028d', { cache: 'no-store' });
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
         hhClosedBufferRef.current = audioBuffer;
