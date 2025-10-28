@@ -14,6 +14,7 @@ interface DrumPattern {
   length: number;
   subdivisions?: string[];
   offsets?: number[];
+  sections?: string[];
 }
 
 export const DrumMachine = () => {
@@ -40,6 +41,7 @@ export const DrumMachine = () => {
   });
   const [backingTrackEnabled, setBackingTrackEnabled] = useState(false);
   const [drumSoundsMuted, setDrumSoundsMuted] = useState(false);
+  const [currentSection, setCurrentSection] = useState<string>('');
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -309,9 +311,17 @@ export const DrumMachine = () => {
   // Separate effect for playing sounds based on currentStep
   useEffect(() => {
     if (isPlaying) {
+      // Update current section if sections data exists
+      if (displayPattern.sections && Array.isArray(displayPattern.sections)) {
+        const sectionAtCurrentStep = displayPattern.sections[currentStep];
+        if (sectionAtCurrentStep && sectionAtCurrentStep !== currentSection) {
+          setCurrentSection(sectionAtCurrentStep);
+        }
+      }
+      
       // Play sounds for active notes at current step
       Object.entries(displayPattern)
-        .filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets')
+        .filter(([key]) => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections')
         .forEach(([drum, steps]) => {
           if (Array.isArray(steps) && steps[currentStep]) {
             playDrumSound(drum);
@@ -323,7 +333,7 @@ export const DrumMachine = () => {
         playMetronome();
       }
     }
-  }, [currentStep, isPlaying, displayPattern, metronomeEnabled]);
+  }, [currentStep, isPlaying, displayPattern, metronomeEnabled, currentSection]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -677,6 +687,7 @@ export const DrumMachine = () => {
     setIsPlaying(false);
     setCurrentStep(0);
     setTimeRemaining(120); // Reset timer to 2:00
+    setCurrentSection(''); // Reset section
     
     // Reset backing track to beginning
     if (backingTrackRef.current) {
@@ -778,6 +789,7 @@ export const DrumMachine = () => {
       // Reset playback state for the new pattern
       setCurrentStep(0);
       setCurrentView(0); // Reset to first view
+      setCurrentSection(''); // Reset section
       
       // Analyze loaded pattern to show component info
       const activeComponents: string[] = [];
@@ -1074,6 +1086,15 @@ export const DrumMachine = () => {
           <div className="flex justify-between items-center mt-8 max-w-4xl mx-auto">
             {/* Left Side Controls */}
             <div className="flex items-center gap-4">
+              {/* Section Indicator Chip */}
+              {currentSection && (
+                <div className="rounded-full px-4 py-2 bg-primary/20 border border-primary/30">
+                  <span className="text-sm font-medium text-primary">
+                    {currentSection}
+                  </span>
+                </div>
+              )}
+              
               {/* Custom Metronome Toggle */}
               <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
                 <button

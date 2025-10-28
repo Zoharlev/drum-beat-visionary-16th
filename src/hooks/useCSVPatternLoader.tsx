@@ -14,6 +14,7 @@ interface DrumPattern {
   length: number;
   subdivisions?: string[]; // Store subdivision labels for each step
   offsets?: number[]; // Store precise offset timing for each step
+  sections?: string[]; // Store section names for each step (e.g., "Verse 1", "Chorus")
 }
 
 // Map CSV drum components to our drum types (using DrumMachine keys)
@@ -610,6 +611,7 @@ export const useCSVPatternLoader = () => {
       'Ghost Note': new Array(patternLength).fill(false),
       subdivisions: new Array(patternLength).fill(''),
       offsets: new Array(patternLength).fill(0),
+      sections: new Array(patternLength).fill(''),
       length: patternLength
     };
 
@@ -628,6 +630,7 @@ export const useCSVPatternLoader = () => {
       const count = columns[0].trim();
       const instrument1 = columns[1] ? columns[1].trim() : '';
       const instrument2 = columns[2] ? columns[2].trim() : '';
+      const section = columns[3] ? columns[3].trim() : '';
       
       // Track which beat we're on (1, 2, 3, or 4)
       if (count === '1') currentBeat = 1;
@@ -658,9 +661,10 @@ export const useCSVPatternLoader = () => {
         console.log(`   instrument1="${instrument1}", instrument2="${instrument2}"`);
       }
 
-      // Store subdivision label
+      // Store subdivision label, section, and offset
       (pattern.subdivisions as string[])[stepIndex] = count;
       (pattern.offsets as number[])[stepIndex] = stepIndex / 4; // Quarter beat offset
+      (pattern.sections as string[])[stepIndex] = section;
 
       // Process Instrument 1 column - may contain comma-separated instruments
       if (instrument1) {
@@ -701,6 +705,7 @@ export const useCSVPatternLoader = () => {
     
     // Try the advanced beat count format first (supports multiple instruments per step)
     const filesToTry = [
+      'come_as_you_are_drums_quarter_beats_with_subdivision_type-5.csv',
       'come_as_you_are_drums_beat_count_advanced.csv',
       'come_as_you_are_drums_quarter_beats_with_subdivision.csv',
       'come_as_you_are_corrected_mapping-2.csv',
