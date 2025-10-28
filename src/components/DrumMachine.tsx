@@ -22,7 +22,8 @@ export const DrumMachine = () => {
   const [currentView, setCurrentView] = useState(0);
   const [bpm, setBpm] = useState(120);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
-  const [timeRemaining, setTimeRemaining] = useState(120); // 2:00 in seconds
+  const [backingTrackDuration, setBackingTrackDuration] = useState(120); // Default to 120 seconds
+  const [timeRemaining, setTimeRemaining] = useState(120);
   const [patternLength, setPatternLength] = useState<number>(16);
   const [displayMode, setDisplayMode] = useState<'grid' | 'notation'>('grid');
   const [pattern, setPattern] = useState<DrumPattern>(() => {
@@ -205,6 +206,15 @@ export const DrumMachine = () => {
     backingTrackRef.current.loop = true;
     backingTrackRef.current.volume = 0.3;
     
+    // Get backing track duration when metadata is loaded
+    backingTrackRef.current.addEventListener('loadedmetadata', () => {
+      if (backingTrackRef.current && !isNaN(backingTrackRef.current.duration)) {
+        const duration = Math.floor(backingTrackRef.current.duration);
+        setBackingTrackDuration(duration);
+        setTimeRemaining(duration);
+      }
+    });
+    
     return () => {
       audioContextRef.current?.close();
       if (backingTrackRef.current) {
@@ -322,11 +332,14 @@ export const DrumMachine = () => {
         setTimeRemaining((prev) => {
           if (prev <= 1) {
             setIsPlaying(false);
+            const minutes = Math.floor(backingTrackDuration / 60);
+            const seconds = backingTrackDuration % 60;
+            const timeString = seconds > 0 ? `${minutes}:${seconds.toString().padStart(2, '0')}` : `${minutes} minute${minutes !== 1 ? 's' : ''}`;
             toast({
               title: "Time's up!",
-              description: "2-minute practice session completed",
+              description: `${timeString} practice session completed`,
             });
-            return 120; // Reset to 2:00
+            return backingTrackDuration;
           }
           return prev - 1;
         });
@@ -343,7 +356,7 @@ export const DrumMachine = () => {
         clearInterval(timerRef.current);
       }
     };
-  }, [isPlaying, toast]);
+  }, [isPlaying, toast, backingTrackDuration]);
 
   const playDrumSound = (drum: string) => {
     // Return early if drum sounds are muted
