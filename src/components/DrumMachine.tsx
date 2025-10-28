@@ -48,6 +48,7 @@ export const DrumMachine = () => {
   const hhOpenBufferRef = useRef<AudioBuffer | null>(null);
   const hhClosedBufferRef = useRef<AudioBuffer | null>(null);
   const tomBufferRef = useRef<AudioBuffer | null>(null);
+  const ghostNoteBufferRef = useRef<AudioBuffer | null>(null);
   const backingTrackRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
@@ -175,6 +176,20 @@ export const DrumMachine = () => {
     }
   };
 
+  // Load Ghost Note sample
+  const loadGhostNoteBuffer = async () => {
+    if (audioContextRef.current && !ghostNoteBufferRef.current) {
+      try {
+        const response = await fetch('/samples/snare-ghost_C_minor.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        ghostNoteBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load Ghost Note sample:', error);
+      }
+    }
+  };
+
   // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -183,6 +198,7 @@ export const DrumMachine = () => {
     loadHHOpenBuffer();
     loadHHClosedBuffer();
     loadTomBuffer();
+    loadGhostNoteBuffer();
     
     // Initialize backing track
     backingTrackRef.current = new Audio('/samples/come_as_you_are_backing_track.mp3');
@@ -532,32 +548,23 @@ export const DrumMachine = () => {
       }
       
     } else if (normalizedDrum.includes('ghost') || normalizedDrum.includes('ghostnote')) {
-      // Ghost note - very quiet snare hit
-      if (snareBufferRef.current) {
+      // Ghost note - play ghost note sample
+      if (ghostNoteBufferRef.current) {
         const source = context.createBufferSource();
-        source.buffer = snareBufferRef.current;
+        source.buffer = ghostNoteBufferRef.current;
         
-        // Add subtle EQ for ghost note
         const gainNode = context.createGain();
-        const eqFilter = context.createBiquadFilter();
-        
-        // Less presence than regular snare
-        eqFilter.type = 'peaking';
-        eqFilter.frequency.setValueAtTime(3000, context.currentTime);
-        eqFilter.Q.setValueAtTime(1.5, context.currentTime);
-        eqFilter.gain.setValueAtTime(1, context.currentTime);
         
         // Signal chain
-        source.connect(eqFilter);
-        eqFilter.connect(gainNode);
+        source.connect(gainNode);
         gainNode.connect(context.destination);
         
-        // Very low volume for ghost note (much quieter than regular snare)
-        gainNode.gain.setValueAtTime(0.15, context.currentTime);
+        // Volume - ghost notes are naturally quiet
+        gainNode.gain.setValueAtTime(0.8, context.currentTime);
         
         source.start(context.currentTime);
       } else {
-        console.warn('Snare sample not loaded yet (needed for ghost note)');
+        console.warn('Ghost Note sample not loaded yet');
       }
       
     } else {
