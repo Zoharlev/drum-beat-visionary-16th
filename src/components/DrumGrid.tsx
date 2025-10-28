@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Trash2, Volume2, VolumeX, Settings, Upload, Loader2 } from "lucide-react";
+import { Trash2, Volume2, VolumeX, Settings, Upload, Loader2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DrumGridProps {
@@ -20,6 +20,8 @@ interface DrumGridProps {
   isPlaying: boolean;
   onLoadPattern?: () => void;
   isLoadingPattern?: boolean;
+  onClearLoadedPattern?: () => void;
+  hasLoadedPattern?: boolean;
 }
 const drumLabels: {
   [key: string]: {
@@ -80,7 +82,9 @@ export const DrumGrid = ({
   onTogglePlay,
   isPlaying,
   onLoadPattern,
-  isLoadingPattern
+  isLoadingPattern,
+  onClearLoadedPattern,
+  hasLoadedPattern
 }: DrumGridProps) => {
   // Calculate visible steps
   const startStep = currentView * stepsPerView;
@@ -118,6 +122,16 @@ export const DrumGrid = ({
               <Upload className="h-4 w-4" />
             )}
             Load CSV
+          </Button>
+        )}
+        {onClearLoadedPattern && hasLoadedPattern && (
+          <Button 
+            onClick={onClearLoadedPattern} 
+            variant="outline" 
+            className="flex items-center gap-2"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Clear Loaded
           </Button>
         )}
         <Button variant="outline" size="icon">

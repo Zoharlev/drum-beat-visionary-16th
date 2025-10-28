@@ -794,6 +794,35 @@ export const DrumMachine = () => {
     }
   };
 
+  const clearLoadedPattern = () => {
+    // Reset to initial empty pattern
+    const initialLength = 16;
+    const emptyPattern: DrumPattern = {
+      'Kick': new Array(initialLength).fill(false),
+      'Snare': new Array(initialLength).fill(false),
+      'HH Closed': new Array(initialLength).fill(false),
+      'HH Open': new Array(initialLength).fill(false),
+      'Tom': new Array(initialLength).fill(false),
+      'Ghost Note': new Array(initialLength).fill(false),
+      length: initialLength,
+    };
+    
+    setPattern(emptyPattern);
+    setLoadedPatternInfo(null);
+    
+    // Reset playback
+    if (isPlaying) {
+      setIsPlaying(false);
+    }
+    setCurrentStep(0);
+    setCurrentView(0);
+    
+    toast({
+      title: "Pattern Cleared",
+      description: "Loaded pattern has been removed from memory",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
@@ -999,6 +1028,8 @@ export const DrumMachine = () => {
               isPlaying={isPlaying}
               onLoadPattern={loadCSVPattern}
               isLoadingPattern={isLoadingPattern}
+              onClearLoadedPattern={clearLoadedPattern}
+              hasLoadedPattern={!!loadedPatternInfo}
             />
           ) : (
             <DrumNotation
@@ -1014,6 +1045,8 @@ export const DrumMachine = () => {
               isPlaying={isPlaying}
               onLoadPattern={loadCSVPattern}
               isLoadingPattern={isLoadingPattern}
+              onClearLoadedPattern={clearLoadedPattern}
+              hasLoadedPattern={!!loadedPatternInfo}
             />
           )}
 
