@@ -381,7 +381,7 @@ export const DrumMachine = () => {
     // Normalize drum name for consistent matching
     const normalizedDrum = drum.toLowerCase().replace(/[-\s]/g, '');
 
-    if (normalizedDrum.includes('hihat') || normalizedDrum.includes('hat')) {
+    if (normalizedDrum.includes('hihat') || normalizedDrum.includes('hat') || normalizedDrum.includes('hh')) {
       const isOpenHat = normalizedDrum.includes('open') || normalizedDrum.includes('crash');
       
       if (isOpenHat && hhOpenBufferRef.current) {
