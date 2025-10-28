@@ -235,7 +235,7 @@ export const useCSVPatternLoader = () => {
       
       // Initialize pattern arrays
       const totalSteps = totalBars * 8; // 8 steps per bar
-      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open'];
+      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open', 'Tom', 'Ghost Note'];
       
       for (const instrument of instruments) {
         pattern[instrument] = new Array(totalSteps).fill(false);
@@ -295,7 +295,8 @@ export const useCSVPatternLoader = () => {
         'Snare': new Array(128).fill(false),
         'HH Closed': new Array(128).fill(false),
         'HH Open': new Array(128).fill(false),
-        'Tom': new Array(128).fill(false)
+        'Tom': new Array(128).fill(false),
+        'Ghost Note': new Array(128).fill(false)
       };
 
       let currentBar = 0;
@@ -400,6 +401,11 @@ export const useCSVPatternLoader = () => {
       return 'Tom';
     }
     
+    // Ghost Note mappings - use 'Ghost Note' to match DrumMachine
+    if (normalized === 'ghost note' || normalized === 'ghost') {
+      return 'Ghost Note';
+    }
+    
     console.log(`⚠️ Unmapped instrument: "${instrument}" → "${normalized}"`);
     return normalized;
   };
@@ -451,6 +457,7 @@ export const useCSVPatternLoader = () => {
           'HH Closed': new Array(patternLength).fill(false),
           'HH Open': new Array(patternLength).fill(false),
           'Tom': new Array(patternLength).fill(false),
+          'Ghost Note': new Array(patternLength).fill(false),
           length: patternLength
         };
 
@@ -505,6 +512,7 @@ export const useCSVPatternLoader = () => {
       'HH Closed': new Array(patternLength).fill(false),
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
+      'Ghost Note': new Array(patternLength).fill(false),
       length: patternLength
     };
 
@@ -599,6 +607,7 @@ export const useCSVPatternLoader = () => {
       'HH Closed': new Array(patternLength).fill(false),
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
+      'Ghost Note': new Array(patternLength).fill(false),
       subdivisions: new Array(patternLength).fill(''),
       offsets: new Array(patternLength).fill(0),
       length: patternLength

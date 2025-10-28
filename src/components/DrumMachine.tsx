@@ -33,6 +33,7 @@ export const DrumMachine = () => {
       'HH Closed': new Array(initialLength).fill(false),
       'HH Open': new Array(initialLength).fill(false),
       'Tom': new Array(initialLength).fill(false),
+      'Ghost Note': new Array(initialLength).fill(false),
       length: initialLength,
     };
   });
@@ -211,6 +212,7 @@ export const DrumMachine = () => {
       'HH Closed': new Array(patternLength).fill(false),
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
+      'Ghost Note': new Array(patternLength).fill(false),
       length: patternLength,
     };
 
@@ -527,6 +529,35 @@ export const DrumMachine = () => {
         source.start(context.currentTime);
       } else {
         console.warn('Tom sample not loaded yet');
+      }
+      
+    } else if (normalizedDrum.includes('ghost') || normalizedDrum.includes('ghostnote')) {
+      // Ghost note - very quiet snare hit
+      if (snareBufferRef.current) {
+        const source = context.createBufferSource();
+        source.buffer = snareBufferRef.current;
+        
+        // Add subtle EQ for ghost note
+        const gainNode = context.createGain();
+        const eqFilter = context.createBiquadFilter();
+        
+        // Less presence than regular snare
+        eqFilter.type = 'peaking';
+        eqFilter.frequency.setValueAtTime(3000, context.currentTime);
+        eqFilter.Q.setValueAtTime(1.5, context.currentTime);
+        eqFilter.gain.setValueAtTime(1, context.currentTime);
+        
+        // Signal chain
+        source.connect(eqFilter);
+        eqFilter.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Very low volume for ghost note (much quieter than regular snare)
+        gainNode.gain.setValueAtTime(0.15, context.currentTime);
+        
+        source.start(context.currentTime);
+      } else {
+        console.warn('Snare sample not loaded yet (needed for ghost note)');
       }
       
     } else {
