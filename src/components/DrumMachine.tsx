@@ -122,7 +122,7 @@ export const DrumMachine = () => {
   const loadKickBuffer = async () => {
     if (audioContextRef.current && !kickBufferRef.current) {
       try {
-        const response = await fetch('/samples/synth-click-drum-kick.wav');
+        const response = await fetch('/samples/bass-kick-drum-hit_D_minor.wav');
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
         kickBufferRef.current = audioBuffer;
