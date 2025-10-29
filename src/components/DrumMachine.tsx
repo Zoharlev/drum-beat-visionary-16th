@@ -870,7 +870,7 @@ export const DrumMachine = () => {
         {/* Drum Components Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {/* Available Drum Components */}
-          <div className="bg-card border border-border rounded-lg p-4">
+          <div className="hidden bg-card border border-border rounded-lg p-4">
             <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
             <div className="space-y-2">
               {/* Drum Info */}
