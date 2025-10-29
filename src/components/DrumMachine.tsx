@@ -997,23 +997,8 @@ export const DrumMachine = () => {
           {/* Pattern Length Controls */}
           <div className="flex items-center justify-center gap-4 mb-4">
             <span className="text-sm font-medium text-muted-foreground">Pattern Length:</span>
-            <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-1">
-              <Button
-                variant={patternLength === 8 ? "default" : "ghost"}
-                size="sm"
-                onClick={() => changePatternLength(8)}
-                className="h-8 px-3"
-              >
-                8 Steps (1 Bar)
-              </Button>
-              <Button
-                variant={patternLength === 16 ? "default" : "ghost"}
-                size="sm"
-                onClick={() => changePatternLength(16)}
-                className="h-8 px-3"
-              >
-                16 Steps (2 Bars)
-              </Button>
+            <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2">
+              <span className="text-sm font-medium">16 Steps (2 Bars)</span>
             </div>
           </div>
 
