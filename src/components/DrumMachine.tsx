@@ -995,7 +995,7 @@ export const DrumMachine = () => {
           )}
 
           {/* Pattern Length Controls */}
-          <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="hidden flex items-center justify-center gap-4 mb-4">
             <span className="text-sm font-medium text-muted-foreground">Pattern Length:</span>
             <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2">
               <span className="text-sm font-medium">16 Steps (2 Bars)</span>
