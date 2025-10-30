@@ -183,7 +183,7 @@ export const DrumMachine = () => {
   const loadGhostNoteBuffer = async () => {
     if (audioContextRef.current && !ghostNoteBufferRef.current) {
       try {
-        const response = await fetch('/samples/snare-ghost_C_minor.wav');
+        const response = await fetch('/samples/snare-ghost.wav');
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
         ghostNoteBufferRef.current = audioBuffer;
