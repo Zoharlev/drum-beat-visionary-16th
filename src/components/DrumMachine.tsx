@@ -5,19 +5,15 @@ import { DrumGrid } from "./DrumGrid";
 import { DrumNotation } from "./DrumNotation";
 import { PatternNavigation } from "./PatternNavigation";
 import { useToast } from "@/hooks/use-toast";
-import { useDrumListener } from "@/hooks/useDrumListener";
-import { useCSVPatternLoader } from "@/hooks/useCSVPatternLoader";
+import { useSong, getBackingTrackUrl, type Song, type DrumPattern } from "@/hooks/useSongs";
 import { cn } from "@/lib/utils";
 
-interface DrumPattern {
-  [key: string]: boolean[] | number | string[] | number[];
-  length: number;
-  subdivisions?: string[];
-  offsets?: number[];
-  sections?: string[];
+interface DrumMachineProps {
+  songId?: string | null;
+  onSongLoad?: (song: Song) => void;
 }
 
-export const DrumMachine = () => {
+export const DrumMachine = ({ songId, onSongLoad }: DrumMachineProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentView, setCurrentView] = useState(0);
@@ -55,58 +51,35 @@ export const DrumMachine = () => {
   const backingTrackRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
-  // Drum listener hook for microphone beat detection
-  const {
-    isListening,
-    detectedBeats,
-    audioLevel,
-    error: listenerError,
-    isModelLoaded,
-    startListening,
-    stopListening,
-    clearBeats
-  } = useDrumListener();
+  // Fetch song data from database
+  const { data: currentSong, isLoading: songLoading } = useSong(songId);
 
-  const { loadPatternFromFile, isLoading: isLoadingPattern, error: csvError } = useCSVPatternLoader();
-  const [loadedPatternInfo, setLoadedPatternInfo] = useState<{
-    componentsFound: string[];
-    totalBeats: number;
-  } | null>(null);
-
-  // Handle listener state changes and errors
+  // Load song pattern when song data arrives
   useEffect(() => {
-    if (listenerError) {
-      toast({
-        title: "Listener Error",
-        description: listenerError,
-        variant: "destructive"
-      });
-    }
-  }, [listenerError, toast]);
-
-  const handleListenerToggle = async () => {
-    if (isListening) {
-      stopListening();
-      toast({
-        title: "Listening Stopped",
-        description: "Drum detection disabled"
-      });
-    } else {
-      try {
-        await startListening();
-        toast({
-          title: "Listening Started",
-          description: "Drum detection enabled"
-        });
-      } catch (error) {
-        toast({
-          title: "Failed to Start",
-          description: "Could not access microphone",
-          variant: "destructive"
-        });
+    if (currentSong) {
+      setPattern(currentSong.pattern_data);
+      changeBpm(currentSong.bpm);
+      
+      // Update backing track URL
+      const trackUrl = getBackingTrackUrl(currentSong.backing_track_url);
+      if (trackUrl && backingTrackRef.current) {
+        backingTrackRef.current.src = trackUrl;
+        backingTrackRef.current.load();
+        
+        // Update duration when metadata loads
+        backingTrackRef.current.onloadedmetadata = () => {
+          if (backingTrackRef.current && !isNaN(backingTrackRef.current.duration)) {
+            const duration = Math.floor(backingTrackRef.current.duration);
+            setBackingTrackDuration(duration);
+            setTimeRemaining(duration);
+          }
+        };
       }
+      
+      // Notify parent component
+      onSongLoad?.(currentSong);
     }
-  };
+  }, [currentSong, onSongLoad]);
 
   // Load snare sample
   const loadSnareBuffer = async () => {
@@ -203,19 +176,10 @@ export const DrumMachine = () => {
     loadTomBuffer();
     loadGhostNoteBuffer();
     
-    // Initialize backing track
-    backingTrackRef.current = new Audio('/samples/come_as_you_are_backing_track.mp3');
+    // Initialize backing track (URL will be set when song loads)
+    backingTrackRef.current = new Audio();
     backingTrackRef.current.loop = true;
     backingTrackRef.current.volume = 0.3;
-    
-    // Get backing track duration when metadata is loaded
-    backingTrackRef.current.addEventListener('loadedmetadata', () => {
-      if (backingTrackRef.current && !isNaN(backingTrackRef.current.duration)) {
-        const duration = Math.floor(backingTrackRef.current.duration);
-        setBackingTrackDuration(duration);
-        setTimeRemaining(duration);
-      }
-    });
     
     return () => {
       audioContextRef.current?.close();
@@ -230,45 +194,8 @@ export const DrumMachine = () => {
   // At 120 BPM: each beat = 500ms, each step = 125ms
   const stepDuration = (60 / bpm / 4) * 1000;
 
-  // Convert detected beats to pattern grid positions when listening
-  const detectedPattern = useMemo(() => {
-    if (!isListening || detectedBeats.length === 0) return null;
-
-    const newPattern: DrumPattern = {
-      'Kick': new Array(patternLength).fill(false),
-      'Snare': new Array(patternLength).fill(false),
-      'HH Closed': new Array(patternLength).fill(false),
-      'HH Open': new Array(patternLength).fill(false),
-      'Tom': new Array(patternLength).fill(false),
-      'Ghost Note': new Array(patternLength).fill(false),
-      length: patternLength,
-    };
-
-    const firstBeatTime = detectedBeats[0]?.timestamp || Date.now();
-    
-    detectedBeats.forEach(beat => {
-      const relativeTime = beat.timestamp - firstBeatTime;
-      const stepPosition = Math.round(relativeTime / stepDuration) % patternLength;
-      
-      if (stepPosition >= 0 && stepPosition < patternLength && beat.confidence > 0.6) {
-        // Map detected beat types to instrument names
-        let instrumentKey = '';
-        if (beat.type === 'kick') instrumentKey = 'Kick';
-        else if (beat.type === 'snare') instrumentKey = 'Snare';
-        else if (beat.type === 'hihat') instrumentKey = 'HH Closed';
-        else if (beat.type === 'openhat') instrumentKey = 'HH Open';
-        
-        if (instrumentKey && newPattern[instrumentKey]) {
-          (newPattern[instrumentKey] as boolean[])[stepPosition] = true;
-        }
-      }
-    });
-
-    return newPattern;
-  }, [detectedBeats, stepDuration, isListening, patternLength]);
-
-  // Display pattern: use detected pattern when listening, otherwise use manual pattern
-  const displayPattern = isListening && detectedPattern ? detectedPattern : pattern;
+  // Use the loaded pattern as display pattern
+  const displayPattern = pattern;
 
   useEffect(() => {
     if (isPlaying) {
@@ -314,8 +241,11 @@ export const DrumMachine = () => {
       // Update current section if sections data exists
       if (displayPattern.sections && Array.isArray(displayPattern.sections)) {
         const sectionAtCurrentStep = displayPattern.sections[currentStep];
-        if (sectionAtCurrentStep && sectionAtCurrentStep !== currentSection) {
-          setCurrentSection(sectionAtCurrentStep);
+        if (sectionAtCurrentStep && typeof sectionAtCurrentStep === 'object' && 'name' in sectionAtCurrentStep) {
+          const sectionName = sectionAtCurrentStep.name;
+          if (sectionName !== currentSection) {
+            setCurrentSection(sectionName);
+          }
         }
       }
       
@@ -783,216 +713,41 @@ export const DrumMachine = () => {
     });
   };
 
-  const loadCSVPattern = async () => {
-    try {
-      const newPattern = await loadPatternFromFile();
-      setPattern(newPattern);
-      
-      // Reset playback state for the new pattern
-      setCurrentStep(0);
-      setCurrentView(0); // Reset to first view
-      setCurrentSection(''); // Reset section
-      
-      // Analyze loaded pattern to show component info
-      const activeComponents: string[] = [];
-      let totalBeats = 0;
-      
-      Object.entries(newPattern).forEach(([drumType, steps]) => {
-        if (drumType !== 'length' && drumType !== 'subdivisions' && drumType !== 'offsets' && drumType !== 'sections' && Array.isArray(steps)) {
-          const activeSteps = (steps as boolean[]).filter(Boolean).length;
-          if (activeSteps > 0) {
-            activeComponents.push(drumType);
-            totalBeats += activeSteps;
-          }
-        }
-      });
-      
-      setLoadedPatternInfo({
-        componentsFound: activeComponents,
-        totalBeats
-      });
-      
-      toast({
-        title: "Pattern Loaded Successfully",
-        description: `${newPattern.length} steps, ${activeComponents.length} instruments, ${totalBeats} hits total`,
-      });
-    } catch (error) {
-      // Show the actual error message from the hook
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load drum pattern';
-      toast({
-        title: "Failed to Load Pattern",
-        description: errorMessage,
-        variant: "destructive",
-      });
-      console.error('CSV loading error:', error);
-    }
-  };
-
-  const clearLoadedPattern = () => {
-    // Reset to initial empty pattern
-    const initialLength = 16;
-    const emptyPattern: DrumPattern = {
-      'Kick': new Array(initialLength).fill(false),
-      'Snare': new Array(initialLength).fill(false),
-      'HH Closed': new Array(initialLength).fill(false),
-      'HH Open': new Array(initialLength).fill(false),
-      'Tom': new Array(initialLength).fill(false),
-      'Ghost Note': new Array(initialLength).fill(false),
-      length: initialLength,
-    };
-    
-    setPattern(emptyPattern);
-    setLoadedPatternInfo(null);
-    
-    // Reset playback
-    if (isPlaying) {
-      setIsPlaying(false);
-    }
-    setCurrentStep(0);
-    setCurrentView(0);
-    
-    toast({
-      title: "Pattern Cleared",
-      description: "Loaded pattern has been removed from memory",
-    });
-  };
-
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Pattern Instructions */}
-        <div className="text-center mb-6">
-          <p className="text-muted-foreground text-lg">
-            Practice Name
-          </p>
-        </div>
-
-        {/* Drum Components Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* Available Drum Components */}
-          <div className="hidden bg-card border border-border rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
-            <div className="space-y-2">
-              {/* Drum Info */}
-              {Object.keys(displayPattern).filter(key => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections').map((instrument) => {
-                const steps = displayPattern[instrument] as boolean[];
-                if (!Array.isArray(steps)) return null;
-                
-                const isActive = steps.some(Boolean);
-                const drumInfo = getDrumInfo(instrument);
-                
-                return (
-                  <div key={instrument} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
-                    <span className={cn("text-lg font-mono", drumInfo.color)}>{drumInfo.symbol}</span>
-                    <span className="text-sm font-medium">{drumInfo.name}</span>
-                    {isActive && (
-                      <span className="ml-auto text-xs text-accent font-medium">
-                        {steps.filter(Boolean).length} beats
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+        {/* Song Loading State */}
+        {songLoading && (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Loading song...</p>
           </div>
+        )}
 
-          {/* Loaded Pattern Info */}
-          {loadedPatternInfo && (
-            <div className="bg-card border border-border rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Loaded Pattern Info</h3>
-              <div className="space-y-2">
-                <div className="text-sm">
-                  <span className="text-muted-foreground">Components Found:</span>
-                  <span className="ml-2 font-medium">{loadedPatternInfo.componentsFound.length}</span>
-                </div>
-                <div className="text-sm">
-                  <span className="text-muted-foreground">Total Beats:</span>
-                  <span className="ml-2 font-medium">{loadedPatternInfo.totalBeats}</span>
-                </div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  Active: {loadedPatternInfo.componentsFound.join(', ')}
-                </div>
+        {/* Current Song Info */}
+        {currentSong && (
+          <div className="bg-card border border-border rounded-lg p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold">{currentSong.title}</h2>
+                {currentSong.artist && (
+                  <p className="text-sm text-muted-foreground">{currentSong.artist}</p>
+                )}
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Detection Status */}
-        {isListening && detectedBeats.length > 0 && (
-          <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 mb-4">
-            <div className="text-sm font-medium text-accent mb-2">
-              Detected Beats ({detectedBeats.length})
-            </div>
-            <div className="text-xs text-muted-foreground">
-              Last detected: {detectedBeats[detectedBeats.length - 1]?.type} 
-              (confidence: {Math.round((detectedBeats[detectedBeats.length - 1]?.confidence || 0) * 100)}%)
+              <div className="text-right">
+                <p className="text-lg font-medium">{currentSong.bpm} BPM</p>
+                {currentSong.duration_seconds && (
+                  <p className="text-xs text-muted-foreground">
+                    {Math.floor(currentSong.duration_seconds / 60)}:
+                    {(currentSong.duration_seconds % 60).toString().padStart(2, '0')}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         )}
 
         {/* Main Pattern Content */}
         <div className="space-y-6">
-          {/* Drum Components Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {/* Available Drum Components */}
-            <div className="hidden bg-card border border-border rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Available Drum Components</h3>
-              <div className="space-y-2">
-                {Object.keys(displayPattern).filter(key => key !== 'length' && key !== 'subdivisions' && key !== 'offsets' && key !== 'sections').map((instrument) => {
-                  const steps = displayPattern[instrument] as boolean[];
-                  if (!Array.isArray(steps)) return null;
-                  
-                  const isActive = steps.some(Boolean);
-                  const drumInfo = getDrumInfo(instrument);
-                  
-                  return (
-                    <div key={instrument} className={cn("flex items-center gap-3 p-2 rounded", isActive ? "bg-accent/10" : "opacity-60")}>
-                      <span className={cn("text-lg font-mono", drumInfo.color)}>{drumInfo.symbol}</span>
-                      <span className="text-sm font-medium">{drumInfo.name}</span>
-                      {isActive && (
-                        <span className="ml-auto text-xs text-accent font-medium">
-                          {steps.filter(Boolean).length} beats
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Loaded Pattern Info */}
-            {loadedPatternInfo && (
-              <div className="bg-card border border-border rounded-lg p-4">
-                <h3 className="text-sm font-semibold text-foreground mb-3">Loaded Pattern Info</h3>
-                <div className="space-y-2">
-                  <div className="text-sm">
-                    <span className="text-muted-foreground">Components Found:</span>
-                    <span className="ml-2 font-medium">{loadedPatternInfo.componentsFound.length}</span>
-                  </div>
-                  <div className="text-sm">
-                    <span className="text-muted-foreground">Total Beats:</span>
-                    <span className="ml-2 font-medium">{loadedPatternInfo.totalBeats}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-2">
-                    Active: {loadedPatternInfo.componentsFound.join(', ')}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Detection Status */}
-          {isListening && detectedBeats.length > 0 && (
-            <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 mb-4">
-              <div className="text-sm font-medium text-accent mb-2">
-                Detected Beats ({detectedBeats.length})
-              </div>
-              <div className="text-xs text-muted-foreground">
-                Last detected: {detectedBeats[detectedBeats.length - 1]?.type} 
-                (confidence: {Math.round((detectedBeats[detectedBeats.length - 1]?.confidence || 0) * 100)}%)
-              </div>
-            </div>
-          )}
 
           {/* Pattern Length Controls */}
           <div className="hidden flex items-center justify-center gap-4 mb-4">
@@ -1045,10 +800,6 @@ export const DrumMachine = () => {
               onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
               onTogglePlay={togglePlay}
               isPlaying={isPlaying}
-              onLoadPattern={loadCSVPattern}
-              isLoadingPattern={isLoadingPattern}
-              onClearLoadedPattern={clearLoadedPattern}
-              hasLoadedPattern={!!loadedPatternInfo}
             />
           ) : (
             <DrumNotation
@@ -1062,10 +813,6 @@ export const DrumMachine = () => {
               onMetronomeToggle={() => setMetronomeEnabled(!metronomeEnabled)}
               onTogglePlay={togglePlay}
               isPlaying={isPlaying}
-              onLoadPattern={loadCSVPattern}
-              isLoadingPattern={isLoadingPattern}
-              onClearLoadedPattern={clearLoadedPattern}
-              hasLoadedPattern={!!loadedPatternInfo}
             />
           )}
 
@@ -1109,43 +856,6 @@ export const DrumMachine = () => {
                 </div>
               </div>
 
-              {/* Drum Listener Toggle */}
-              <div className="hidden flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>
-                <button
-                  onClick={handleListenerToggle}
-                  disabled={!isModelLoaded}
-                  className={cn(
-                    "relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
-                    isListening ? "bg-red-600" : "bg-gray-300"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 shadow-lg",
-                      isListening ? "translate-x-5" : "translate-x-1"
-                    )}
-                  />
-                </button>
-                
-                {/* Microphone Icon */}
-                <div className="flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: isListening ? '#ff6b6b' : '#786C7D' }}>
-                  {isListening ? (
-                    <Mic className="h-4 w-4 text-white" />
-                  ) : (
-                    <MicOff className="h-4 w-4 text-white" />
-                  )}
-                </div>
-                
-                {/* Audio Level Indicator */}
-                {isListening && (
-                  <div className="w-8 h-4 bg-gray-700 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-green-400 transition-all duration-100 rounded-full"
-                      style={{ width: `${audioLevel * 100}%` }}
-                    />
-                  </div>
-                )}
-              </div>
 
               {/* Drum Mute Toggle */}
               <div className="flex items-center gap-3 rounded-[20px] px-4 py-2" style={{ backgroundColor: '#333537' }}>

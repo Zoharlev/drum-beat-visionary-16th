@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 
 interface DrumGridProps {
   pattern: {
-    [key: string]: boolean[] | number | string[] | number[];
+    [key: string]: boolean[] | number | (string | number)[] | Array<{name: string; startStep: number; endStep: number}>;
     length: number;
-    subdivisions?: string[];
+    subdivisions?: (string | number)[];
     offsets?: number[];
   };
   currentStep: number;
@@ -176,7 +176,7 @@ export const DrumGrid = ({
               // If we have subdivision data from the CSV, use it
               if (pattern.subdivisions && pattern.subdivisions[stepIndex]) {
                 const count = pattern.subdivisions[stepIndex];
-                displayText = count;
+                displayText = String(count);
                 
                 // Style based on count type
                 if (count === '1' || count === '2' || count === '3' || count === '4') {

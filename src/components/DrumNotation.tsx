@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 
 interface DrumNotationProps {
   pattern: {
-    [key: string]: boolean[] | number | string[] | number[];
+    [key: string]: boolean[] | number | (string | number)[] | Array<{name: string; startStep: number; endStep: number}>;
     length: number;
-    subdivisions?: string[];
+    subdivisions?: (string | number)[];
     offsets?: number[];
   };
   currentStep: number;
