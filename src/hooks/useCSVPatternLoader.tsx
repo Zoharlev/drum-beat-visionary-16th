@@ -29,7 +29,9 @@ const drumComponentMap: Record<string, string> = {
   'Hi-Hat': 'HH Closed', // Full name mapping
   'Open Hi-Hat': 'HH Open', // Full name mapping
   'Tom-tom': 'Tom',      // Tom mapping
-  'Tom': 'Tom'           // Tom mapping
+  'Tom': 'Tom',          // Tom mapping
+  'Crash Cymbal': 'Crash Cymbal', // Crash cymbal mapping
+  'Crash': 'Crash Cymbal' // Crash mapping
 };
 
 export const useCSVPatternLoader = () => {
@@ -236,7 +238,7 @@ export const useCSVPatternLoader = () => {
       
       // Initialize pattern arrays
       const totalSteps = totalBars * 8; // 8 steps per bar
-      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open', 'Tom', 'Ghost Note'];
+      const instruments = ['Kick', 'Snare', 'HH Closed', 'HH Open', 'Tom', 'Ghost Note', 'Crash Cymbal'];
       
       for (const instrument of instruments) {
         pattern[instrument] = new Array(totalSteps).fill(false);
@@ -297,7 +299,8 @@ export const useCSVPatternLoader = () => {
         'HH Closed': new Array(128).fill(false),
         'HH Open': new Array(128).fill(false),
         'Tom': new Array(128).fill(false),
-        'Ghost Note': new Array(128).fill(false)
+        'Ghost Note': new Array(128).fill(false),
+        'Crash Cymbal': new Array(128).fill(false)
       };
 
       let currentBar = 0;
@@ -407,6 +410,12 @@ export const useCSVPatternLoader = () => {
       return 'Ghost Note';
     }
     
+    // Crash Cymbal mappings - use 'Crash Cymbal' to match DrumMachine
+    if (normalized === 'crash cymbal' || normalized === 'crash' || 
+        normalized === 'crash cym' || normalized === 'cymbal') {
+      return 'Crash Cymbal';
+    }
+    
     console.log(`⚠️ Unmapped instrument: "${instrument}" → "${normalized}"`);
     return normalized;
   };
@@ -459,6 +468,7 @@ export const useCSVPatternLoader = () => {
           'HH Open': new Array(patternLength).fill(false),
           'Tom': new Array(patternLength).fill(false),
           'Ghost Note': new Array(patternLength).fill(false),
+          'Crash Cymbal': new Array(patternLength).fill(false),
           length: patternLength
         };
 
@@ -514,6 +524,7 @@ export const useCSVPatternLoader = () => {
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
       'Ghost Note': new Array(patternLength).fill(false),
+      'Crash Cymbal': new Array(patternLength).fill(false),
       length: patternLength
     };
 
@@ -592,6 +603,7 @@ export const useCSVPatternLoader = () => {
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
       'Ghost Note': new Array(patternLength).fill(false),
+      'Crash Cymbal': new Array(patternLength).fill(false),
       subdivisions: new Array(patternLength).fill(''),
       offsets: new Array(patternLength).fill(0),
       sections: new Array(patternLength).fill(''),

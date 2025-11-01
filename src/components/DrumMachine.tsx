@@ -36,6 +36,7 @@ export const DrumMachine = () => {
       'HH Open': new Array(initialLength).fill(false),
       'Tom': new Array(initialLength).fill(false),
       'Ghost Note': new Array(initialLength).fill(false),
+      'Crash Cymbal': new Array(initialLength).fill(false),
       length: initialLength,
     };
   });
@@ -52,6 +53,7 @@ export const DrumMachine = () => {
   const hhClosedBufferRef = useRef<AudioBuffer | null>(null);
   const tomBufferRef = useRef<AudioBuffer | null>(null);
   const ghostNoteBufferRef = useRef<AudioBuffer | null>(null);
+  const crashCymbalBufferRef = useRef<AudioBuffer | null>(null);
   const backingTrackRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
@@ -193,6 +195,20 @@ export const DrumMachine = () => {
     }
   };
 
+  // Load Crash Cymbal sample
+  const loadCrashCymbalBuffer = async () => {
+    if (audioContextRef.current && !crashCymbalBufferRef.current) {
+      try {
+        const response = await fetch('/samples/open-hi-hats-2.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        crashCymbalBufferRef.current = audioBuffer;
+      } catch (error) {
+        console.error('Failed to load Crash Cymbal sample:', error);
+      }
+    }
+  };
+
   // Initialize audio context and load samples
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -202,6 +218,7 @@ export const DrumMachine = () => {
     loadHHClosedBuffer();
     loadTomBuffer();
     loadGhostNoteBuffer();
+    loadCrashCymbalBuffer();
     
     // Initialize backing track
     backingTrackRef.current = new Audio('/samples/sweet_child_o_mine_backing_track.mp3');
@@ -241,6 +258,7 @@ export const DrumMachine = () => {
       'HH Open': new Array(patternLength).fill(false),
       'Tom': new Array(patternLength).fill(false),
       'Ghost Note': new Array(patternLength).fill(false),
+      'Crash Cymbal': new Array(patternLength).fill(false),
       length: patternLength,
     };
 
@@ -588,6 +606,42 @@ export const DrumMachine = () => {
         source.start(context.currentTime);
       } else {
         console.warn('Ghost Note sample not loaded yet');
+      }
+      
+    } else if (normalizedDrum.includes('crash') || normalizedDrum.includes('crashcymbal')) {
+      // Crash Cymbal - play crash cymbal sample
+      if (crashCymbalBufferRef.current) {
+        const source = context.createBufferSource();
+        source.buffer = crashCymbalBufferRef.current;
+        
+        // Add processing for crash cymbal
+        const gainNode = context.createGain();
+        const highpass = context.createBiquadFilter();
+        const shimmer = context.createBiquadFilter();
+        
+        // High-pass to clean up low-end
+        highpass.type = 'highpass';
+        highpass.frequency.setValueAtTime(6000, context.currentTime);
+        highpass.Q.setValueAtTime(0.7, context.currentTime);
+        
+        // Shimmer boost for brightness
+        shimmer.type = 'peaking';
+        shimmer.frequency.setValueAtTime(10000, context.currentTime);
+        shimmer.Q.setValueAtTime(1.0, context.currentTime);
+        shimmer.gain.setValueAtTime(3, context.currentTime);
+        
+        // Signal chain
+        source.connect(highpass);
+        highpass.connect(shimmer);
+        shimmer.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        // Volume envelope for crash
+        gainNode.gain.setValueAtTime(0.7, context.currentTime);
+        
+        source.start(context.currentTime);
+      } else {
+        console.warn('Crash Cymbal sample not loaded yet');
       }
       
     } else {

@@ -49,6 +49,10 @@ const drumLabels: {
     name: "Tom",
     symbol: "◆"
   },
+  crash: {
+    name: "Crash",
+    symbol: "⊗"
+  },
   "HH Closed": {
     name: "Hi-Hat",
     symbol: "○"
@@ -68,6 +72,10 @@ const drumLabels: {
   Tom: {
     name: "Tom",
     symbol: "◆"
+  },
+  "Crash Cymbal": {
+    name: "Crash",
+    symbol: "⊗"
   }
 };
 export const DrumGrid = ({

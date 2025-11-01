@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 export interface DrumSample {
   id: string;
   name: string;
-  type: 'kick' | 'snare' | 'hihat' | 'openhat' | 'tom';
+  type: 'kick' | 'snare' | 'hihat' | 'openhat' | 'tom' | 'crash';
   audioBlob: Blob;
   audioUrl: string;
   createdAt: Date;
