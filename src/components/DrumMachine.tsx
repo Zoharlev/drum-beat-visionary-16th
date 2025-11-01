@@ -204,7 +204,7 @@ export const DrumMachine = () => {
     loadGhostNoteBuffer();
     
     // Initialize backing track
-    backingTrackRef.current = new Audio('/samples/come_as_you_are_backing_track.mp3');
+    backingTrackRef.current = new Audio('/samples/sweet_child_o_mine_backing_track.mp3');
     backingTrackRef.current.loop = true;
     backingTrackRef.current.volume = 0.3;
     
