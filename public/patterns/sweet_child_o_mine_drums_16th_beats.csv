@@ -1,0 +1,1606 @@
+Beat Count,Instrument 1,Instrument 2,Offset (Quarter Length)
+1,,,0
+e,,,0.0625
+&,,,0.125
+a,,,0.1875
+2,,,0.25
+e,,,0.3125
+&,,,0.375
+a,,,0.4375
+3,,,0.5
+e,,,0.5625
+&,,,0.625
+a,,,0.6875
+4,,,0.75
+e,,,0.8125
+&,,,0.875
+a,,,0.9375
+5,,,1
+e,,,1.0625
+&,,,1.125
+a,,,1.1875
+6,,,1.25
+e,,,1.3125
+&,,,1.375
+a,,,1.4375
+7,,,1.5
+e,,,1.5625
+&,,,1.625
+a,,,1.6875
+8,,,1.75
+e,,,1.8125
+&,,,1.875
+a,,,1.9375
+9,,,2
+e,,,2.0625
+&,,,2.125
+a,,,2.1875
+10,,,2.25
+e,,,2.3125
+&,,,2.375
+a,,,2.4375
+11,,,2.5
+e,,,2.5625
+&,,,2.625
+a,,,2.6875
+12,,,2.75
+e,,,2.8125
+&,,,2.875
+a,,,2.9375
+13,,,3
+e,,,3.0625
+&,,,3.125
+a,,,3.1875
+14,,,3.25
+e,,,3.3125
+&,,,3.375
+a,,,3.4375
+15,,,3.5
+e,,,3.5625
+&,,,3.625
+a,,,3.6875
+16,,,3.75
+e,,,3.8125
+&,,,3.875
+a,,,3.9375
+17,,,4
+e,,,4.0625
+&,,,4.125
+a,,,4.1875
+18,,,4.25
+e,,,4.3125
+&,,,4.375
+a,,,4.4375
+19,,,4.5
+e,,,4.5625
+&,,,4.625
+a,,,4.6875
+20,,,4.75
+e,,,4.8125
+&,,,4.875
+a,,,4.9375
+21,,,5
+e,,,5.0625
+&,,,5.125
+a,,,5.1875
+22,,,5.25
+e,,,5.3125
+&,,,5.375
+a,,,5.4375
+23,,,5.5
+e,,,5.5625
+&,,,5.625
+a,,,5.6875
+24,,,5.75
+e,,,5.8125
+&,,,5.875
+a,,,5.9375
+25,,,6
+e,,,6.0625
+&,,,6.125
+a,,,6.1875
+26,,,6.25
+e,,,6.3125
+&,,,6.375
+a,,,6.4375
+27,,,6.5
+e,,,6.5625
+&,,,6.625
+a,,,6.6875
+28,,,6.75
+e,,,6.8125
+&,,,6.875
+a,,,6.9375
+29,,,7
+e,,,7.0625
+&,,,7.125
+a,,,7.1875
+30,,,7.25
+e,,,7.3125
+&,,,7.375
+a,,,7.4375
+31,,,7.5
+e,,,7.5625
+&,,,7.625
+a,,,7.6875
+32,,,7.75
+e,,,7.8125
+&,,,7.875
+a,,,7.9375
+33,,,8
+e,,,8.0625
+&,,,8.125
+a,,,8.1875
+34,Bass Drum,Tom-tom,8.25
+e,,,8.3125
+&,,,8.375
+a,,,8.4375
+35,,,8.5
+e,,,8.5625
+&,,,8.625
+a,,,8.6875
+36,,,8.75
+e,,,8.8125
+&,,,8.875
+a,,,8.9375
+37,,,9
+e,,,9.0625
+&,Hi-Hat (Open),,9.125
+a,Hi-Hat (Open),,9.1875
+38,Hi-Hat (Open),,9.25
+e,,,9.3125
+&,,,9.375
+a,,,9.4375
+39,,,9.5
+e,,,9.5625
+&,,,9.625
+a,,,9.6875
+40,,,9.75
+e,,,9.8125
+&,,,9.875
+a,,,9.9375
+41,,,10
+e,,,10.0625
+&,,,10.125
+a,,,10.1875
+42,Bass Drum,Tom-tom,10.25
+e,,,10.3125
+&,Tom-tom,Snare Drum,10.375
+a,,,10.4375
+43,Tom-tom,Snare Drum,10.5
+e,,,10.5625
+&,Tom-tom,Snare Drum,10.625
+a,,,10.6875
+44,Tom-tom,Snare Drum,10.75
+e,,,10.8125
+&,Tom-tom,Snare Drum,10.875
+a,,,10.9375
+45,Tom-tom,Snare Drum,11
+e,,,11.0625
+&,Tom-tom,Snare Drum,11.125
+a,,,11.1875
+46,Tom-tom,Snare Drum,11.25
+e,,,11.3125
+&,Tom-tom,Snare Drum,11.375
+a,,,11.4375
+47,Tom-tom,Snare Drum,11.5
+e,,,11.5625
+&,Tom-tom,Snare Drum,11.625
+a,,,11.6875
+48,Tom-tom,Snare Drum,11.75
+e,,,11.8125
+&,Bass Drum,,11.875
+a,,,11.9375
+49,Tom-tom,Snare Drum,12
+e,,,12.0625
+&,,,12.125
+a,,,12.1875
+50,Bass Drum,Tom-tom,12.25
+e,,,12.3125
+&,Hi-Hat (Open),,12.375
+a,,,12.4375
+51,Snare Drum,Hi-Hat (Open),12.5
+e,,,12.5625
+&,Bass Drum,Hi-Hat (Open),12.625
+a,,,12.6875
+52,Bass Drum,Hi-Hat (Open),12.75
+e,,,12.8125
+&,Hi-Hat (Open),,12.875
+a,,,12.9375
+53,Snare Drum,Hi-Hat (Open),13
+e,,,13.0625
+&,Bass Drum,Hi-Hat (Open),13.125
+a,,,13.1875
+54,Bass Drum,Hi-Hat (Open),13.25
+e,,,13.3125
+&,Hi-Hat (Open),,13.375
+a,,,13.4375
+55,Snare Drum,Hi-Hat (Open),13.5
+e,,,13.5625
+&,Bass Drum,Hi-Hat (Open),13.625
+a,,,13.6875
+56,Bass Drum,Hi-Hat (Open),13.75
+e,,,13.8125
+&,Hi-Hat (Open),,13.875
+a,,,13.9375
+57,Snare Drum,Hi-Hat (Open),14
+e,,,14.0625
+&,Bass Drum,Hi-Hat (Open),14.125
+a,,,14.1875
+58,Bass Drum,Hi-Hat (Open),14.25
+e,,,14.3125
+&,Hi-Hat (Open),,14.375
+a,,,14.4375
+59,Snare Drum,Hi-Hat (Open),14.5
+e,,,14.5625
+&,Bass Drum,Hi-Hat (Open),14.625
+a,,,14.6875
+60,Bass Drum,Hi-Hat (Open),14.75
+e,,,14.8125
+&,Hi-Hat (Open),,14.875
+a,,,14.9375
+61,Snare Drum,Hi-Hat (Open),15
+e,,,15.0625
+&,Bass Drum,Hi-Hat (Open),15.125
+a,,,15.1875
+62,Bass Drum,Hi-Hat (Open),15.25
+e,,,15.3125
+&,Hi-Hat (Open),,15.375
+a,,,15.4375
+63,Snare Drum,Hi-Hat (Open),15.5
+e,,,15.5625
+&,Bass Drum,Hi-Hat (Open),15.625
+a,,,15.6875
+64,Bass Drum,Hi-Hat (Open),15.75
+e,,,15.8125
+&,Hi-Hat (Open),,15.875
+a,,,15.9375
+65,Snare Drum,Hi-Hat (Open),16
+e,,,16.0625
+&,Bass Drum,Hi-Hat (Open),16.125
+a,,,16.1875
+66,Bass Drum,Hi-Hat (Open),16.25
+e,,,16.3125
+&,Hi-Hat (Open),,16.375
+a,,,16.4375
+67,Snare Drum,Hi-Hat (Open),16.5
+e,,,16.5625
+&,Bass Drum,Hi-Hat (Open),16.625
+a,,,16.6875
+68,Bass Drum,Hi-Hat (Open),16.75
+e,,,16.8125
+&,Hi-Hat (Open),,16.875
+a,,,16.9375
+69,Snare Drum,Hi-Hat (Open),17
+e,,,17.0625
+&,Bass Drum,Hi-Hat (Open),17.125
+a,,,17.1875
+70,Bass Drum,Hi-Hat (Open),17.25
+e,,,17.3125
+&,Snare Drum,Tom-tom,17.375
+a,,,17.4375
+71,Hi-Hat (Open),,17.5
+e,,,17.5625
+&,Bass Drum,Hi-Hat (Open),17.625
+a,,,17.6875
+72,Snare Drum,Tom-tom,17.75
+e,,,17.8125
+&,Bass Drum,,17.875
+a,,,17.9375
+73,Snare Drum,Tom-tom,18
+e,,,18.0625
+&,Bass Drum,,18.125
+a,,,18.1875
+74,Bass Drum,Ghost Note,18.25
+e,,,18.3125
+&,Ghost Note,,18.375
+a,,,18.4375
+75,Snare Drum,Ghost Note,18.5
+e,,,18.5625
+&,Bass Drum,Ghost Note,18.625
+a,,,18.6875
+76,Bass Drum,Ghost Note,18.75
+e,,,18.8125
+&,Ghost Note,,18.875
+a,,,18.9375
+77,Snare Drum,Ghost Note,19
+e,,,19.0625
+&,Bass Drum,Ghost Note,19.125
+a,,,19.1875
+78,Bass Drum,Ghost Note,19.25
+e,,,19.3125
+&,Ghost Note,,19.375
+a,,,19.4375
+79,Snare Drum,Ghost Note,19.5
+e,,,19.5625
+&,Bass Drum,Ghost Note,19.625
+a,,,19.6875
+80,Bass Drum,Ghost Note,19.75
+e,,,19.8125
+&,Ghost Note,,19.875
+a,,,19.9375
+81,Snare Drum,Ghost Note,20
+e,,,20.0625
+&,Bass Drum,Ghost Note,20.125
+a,,,20.1875
+82,Bass Drum,Ghost Note,20.25
+e,,,20.3125
+&,Ghost Note,,20.375
+a,,,20.4375
+83,Snare Drum,Ghost Note,20.5
+e,,,20.5625
+&,Bass Drum,Ghost Note,20.625
+a,,,20.6875
+84,Bass Drum,Ghost Note,20.75
+e,,,20.8125
+&,Ghost Note,,20.875
+a,,,20.9375
+85,Snare Drum,Ghost Note,21
+e,,,21.0625
+&,Bass Drum,Ghost Note,21.125
+a,,,21.1875
+86,Bass Drum,Ghost Note,21.25
+e,,,21.3125
+&,Ghost Note,,21.375
+a,,,21.4375
+87,Snare Drum,Ghost Note,21.5
+e,,,21.5625
+&,Bass Drum,Ghost Note,21.625
+a,,,21.6875
+88,Bass Drum,Ghost Note,21.75
+e,,,21.8125
+&,Bass Drum,Ghost Note,21.875
+a,,,21.9375
+89,Snare Drum,Ghost Note,22
+e,,,22.0625
+&,Bass Drum,Ghost Note,22.125
+a,,,22.1875
+90,Bass Drum,Ghost Note,22.25
+e,,,22.3125
+&,Ghost Note,,22.375
+a,,,22.4375
+91,Snare Drum,Ghost Note,22.5
+e,,,22.5625
+&,Bass Drum,Ghost Note,22.625
+a,,,22.6875
+92,Bass Drum,Ghost Note,22.75
+e,,,22.8125
+&,Ghost Note,,22.875
+a,,,22.9375
+93,Snare Drum,Ghost Note,23
+e,,,23.0625
+&,Bass Drum,Ghost Note,23.125
+a,,,23.1875
+94,Bass Drum,Ghost Note,23.25
+e,,,23.3125
+&,Ghost Note,,23.375
+a,,,23.4375
+95,Snare Drum,Ghost Note,23.5
+e,,,23.5625
+&,Bass Drum,Ghost Note,23.625
+a,,,23.6875
+96,Bass Drum,Ghost Note,23.75
+e,,,23.8125
+&,Ghost Note,,23.875
+a,,,23.9375
+97,Snare Drum,Ghost Note,24
+e,,,24.0625
+&,Bass Drum,Ghost Note,24.125
+a,,,24.1875
+98,Bass Drum,Ghost Note,24.25
+e,,,24.3125
+&,Ghost Note,,24.375
+a,,,24.4375
+99,Snare Drum,Ghost Note,24.5
+e,,,24.5625
+&,Bass Drum,Ghost Note,24.625
+a,,,24.6875
+100,Bass Drum,Ghost Note,24.75
+e,,,24.8125
+&,Ghost Note,,24.875
+a,,,24.9375
+101,Snare Drum,Ghost Note,25
+e,,,25.0625
+&,Bass Drum,Ghost Note,25.125
+a,,,25.1875
+102,Bass Drum,Ghost Note,25.25
+e,,,25.3125
+&,Snare Drum,Tom-tom,25.375
+a,,,25.4375
+103,Ghost Note,,25.5
+e,,,25.5625
+&,Bass Drum,Ghost Note,25.625
+a,,,25.6875
+104,Snare Drum,Tom-tom,25.75
+e,,,25.8125
+&,Bass Drum,,25.875
+a,,,25.9375
+105,Snare Drum,Tom-tom,26
+e,,,26.0625
+&,Bass Drum,,26.125
+a,,,26.1875
+106,Bass Drum,Tom-tom,26.25
+e,,,26.3125
+&,Hi-Hat (Open),,26.375
+a,,,26.4375
+107,Snare Drum,Hi-Hat (Open),26.5
+e,,,26.5625
+&,Bass Drum,Tom-tom,26.625
+a,,,26.6875
+108,Hi-Hat (Open),,26.75
+e,,,26.8125
+&,Bass Drum,Hi-Hat (Open),26.875
+a,,,26.9375
+109,Snare Drum,Hi-Hat (Open),27
+e,,,27.0625
+&,Hi-Hat (Open),,27.125
+a,,,27.1875
+110,Bass Drum,Tom-tom,27.25
+e,,,27.3125
+&,Hi-Hat (Open),,27.375
+a,,,27.4375
+111,Snare Drum,Hi-Hat (Open),27.5
+e,,,27.5625
+&,Bass Drum,Tom-tom,27.625
+a,,,27.6875
+112,Hi-Hat (Open),,27.75
+e,,,27.8125
+&,Bass Drum,Hi-Hat (Open),27.875
+a,,,27.9375
+113,Snare Drum,Hi-Hat (Open),28
+e,,,28.0625
+&,Bass Drum,Hi-Hat (Open),28.125
+a,,,28.1875
+114,Bass Drum,Tom-tom,28.25
+e,,,28.3125
+&,Hi-Hat (Open),,28.375
+a,,,28.4375
+115,Snare Drum,Hi-Hat (Open),28.5
+e,,,28.5625
+&,Bass Drum,Hi-Hat (Open),28.625
+a,,,28.6875
+116,Bass Drum,Hi-Hat (Open),28.75
+e,,,28.8125
+&,Hi-Hat (Open),,28.875
+a,,,28.9375
+117,Snare Drum,Hi-Hat (Open),29
+e,,,29.0625
+&,Bass Drum,Hi-Hat (Open),29.125
+a,,,29.1875
+118,Bass Drum,Hi-Hat (Open),29.25
+e,,,29.3125
+&,Hi-Hat (Open),,29.375
+a,,,29.4375
+119,Snare Drum,Hi-Hat (Open),29.5
+e,,,29.5625
+&,Bass Drum,Hi-Hat (Open),29.625
+a,,,29.6875
+120,Bass Drum,Hi-Hat (Open),29.75
+e,,,29.8125
+&,Hi-Hat (Open),,29.875
+a,,,29.9375
+121,Snare Drum,Hi-Hat (Open),30
+e,,,30.0625
+&,Bass Drum,Hi-Hat (Open),30.125
+a,,,30.1875
+122,Bass Drum,Hi-Hat (Open),30.25
+e,,,30.3125
+&,Hi-Hat (Open),,30.375
+a,,,30.4375
+123,Snare Drum,Hi-Hat (Open),30.5
+e,,,30.5625
+&,Bass Drum,Hi-Hat (Open),30.625
+a,,,30.6875
+124,Bass Drum,Hi-Hat (Open),30.75
+e,,,30.8125
+&,Snare Drum,Tom-tom,30.875
+a,,,30.9375
+125,Snare Drum,Tom-tom,31
+e,,,31.0625
+&,,,31.125
+a,,,31.1875
+126,Bass Drum,Tom-tom,31.25
+e,,,31.3125
+&,Hi-Hat (Open),,31.375
+a,,,31.4375
+127,Snare Drum,Hi-Hat (Open),31.5
+e,,,31.5625
+&,Bass Drum,Hi-Hat (Open),31.625
+a,,,31.6875
+128,Bass Drum,Hi-Hat (Open),31.75
+e,,,31.8125
+&,Hi-Hat (Open),,31.875
+a,,,31.9375
+129,Snare Drum,Hi-Hat (Open),32
+e,,,32.0625
+&,Bass Drum,Hi-Hat (Open),32.125
+a,,,32.1875
+130,Bass Drum,Hi-Hat (Open),32.25
+e,,,32.3125
+&,Hi-Hat (Open),,32.375
+a,,,32.4375
+131,Snare Drum,Hi-Hat (Open),32.5
+e,,,32.5625
+&,Bass Drum,Hi-Hat (Open),32.625
+a,,,32.6875
+132,Bass Drum,Hi-Hat (Open),32.75
+e,,,32.8125
+&,Hi-Hat (Open),,32.875
+a,,,32.9375
+133,Hi-Hat (Open),,33
+e,,,33.0625
+&,Bass Drum,Hi-Hat (Open),33.125
+a,,,33.1875
+134,Bass Drum,Hi-Hat (Open),33.25
+e,,,33.3125
+&,Hi-Hat (Open),,33.375
+a,,,33.4375
+135,Snare Drum,Hi-Hat (Open),33.5
+e,,,33.5625
+&,Bass Drum,Hi-Hat (Open),33.625
+a,,,33.6875
+136,Bass Drum,Hi-Hat (Open),33.75
+e,,,33.8125
+&,Hi-Hat (Open),,33.875
+a,,,33.9375
+137,Hi-Hat (Open),,34
+e,,,34.0625
+&,Bass Drum,Hi-Hat (Open),34.125
+a,,,34.1875
+138,Bass Drum,Hi-Hat (Open),34.25
+e,,,34.3125
+&,Hi-Hat (Open),,34.375
+a,,,34.4375
+139,Snare Drum,Hi-Hat (Open),34.5
+e,,,34.5625
+&,Bass Drum,Hi-Hat (Open),34.625
+a,,,34.6875
+140,Bass Drum,Hi-Hat (Open),34.75
+e,,,34.8125
+&,Hi-Hat (Open),,34.875
+a,,,34.9375
+141,Hi-Hat (Open),,35
+e,,,35.0625
+&,Bass Drum,Hi-Hat (Open),35.125
+a,,,35.1875
+142,Bass Drum,Hi-Hat (Open),35.25
+e,,,35.3125
+&,Hi-Hat (Open),,35.375
+a,,,35.4375
+143,Snare Drum,Hi-Hat (Open),35.5
+e,,,35.5625
+&,Bass Drum,Hi-Hat (Open),35.625
+a,,,35.6875
+144,Bass Drum,Hi-Hat (Open),35.75
+e,,,35.8125
+&,Hi-Hat (Open),,35.875
+a,,,35.9375
+145,Hi-Hat (Open),,36
+e,,,36.0625
+&,Bass Drum,Hi-Hat (Open),36.125
+a,,,36.1875
+146,Bass Drum,Hi-Hat (Open),36.25
+e,,,36.3125
+&,Hi-Hat (Open),,36.375
+a,,,36.4375
+147,Snare Drum,Hi-Hat (Open),36.5
+e,,,36.5625
+&,Bass Drum,Hi-Hat (Open),36.625
+a,,,36.6875
+148,Bass Drum,Hi-Hat (Open),36.75
+e,,,36.8125
+&,Hi-Hat (Open),,36.875
+a,,,36.9375
+149,Hi-Hat (Open),,37
+e,,,37.0625
+&,Bass Drum,Hi-Hat (Open),37.125
+a,,,37.1875
+150,Bass Drum,Hi-Hat (Open),37.25
+e,,,37.3125
+&,Hi-Hat (Open),,37.375
+a,,,37.4375
+151,Snare Drum,Hi-Hat (Open),37.5
+e,,,37.5625
+&,Bass Drum,Hi-Hat (Open),37.625
+a,,,37.6875
+152,Bass Drum,Hi-Hat (Open),37.75
+e,,,37.8125
+&,Hi-Hat (Open),,37.875
+a,,,37.9375
+153,Hi-Hat (Open),,38
+e,,,38.0625
+&,Bass Drum,Hi-Hat (Open),38.125
+a,,,38.1875
+154,Bass Drum,Hi-Hat (Open),38.25
+e,,,38.3125
+&,Snare Drum,Tom-tom,38.375
+a,,,38.4375
+155,Hi-Hat (Open),,38.5
+e,,,38.5625
+&,Bass Drum,Hi-Hat (Open),38.625
+a,,,38.6875
+156,Snare Drum,Tom-tom,38.75
+e,,,38.8125
+&,Bass Drum,,38.875
+a,,,38.9375
+157,Snare Drum,Tom-tom,39
+e,,,39.0625
+&,,,39.125
+a,,,39.1875
+158,Bass Drum,Ghost Note,39.25
+e,,,39.3125
+&,Ghost Note,,39.375
+a,,,39.4375
+159,Snare Drum,Ghost Note,39.5
+e,,,39.5625
+&,Bass Drum,Ghost Note,39.625
+a,,,39.6875
+160,Bass Drum,Ghost Note,39.75
+e,,,39.8125
+&,Ghost Note,,39.875
+a,,,39.9375
+161,Snare Drum,Ghost Note,40
+e,,,40.0625
+&,Bass Drum,Ghost Note,40.125
+a,,,40.1875
+162,Bass Drum,Ghost Note,40.25
+e,,,40.3125
+&,Ghost Note,,40.375
+a,,,40.4375
+163,Snare Drum,Ghost Note,40.5
+e,,,40.5625
+&,Bass Drum,Ghost Note,40.625
+a,,,40.6875
+164,Bass Drum,Ghost Note,40.75
+e,,,40.8125
+&,Ghost Note,,40.875
+a,,,40.9375
+165,Snare Drum,Ghost Note,41
+e,,,41.0625
+&,Bass Drum,Ghost Note,41.125
+a,,,41.1875
+166,Bass Drum,Ghost Note,41.25
+e,,,41.3125
+&,Ghost Note,,41.375
+a,,,41.4375
+167,Snare Drum,Ghost Note,41.5
+e,,,41.5625
+&,Bass Drum,Ghost Note,41.625
+a,,,41.6875
+168,Bass Drum,Ghost Note,41.75
+e,,,41.8125
+&,Ghost Note,,41.875
+a,,,41.9375
+169,Snare Drum,Ghost Note,42
+e,,,42.0625
+&,Bass Drum,Ghost Note,42.125
+a,,,42.1875
+170,Bass Drum,Ghost Note,42.25
+e,,,42.3125
+&,Ghost Note,,42.375
+a,,,42.4375
+171,Snare Drum,Ghost Note,42.5
+e,,,42.5625
+&,Bass Drum,Ghost Note,42.625
+a,,,42.6875
+172,Bass Drum,Ghost Note,42.75
+e,,,42.8125
+&,Bass Drum,Ghost Note,42.875
+a,,,42.9375
+173,Snare Drum,Ghost Note,43
+e,,,43.0625
+&,Bass Drum,Ghost Note,43.125
+a,,,43.1875
+174,Bass Drum,Ghost Note,43.25
+e,,,43.3125
+&,Ghost Note,,43.375
+a,,,43.4375
+175,Snare Drum,Ghost Note,43.5
+e,,,43.5625
+&,Bass Drum,Ghost Note,43.625
+a,,,43.6875
+176,Bass Drum,Ghost Note,43.75
+e,,,43.8125
+&,Ghost Note,,43.875
+a,,,43.9375
+177,Snare Drum,Ghost Note,44
+e,,,44.0625
+&,Bass Drum,Ghost Note,44.125
+a,,,44.1875
+178,Bass Drum,Ghost Note,44.25
+e,,,44.3125
+&,Ghost Note,,44.375
+a,,,44.4375
+179,Snare Drum,Ghost Note,44.5
+e,,,44.5625
+&,Bass Drum,Ghost Note,44.625
+a,,,44.6875
+180,Bass Drum,Ghost Note,44.75
+e,,,44.8125
+&,Ghost Note,,44.875
+a,,,44.9375
+181,Snare Drum,Ghost Note,45
+e,,,45.0625
+&,Bass Drum,Ghost Note,45.125
+a,,,45.1875
+182,Bass Drum,Ghost Note,45.25
+e,,,45.3125
+&,Ghost Note,,45.375
+a,,,45.4375
+183,Snare Drum,Ghost Note,45.5
+e,,,45.5625
+&,Bass Drum,Ghost Note,45.625
+a,,,45.6875
+184,Bass Drum,Ghost Note,45.75
+e,,,45.8125
+&,Ghost Note,,45.875
+a,,,45.9375
+185,Snare Drum,Ghost Note,46
+e,,,46.0625
+&,Bass Drum,Ghost Note,46.125
+a,,,46.1875
+186,Bass Drum,Ghost Note,46.25
+e,,,46.3125
+&,Snare Drum,Tom-tom,46.375
+a,,,46.4375
+187,Ghost Note,,46.5
+e,,,46.5625
+&,Bass Drum,Ghost Note,46.625
+a,,,46.6875
+188,Snare Drum,Tom-tom,46.75
+e,,,46.8125
+&,Bass Drum,,46.875
+a,,,46.9375
+189,Snare Drum,Tom-tom,47
+e,,,47.0625
+&,Bass Drum,,47.125
+a,,,47.1875
+190,Bass Drum,Tom-tom,47.25
+e,,,47.3125
+&,Hi-Hat (Open),,47.375
+a,,,47.4375
+191,Snare Drum,Hi-Hat (Open),47.5
+e,,,47.5625
+&,Bass Drum,Tom-tom,47.625
+a,,,47.6875
+192,Hi-Hat (Open),,47.75
+e,,,47.8125
+&,Bass Drum,Hi-Hat (Open),47.875
+a,,,47.9375
+193,Snare Drum,Hi-Hat (Open),48
+e,,,48.0625
+&,Hi-Hat (Open),,48.125
+a,,,48.1875
+194,Bass Drum,Tom-tom,48.25
+e,,,48.3125
+&,Hi-Hat (Open),,48.375
+a,,,48.4375
+195,Snare Drum,Hi-Hat (Open),48.5
+e,,,48.5625
+&,Bass Drum,Tom-tom,48.625
+a,,,48.6875
+196,Hi-Hat (Open),,48.75
+e,,,48.8125
+&,Bass Drum,Hi-Hat (Open),48.875
+a,,,48.9375
+197,Snare Drum,Hi-Hat (Open),49
+e,,,49.0625
+&,Bass Drum,Hi-Hat (Open),49.125
+a,,,49.1875
+198,Bass Drum,Tom-tom,49.25
+e,,,49.3125
+&,Hi-Hat (Open),,49.375
+a,,,49.4375
+199,Snare Drum,Hi-Hat (Open),49.5
+e,,,49.5625
+&,Bass Drum,Hi-Hat (Open),49.625
+a,,,49.6875
+200,Bass Drum,Hi-Hat (Open),49.75
+e,,,49.8125
+&,Hi-Hat (Open),,49.875
+a,,,49.9375
+201,Snare Drum,Hi-Hat (Open),50
+e,,,50.0625
+&,Bass Drum,Hi-Hat (Open),50.125
+a,,,50.1875
+202,Bass Drum,Hi-Hat (Open),50.25
+e,,,50.3125
+&,Hi-Hat (Open),,50.375
+a,,,50.4375
+203,Snare Drum,Hi-Hat (Open),50.5
+e,,,50.5625
+&,Bass Drum,Hi-Hat (Open),50.625
+a,,,50.6875
+204,Bass Drum,Hi-Hat (Open),50.75
+e,,,50.8125
+&,Hi-Hat (Open),,50.875
+a,,,50.9375
+205,Snare Drum,Hi-Hat (Open),51
+e,,,51.0625
+&,Bass Drum,Hi-Hat (Open),51.125
+a,,,51.1875
+206,Bass Drum,Hi-Hat (Open),51.25
+e,,,51.3125
+&,Hi-Hat (Open),,51.375
+a,,,51.4375
+207,Snare Drum,Hi-Hat (Open),51.5
+e,,,51.5625
+&,Bass Drum,Hi-Hat (Open),51.625
+a,,,51.6875
+208,Bass Drum,Hi-Hat (Open),51.75
+e,,,51.8125
+&,Snare Drum,Tom-tom,51.875
+a,,,51.9375
+209,Snare Drum,Tom-tom,52
+e,,,52.0625
+&,,,52.125
+a,,,52.1875
+210,Bass Drum,Tom-tom,52.25
+e,,,52.3125
+&,Hi-Hat (Open),,52.375
+a,,,52.4375
+211,Snare Drum,Hi-Hat (Open),52.5
+e,,,52.5625
+&,Bass Drum,Hi-Hat (Open),52.625
+a,,,52.6875
+212,Bass Drum,Hi-Hat (Open),52.75
+e,,,52.8125
+&,Hi-Hat (Open),,52.875
+a,,,52.9375
+213,Snare Drum,Hi-Hat (Open),53
+e,,,53.0625
+&,Bass Drum,Hi-Hat (Open),53.125
+a,,,53.1875
+214,Bass Drum,Hi-Hat (Open),53.25
+e,,,53.3125
+&,Hi-Hat (Open),,53.375
+a,,,53.4375
+215,Snare Drum,Hi-Hat (Open),53.5
+e,,,53.5625
+&,Bass Drum,Hi-Hat (Open),53.625
+a,,,53.6875
+216,Bass Drum,Hi-Hat (Open),53.75
+e,,,53.8125
+&,Hi-Hat (Open),,53.875
+a,,,53.9375
+217,Hi-Hat (Open),,54
+e,,,54.0625
+&,Bass Drum,Hi-Hat (Open),54.125
+a,,,54.1875
+218,Bass Drum,Hi-Hat (Open),54.25
+e,,,54.3125
+&,Hi-Hat (Open),,54.375
+a,,,54.4375
+219,Snare Drum,Hi-Hat (Open),54.5
+e,,,54.5625
+&,Bass Drum,Hi-Hat (Open),54.625
+a,,,54.6875
+220,Bass Drum,Hi-Hat (Open),54.75
+e,,,54.8125
+&,Hi-Hat (Open),,54.875
+a,,,54.9375
+221,Hi-Hat (Open),,55
+e,,,55.0625
+&,Bass Drum,Hi-Hat (Open),55.125
+a,,,55.1875
+222,Bass Drum,Hi-Hat (Open),55.25
+e,,,55.3125
+&,Hi-Hat (Open),,55.375
+a,,,55.4375
+223,Snare Drum,Hi-Hat (Open),55.5
+e,,,55.5625
+&,Bass Drum,Hi-Hat (Open),55.625
+a,,,55.6875
+224,Bass Drum,Hi-Hat (Open),55.75
+e,,,55.8125
+&,Hi-Hat (Open),,55.875
+a,,,55.9375
+225,Hi-Hat (Open),,56
+e,,,56.0625
+&,Bass Drum,Hi-Hat (Open),56.125
+a,,,56.1875
+226,Bass Drum,Hi-Hat (Open),56.25
+e,,,56.3125
+&,Hi-Hat (Open),,56.375
+a,,,56.4375
+227,Snare Drum,Hi-Hat (Open),56.5
+e,,,56.5625
+&,Bass Drum,Hi-Hat (Open),56.625
+a,,,56.6875
+228,Bass Drum,Hi-Hat (Open),56.75
+e,,,56.8125
+&,Hi-Hat (Open),,56.875
+a,,,56.9375
+229,Hi-Hat (Open),,57
+e,,,57.0625
+&,Bass Drum,Hi-Hat (Open),57.125
+a,,,57.1875
+230,Bass Drum,Hi-Hat (Open),57.25
+e,,,57.3125
+&,Hi-Hat (Open),,57.375
+a,,,57.4375
+231,Snare Drum,Hi-Hat (Open),57.5
+e,,,57.5625
+&,Bass Drum,Hi-Hat (Open),57.625
+a,,,57.6875
+232,Bass Drum,Hi-Hat (Open),57.75
+e,,,57.8125
+&,Hi-Hat (Open),,57.875
+a,,,57.9375
+233,Hi-Hat (Open),,58
+e,,,58.0625
+&,Bass Drum,Hi-Hat (Open),58.125
+a,,,58.1875
+234,Bass Drum,Hi-Hat (Open),58.25
+e,,,58.3125
+&,Hi-Hat (Open),,58.375
+a,,,58.4375
+235,Snare Drum,Hi-Hat (Open),58.5
+e,,,58.5625
+&,Bass Drum,Hi-Hat (Open),58.625
+a,,,58.6875
+236,Bass Drum,Hi-Hat (Open),58.75
+e,,,58.8125
+&,Hi-Hat (Open),,58.875
+a,,,58.9375
+237,Hi-Hat (Open),,59
+e,,,59.0625
+&,Bass Drum,Hi-Hat (Open),59.125
+a,,,59.1875
+238,Bass Drum,Hi-Hat (Open),59.25
+e,,,59.3125
+&,Snare Drum,Tom-tom,59.375
+a,,,59.4375
+239,Hi-Hat (Open),,59.5
+e,,,59.5625
+&,Bass Drum,Hi-Hat (Open),59.625
+a,,,59.6875
+240,Snare Drum,Tom-tom,59.75
+e,,,59.8125
+&,Bass Drum,,59.875
+a,,,59.9375
+241,Snare Drum,Tom-tom,60
+e,,,60.0625
+&,,,60.125
+a,,,60.1875
+242,Bass Drum,Tom-tom,60.25
+e,,,60.3125
+&,Hi-Hat (Open),,60.375
+a,,,60.4375
+243,Snare Drum,Hi-Hat (Open),60.5
+e,,,60.5625
+&,Bass Drum,Tom-tom,60.625
+a,,,60.6875
+244,Hi-Hat (Open),,60.75
+e,,,60.8125
+&,Bass Drum,Hi-Hat (Open),60.875
+a,,,60.9375
+245,Snare Drum,Hi-Hat (Open),61
+e,,,61.0625
+&,Hi-Hat (Open),,61.125
+a,,,61.1875
+246,Bass Drum,Tom-tom,61.25
+e,,,61.3125
+&,Hi-Hat (Open),,61.375
+a,,,61.4375
+247,Snare Drum,Hi-Hat (Open),61.5
+e,,,61.5625
+&,Bass Drum,Tom-tom,61.625
+a,,,61.6875
+248,Hi-Hat (Open),,61.75
+e,,,61.8125
+&,Bass Drum,Hi-Hat (Open),61.875
+a,,,61.9375
+249,Snare Drum,Hi-Hat (Open),62
+e,,,62.0625
+&,Bass Drum,Hi-Hat (Open),62.125
+a,,,62.1875
+250,Bass Drum,Tom-tom,62.25
+e,,,62.3125
+&,Hi-Hat (Open),,62.375
+a,,,62.4375
+251,Snare Drum,Hi-Hat (Open),62.5
+e,,,62.5625
+&,Bass Drum,Hi-Hat (Open),62.625
+a,,,62.6875
+252,Bass Drum,Hi-Hat (Open),62.75
+e,,,62.8125
+&,Hi-Hat (Open),,62.875
+a,,,62.9375
+253,Snare Drum,Hi-Hat (Open),63
+e,,,63.0625
+&,Bass Drum,Hi-Hat (Open),63.125
+a,,,63.1875
+254,Bass Drum,Hi-Hat (Open),63.25
+e,,,63.3125
+&,Hi-Hat (Open),,63.375
+a,,,63.4375
+255,Snare Drum,Hi-Hat (Open),63.5
+e,,,63.5625
+&,Bass Drum,Hi-Hat (Open),63.625
+a,,,63.6875
+256,Bass Drum,Hi-Hat (Open),63.75
+e,,,63.8125
+&,Hi-Hat (Open),,63.875
+a,,,63.9375
+257,Snare Drum,Hi-Hat (Open),64
+e,,,64.0625
+&,Bass Drum,Hi-Hat (Open),64.125
+a,,,64.1875
+258,Bass Drum,Tom-tom,64.25
+e,,,64.3125
+&,Hi-Hat (Open),,64.375
+a,,,64.4375
+259,Snare Drum,Hi-Hat (Open),64.5
+e,,,64.5625
+&,Bass Drum,Tom-tom,64.625
+a,,,64.6875
+260,Hi-Hat (Open),,64.75
+e,,,64.8125
+&,Bass Drum,Hi-Hat (Open),64.875
+a,,,64.9375
+261,Snare Drum,Hi-Hat (Open),65
+e,,,65.0625
+&,Hi-Hat (Open),,65.125
+a,,,65.1875
+262,Bass Drum,Tom-tom,65.25
+e,,,65.3125
+&,Hi-Hat (Open),,65.375
+a,,,65.4375
+263,Snare Drum,Hi-Hat (Open),65.5
+e,,,65.5625
+&,Bass Drum,Tom-tom,65.625
+a,,,65.6875
+264,Hi-Hat (Open),,65.75
+e,,,65.8125
+&,Bass Drum,Hi-Hat (Open),65.875
+a,,,65.9375
+265,Snare Drum,Hi-Hat (Open),66
+e,,,66.0625
+&,Hi-Hat (Open),,66.125
+a,,,66.1875
+266,Bass Drum,Tom-tom,66.25
+e,,,66.3125
+&,Tom-tom,Snare Drum,66.375
+a,,,66.4375
+267,Tom-tom,Snare Drum,66.5
+e,,,66.5625
+&,Tom-tom,Snare Drum,66.625
+a,,,66.6875
+268,Tom-tom,Snare Drum,66.75
+e,,,66.8125
+&,Tom-tom,Snare Drum,66.875
+a,,,66.9375
+269,Tom-tom,Snare Drum,67
+e,,,67.0625
+&,Tom-tom,Snare Drum,67.125
+a,,,67.1875
+270,Tom-tom,Snare Drum,67.25
+e,,,67.3125
+&,Tom-tom,Snare Drum,67.375
+a,,,67.4375
+271,Tom-tom,Snare Drum,67.5
+e,,,67.5625
+&,Tom-tom,Snare Drum,67.625
+a,,,67.6875
+272,Tom-tom,Snare Drum,67.75
+e,,,67.8125
+&,Bass Drum,,67.875
+a,,,67.9375
+273,Snare Drum,Snare Drum,68
+e,,,68.0625
+&,,,68.125
+a,,,68.1875
+274,Bass Drum,Tom-tom,68.25
+e,,,68.3125
+&,Hi-Hat (Open),,68.375
+a,,,68.4375
+275,Snare Drum,Hi-Hat (Open),68.5
+e,,,68.5625
+&,Bass Drum,Tom-tom,68.625
+a,,,68.6875
+276,Hi-Hat (Open),,68.75
+e,,,68.8125
+&,Bass Drum,Hi-Hat (Open),68.875
+a,,,68.9375
+277,Snare Drum,Hi-Hat (Open),69
+e,,,69.0625
+&,Hi-Hat (Open),,69.125
+a,,,69.1875
+278,Bass Drum,Tom-tom,69.25
+e,,,69.3125
+&,Hi-Hat (Open),,69.375
+a,,,69.4375
+279,Snare Drum,Hi-Hat (Open),69.5
+e,,,69.5625
+&,Bass Drum,Hi-Hat (Open),69.625
+a,,,69.6875
+280,Hi-Hat (Open),,69.75
+e,,,69.8125
+&,Bass Drum,Hi-Hat (Open),69.875
+a,,,69.9375
+281,Snare Drum,Hi-Hat (Open),70
+e,,,70.0625
+&,Hi-Hat (Open),,70.125
+a,,,70.1875
+282,Bass Drum,Tom-tom,70.25
+e,,,70.3125
+&,Tom-tom,Snare Drum,70.375
+a,,,70.4375
+283,Tom-tom,Snare Drum,70.5
+e,,,70.5625
+&,Tom-tom,Snare Drum,70.625
+a,,,70.6875
+284,Tom-tom,Snare Drum,70.75
+e,,,70.8125
+&,Tom-tom,Snare Drum,70.875
+a,,,70.9375
+285,Tom-tom,Snare Drum,71
+e,,,71.0625
+&,Tom-tom,Snare Drum,71.125
+a,,,71.1875
+286,Tom-tom,Snare Drum,71.25
+e,,,71.3125
+&,Tom-tom,Snare Drum,71.375
+a,,,71.4375
+287,Tom-tom,Snare Drum,71.5
+e,,,71.5625
+&,Tom-tom,Snare Drum,71.625
+a,,,71.6875
+288,Tom-tom,Snare Drum,71.75
+e,,,71.8125
+&,Tom-tom,Snare Drum,71.875
+a,,,71.9375
+289,Snare Drum,Snare Drum,72
+e,,,72.0625
+&,,,72.125
+a,,,72.1875
+290,Bass Drum,Tom-tom,72.25
+e,,,72.3125
+&,Hi-Hat (Open),,72.375
+a,,,72.4375
+291,Snare Drum,Hi-Hat (Open),72.5
+e,,,72.5625
+&,Bass Drum,Tom-tom,72.625
+a,,,72.6875
+292,Hi-Hat (Open),,72.75
+e,,,72.8125
+&,Bass Drum,Hi-Hat (Open),72.875
+a,,,72.9375
+293,Snare Drum,Hi-Hat (Open),73
+e,,,73.0625
+&,Hi-Hat (Open),,73.125
+a,,,73.1875
+294,Bass Drum,Tom-tom,73.25
+e,,,73.3125
+&,Hi-Hat (Open),,73.375
+a,,,73.4375
+295,Snare Drum,Hi-Hat (Open),73.5
+e,,,73.5625
+&,Bass Drum,Hi-Hat (Open),73.625
+a,,,73.6875
+296,Hi-Hat (Open),,73.75
+e,,,73.8125
+&,Bass Drum,Hi-Hat (Open),73.875
+a,,,73.9375
+297,Snare Drum,Hi-Hat (Open),74
+e,,,74.0625
+&,Hi-Hat (Open),,74.125
+a,,,74.1875
+298,Bass Drum,Tom-tom,74.25
+e,,,74.3125
+&,Hi-Hat (Open),,74.375
+a,,,74.4375
+299,Snare Drum,Hi-Hat (Open),74.5
+e,,,74.5625
+&,Bass Drum,Hi-Hat (Open),74.625
+a,,,74.6875
+300,Hi-Hat (Open),,74.75
+e,,,74.8125
+&,Bass Drum,Hi-Hat (Open),74.875
+a,,,74.9375
+301,Snare Drum,Hi-Hat (Open),75
+e,,,75.0625
+&,Hi-Hat (Open),,75.125
+a,,,75.1875
+302,Bass Drum,Tom-tom,75.25
+e,,,75.3125
+&,Hi-Hat (Open),,75.375
+a,,,75.4375
+303,Snare Drum,Hi-Hat (Open),75.5
+e,,,75.5625
+&,Bass Drum,Hi-Hat (Open),75.625
+a,,,75.6875
+304,Bass Drum,Tom-tom,75.75
+e,,,75.8125
+&,,,75.875
+a,,,75.9375
+305,Bass Drum,Tom-tom,76
+e,,,76.0625
+&,,,76.125
+a,,,76.1875
+306,Bass Drum,Ghost Note,76.25
+e,,,76.3125
+&,Ghost Note,,76.375
+a,,,76.4375
+307,Snare Drum,Ghost Note,76.5
+e,,,76.5625
+&,Bass Drum,Ghost Note,76.625
+a,,,76.6875
+308,Ghost Note,,76.75
+e,,,76.8125
+&,Ghost Note,,76.875
+a,,,76.9375
+309,Snare Drum,Ghost Note,77
+e,,,77.0625
+&,Ghost Note,,77.125
+a,,,77.1875
+310,Bass Drum,Ghost Note,77.25
+e,,,77.3125
+&,Ghost Note,,77.375
+a,,,77.4375
+311,Snare Drum,Ghost Note,77.5
+e,,,77.5625
+&,Bass Drum,Ghost Note,77.625
+a,,,77.6875
+312,Ghost Note,,77.75
+e,,,77.8125
+&,Ghost Note,,77.875
+a,,,77.9375
+313,Snare Drum,Ghost Note,78
+e,,,78.0625
+&,Ghost Note,,78.125
+a,,,78.1875
+314,Bass Drum,Ghost Note,78.25
+e,,,78.3125
+&,Ghost Note,,78.375
+a,,,78.4375
+315,Snare Drum,Ghost Note,78.5
+e,,,78.5625
+&,Bass Drum,Ghost Note,78.625
+a,,,78.6875
+316,Ghost Note,,78.75
+e,,,78.8125
+&,Ghost Note,,78.875
+a,,,78.9375
+317,Snare Drum,Ghost Note,79
+e,,,79.0625
+&,Ghost Note,,79.125
+a,,,79.1875
+318,Ghost Note,,79.25
+e,,,79.3125
+&,Bass Drum,Ghost Note,79.375
+a,,,79.4375
+319,Snare Drum,Ghost Note,79.5
+e,,,79.5625
+&,Bass Drum,Ghost Note,79.625
+a,,,79.6875
+320,Bass Drum,Ghost Note,79.75
+e,,,79.8125
+&,Ghost Note,,79.875
+a,,,79.9375
+321,Snare Drum,Ghost Note,80
+e,,,80.0625
+&,Ghost Note,,80.125
+a,,,80.1875
+322,Bass Drum,Ghost Note,80.25
+e,,,80.3125
+&,Ghost Note,,80.375
+a,,,80.4375
+323,Snare Drum,Ghost Note,80.5
+e,,,80.5625
+&,Bass Drum,Ghost Note,80.625
+a,,,80.6875
+324,Ghost Note,,80.75
+e,,,80.8125
+&,Ghost Note,,80.875
+a,,,80.9375
+325,Snare Drum,Ghost Note,81
+e,,,81.0625
+&,Ghost Note,,81.125
+a,,,81.1875
+326,Bass Drum,Ghost Note,81.25
+e,,,81.3125
+&,Ghost Note,,81.375
+a,,,81.4375
+327,Snare Drum,Ghost Note,81.5
+e,,,81.5625
+&,Bass Drum,Ghost Note,81.625
+a,,,81.6875
+328,Ghost Note,,81.75
+e,,,81.8125
+&,Ghost Note,,81.875
+a,,,81.9375
+329,Snare Drum,Ghost Note,82
+e,,,82.0625
+&,Ghost Note,,82.125
+a,,,82.1875
+330,Bass Drum,Ghost Note,82.25
+e,,,82.3125
+&,Ghost Note,,82.375
+a,,,82.4375
+331,Snare Drum,Ghost Note,82.5
+e,,,82.5625
+&,Bass Drum,Ghost Note,82.625
+a,,,82.6875
+332,Ghost Note,,82.75
+e,,,82.8125
+&,Ghost Note,,82.875
+a,,,82.9375
+333,Snare Drum,Ghost Note,83
+e,,,83.0625
+&,Ghost Note,,83.125
+a,,,83.1875
+334,Ghost Note,,83.25
+e,,,83.3125
+&,Bass Drum,Ghost Note,83.375
+a,,,83.4375
+335,Snare Drum,Ghost Note,83.5
+e,,,83.5625
+&,Bass Drum,Ghost Note,83.625
+a,,,83.6875
+336,Bass Drum,Ghost Note,83.75
+e,,,83.8125
+&,Ghost Note,,83.875
+a,,,83.9375
+337,Snare Drum,Ghost Note,84
+e,,,84.0625
+&,Snare Drum,Ghost Note,84.125
+a,,,84.1875
+338,Bass Drum,Tom-tom,84.25
+e,,,84.3125
+&,Ghost Note,,84.375
+a,,,84.4375
+339,Snare Drum,Ghost Note,84.5
+e,,,84.5625
+&,Ghost Note,,84.625
+a,,,84.6875
+340,Ghost Note,,84.75
+e,,,84.8125
+&,Bass Drum,Ghost Note,84.875
+a,,,84.9375
+341,Snare Drum,Ghost Note,85
+e,,,85.0625
+&,Ghost Note,,85.125
+a,,,85.1875
+342,Bass Drum,Ghost Note,85.25
+e,,,85.3125
+&,Ghost Note,,85.375
+a,,,85.4375
+343,Snare Drum,Ghost Note,85.5
+e,,,85.5625
+&,Bass Drum,Ghost Note,85.625
+a,,,85.6875
+344,Ghost Note,,85.75
+e,,,85.8125
+&,Bass Drum,Ghost Note,85.875
+a,,,85.9375
+345,Snare Drum,Ghost Note,86
+e,,,86.0625
+&,Bass Drum,Ghost Note,86.125
+a,,,86.1875
+346,Snare Drum,Tom-tom,86.25
+e,,,86.3125
+&,Tom-tom,Snare Drum,86.375
+a,,,86.4375
+347,Tom-tom,Snare Drum,86.5
+e,,,86.5625
+&,Tom-tom,Snare Drum,86.625
+a,,,86.6875
+348,Tom-tom,Snare Drum,86.75
+e,,,86.8125
+&,Tom-tom,Snare Drum,86.875
+a,,,86.9375
+349,Tom-tom,Snare Drum,87
+e,,,87.0625
+&,Tom-tom,Snare Drum,87.125
+a,,,87.1875
+350,Tom-tom,Snare Drum,87.25
+e,,,87.3125
+&,Tom-tom,Snare Drum,87.375
+a,,,87.4375
+351,Tom-tom,Snare Drum,87.5
+e,,,87.5625
+&,Tom-tom,Snare Drum,87.625
+a,,,87.6875
+352,Snare Drum,Snare Drum,87.75
+e,,,87.8125
+&,Bass Drum,,87.875
+a,,,87.9375
+353,Snare Drum,Snare Drum,88
+e,,,88.0625
+&,,,88.125
+a,,,88.1875
+354,Bass Drum,Tom-tom,88.25
+e,,,88.3125
+&,Hi-Hat (Open),,88.375
+a,,,88.4375
+355,Snare Drum,Hi-Hat (Open),88.5
+e,,,88.5625
+&,Bass Drum,Tom-tom,88.625
+a,,,88.6875
+356,Hi-Hat (Open),,88.75
+e,,,88.8125
+&,Bass Drum,Hi-Hat (Open),88.875
+a,,,88.9375
+357,Snare Drum,Hi-Hat (Open),89
+e,,,89.0625
+&,Hi-Hat (Open),,89.125
+a,,,89.1875
+358,Bass Drum,Tom-tom,89.25
+e,,,89.3125
+&,Hi-Hat (Open),,89.375
+a,,,89.4375
+359,Snare Drum,Hi-Hat (Open),89.5
+e,,,89.5625
+&,Bass Drum,Tom-tom,89.625
+a,,,89.6875
+360,Hi-Hat (Open),,89.75
+e,,,89.8125
+&,Bass Drum,Hi-Hat (Open),89.875
+a,,,89.9375
+361,Snare Drum,Hi-Hat (Open),90
+e,,,90.0625
+&,Hi-Hat (Open),,90.125
+a,,,90.1875
+362,Bass Drum,Tom-tom,90.25
+e,,,90.3125
+&,Hi-Hat (Open),,90.375
+a,,,90.4375
+363,Snare Drum,Hi-Hat (Open),90.5
+e,,,90.5625
+&,Bass Drum,Tom-tom,90.625
+a,,,90.6875
+364,Hi-Hat (Open),,90.75
+e,,,90.8125
+&,Bass Drum,Hi-Hat (Open),90.875
+a,,,90.9375
+365,Snare Drum,Hi-Hat (Open),91
+e,,,91.0625
+&,Hi-Hat (Open),,91.125
+a,,,91.1875
+366,Bass Drum,Tom-tom,91.25
+e,,,91.3125
+&,Hi-Hat (Open),,91.375
+a,,,91.4375
+367,Snare Drum,Hi-Hat (Open),91.5
+e,,,91.5625
+&,Hi-Hat (Open),,91.625
+a,,,91.6875
+368,Bass Drum,Tom-tom,91.75
+e,,,91.8125
+&,,,91.875
+a,,,91.9375
+369,Bass Drum,Tom-tom,92
+e,,,92.0625
+&,,,92.125
+a,,,92.1875
+370,Bass Drum,Tom-tom,92.25
+e,,,92.3125
+&,Hi-Hat (Open),,92.375
+a,,,92.4375
+371,Snare Drum,Hi-Hat (Open),92.5
+e,,,92.5625
+&,Bass Drum,Tom-tom,92.625
+a,,,92.6875
+372,Hi-Hat (Open),,92.75
+e,,,92.8125
+&,Bass Drum,Hi-Hat (Open),92.875
+a,,,92.9375
+373,Snare Drum,Hi-Hat (Open),93
+e,,,93.0625
+&,Hi-Hat (Open),,93.125
+a,,,93.1875
+374,Bass Drum,Tom-tom,93.25
+e,,,93.3125
+&,Hi-Hat (Open),,93.375
+a,,,93.4375
+375,Snare Drum,Hi-Hat (Open),93.5
+e,,,93.5625
+&,Bass Drum,Tom-tom,93.625
+a,,,93.6875
+376,Hi-Hat (Open),,93.75
+e,,,93.8125
+&,Bass Drum,Hi-Hat (Open),93.875
+a,,,93.9375
+377,Snare Drum,Hi-Hat (Open),94
+e,,,94.0625
+&,Hi-Hat (Open),,94.125
+a,,,94.1875
+378,Bass Drum,Tom-tom,94.25
+e,,,94.3125
+&,Hi-Hat (Open),,94.375
+a,,,94.4375
+379,Snare Drum,Hi-Hat (Open),94.5
+e,,,94.5625
+&,Bass Drum,Tom-tom,94.625
+a,,,94.6875
+380,Hi-Hat (Open),,94.75
+e,,,94.8125
+&,Bass Drum,Hi-Hat (Open),94.875
+a,,,94.9375
+381,Snare Drum,Hi-Hat (Open),95
+e,,,95.0625
+&,Hi-Hat (Open),,95.125
+a,,,95.1875
+382,Bass Drum,Tom-tom,95.25
+e,,,95.3125
+&,Bass Drum,Tom-tom,95.375
+a,,,95.4375
+383,,,95.5
+e,Bass Drum,Tom-tom,95.5625
+&,,,95.625
+a,,,95.6875
+384,Bass Drum,Tom-tom,95.75
+e,,,95.8125
+&,Bass Drum,Tom-tom,95.875
+a,,,95.9375
+385,,,96
+e,Bass Drum,Tom-tom,96.0625
+&,,,96.125
+a,,,96.1875
+386,Bass Drum,Tom-tom,96.25
+e,,,96.3125
+&,Hi-Hat (Open),,96.375
+a,,,96.4375
+387,Snare Drum,Hi-Hat (Open),96.5
+e,,,96.5625
+&,Bass Drum,Tom-tom,96.625
+a,,,96.6875
+388,Hi-Hat (Open),,96.75
+e,,,96.8125
+&,Bass Drum,Hi-Hat (Open),96.875
+a,,,96.9375
+389,Snare Drum,Hi-Hat (Open),97
+e,,,97.0625
+&,Hi-Hat (Open),,97.125
+a,,,97.1875
+390,Bass Drum,Tom-tom,97.25
+e,,,97.3125
+&,Hi-Hat (Open),,97.375
+a,,,97.4375
+391,Snare Drum,Hi-Hat (Open),97.5
+e,,,97.5625
+&,Bass Drum,Tom-tom,97.625
+a,,,97.6875
+392,Hi-Hat (Open),,97.75
+e,,,97.8125
+&,Bass Drum,Hi-Hat (Open),97.875
+a,,,97.9375
+393,Snare Drum,Hi-Hat (Open),98
+e,,,98.0625
+&,Hi-Hat (Open),,98.125
+a,,,98.1875
+394,Bass Drum,Tom-tom,98.25
+e,,,98.3125
+&,,,98.375
+a,,,98.4375
+395,Hi-Hat (Open),,98.5
+e,,,98.5625
+&,,,98.625
+a,,,98.6875
+396,Hi-Hat (Open),,98.75
+e,,,98.8125
+&,,,98.875
+a,,,98.9375
+397,Hi-Hat (Open),,99
+e,,,99.0625
+&,,,99.125
+a,,,99.1875
+398,Bass Drum,Tom-tom,99.25
+e,,,99.3125
+&,,,99.375
+a,,,99.4375
+399,Hi-Hat (Open),,99.5
+e,,,99.5625
+&,,,99.625
+a,,,99.6875
+400,Bass Drum,Tom-tom,99.75
+e,,,99.8125
+&,,,99.875
+a,,,99.9375
+401,Hi-Hat (Open),,100
+e,,,100.0625
+&,,,100.125
+a,,,100.1875
+402,Bass Drum,Tom-tom,100.25
