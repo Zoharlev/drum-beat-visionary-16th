@@ -21,7 +21,7 @@ export const DrumMachine = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentView, setCurrentView] = useState(0);
-  const [bpm, setBpm] = useState(246);
+  const [bpm, setBpm] = useState(123);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
   const [backingTrackDuration, setBackingTrackDuration] = useState(120); // Default to 120 seconds
   const [timeRemaining, setTimeRemaining] = useState(120);
