@@ -548,30 +548,21 @@ export const useCSVPatternLoader = () => {
   const loadPatternFromAdvancedCountCSV = async (csvContent: string): Promise<DrumPattern> => {
     const lines = csvContent.trim().split('\n');
     
-    // Helper function to get position within a bar based on count and current beat
-    const getPositionInBar = (count: string, currentBeat: number): number => {
-      const beatBase = (currentBeat - 1) * 4; // Each beat has 4 subdivisions
+    // Helper to determine subdivision offset (0=beat, 1=e, 2=&, 3=a)
+    const getSubdivisionOffset = (count: string): number => {
+      // If it's a number, it's the beat itself
+      if (!isNaN(Number(count))) return 0;
       switch (count) {
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-          return beatBase;
-        case 'e':
-          return beatBase + 1;
-        case '&':
-          return beatBase + 2;
-        case 'a':
-          return beatBase + 3;
-        default:
-          return -1;
+        case 'e': return 1;
+        case '&': return 2;
+        case 'a': return 3;
+        default: return -1;
       }
     };
 
-    // First pass: count total bars to determine pattern length
-    let barCount = 0;
-    let currentBeat = 1;
-    let lastCount = '';
+    // First pass: parse to find total steps needed
+    let maxBeat = 0;
+    let currentBeatNumber = 0;
     
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -582,25 +573,17 @@ export const useCSVPatternLoader = () => {
       
       const count = columns[0].trim();
       
-      // Track which beat we're on (1, 2, 3, or 4)
-      if (count === '1') currentBeat = 1;
-      else if (count === '2') currentBeat = 2;
-      else if (count === '3') currentBeat = 3;
-      else if (count === '4') currentBeat = 4;
-      
-      // When we see beat '1' after beat '4', we've started a new bar
-      if (count === '1' && lastCount === 'a' && currentBeat === 1) {
-        barCount++;
+      // If it's a number, update current beat number
+      if (!isNaN(Number(count))) {
+        currentBeatNumber = Number(count);
+        maxBeat = Math.max(maxBeat, currentBeatNumber);
       }
-      lastCount = count;
     }
-    // Add 1 for the final bar
-    if (lastCount !== '') barCount++;
     
-    const stepsPerBar = 16; // 16 positions per bar (4 beats × 4 subdivisions)
-    const patternLength = barCount * stepsPerBar;
+    // Calculate pattern length: maxBeat × 4 subdivisions per beat
+    const patternLength = maxBeat * 4;
 
-    console.log(`Advanced Count CSV Pattern: barCount=${barCount}, patternLength=${patternLength}`);
+    console.log(`Advanced Count CSV Pattern: maxBeat=${maxBeat}, patternLength=${patternLength}`);
 
     const pattern: DrumPattern = {
       'Kick': new Array(patternLength).fill(false),
@@ -616,9 +599,7 @@ export const useCSVPatternLoader = () => {
     };
 
     // Second pass: parse instrument data
-    let currentBar = 0;
-    currentBeat = 1;
-    lastCount = '';
+    currentBeatNumber = 0;
     
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -632,70 +613,41 @@ export const useCSVPatternLoader = () => {
       const instrument2 = columns[2] ? columns[2].trim() : '';
       const section = columns[3] ? columns[3].trim() : '';
       
-      // Track which beat we're on (1, 2, 3, or 4)
-      if (count === '1') currentBeat = 1;
-      else if (count === '2') currentBeat = 2;
-      else if (count === '3') currentBeat = 3;
-      else if (count === '4') currentBeat = 4;
-      
-      // When we see beat '1' after beat '4' subdivision 'a', we've started a new bar
-      if (count === '1' && lastCount === 'a' && currentBeat === 1 && i > 1) {
-        currentBar++;
+      // If it's a number, update current beat number
+      if (!isNaN(Number(count))) {
+        currentBeatNumber = Number(count);
       }
-      lastCount = count;
       
-      // Get position within current bar
-      const positionInBar = getPositionInBar(count, currentBeat);
-      if (positionInBar === -1) continue;
+      // Get subdivision offset (0-3)
+      const subdivisionOffset = getSubdivisionOffset(count);
+      if (subdivisionOffset === -1 || currentBeatNumber === 0) continue;
       
-      // Calculate absolute step index
-      const stepIndex = (currentBar * stepsPerBar) + positionInBar;
+      // Calculate absolute step index: (beatNumber - 1) × 4 + subdivisionOffset
+      const stepIndex = (currentBeatNumber - 1) * 4 + subdivisionOffset;
       
       if (stepIndex >= patternLength) continue;
-
-      // Debug logging for specific steps
-      if (stepIndex === 61 || stepIndex === 73) {
-        console.log(`📍 Step ${stepIndex} Debug (CSV line ${i+1}):`);
-        console.log(`   count="${count}", bar=${currentBar}, pos=${positionInBar}`);
-        console.log(`   Raw columns:`, columns);
-        console.log(`   instrument1="${instrument1}", instrument2="${instrument2}"`);
-      }
 
       // Store subdivision label, section, and offset
       (pattern.subdivisions as string[])[stepIndex] = count;
       (pattern.offsets as number[])[stepIndex] = stepIndex / 4; // Quarter beat offset
       (pattern.sections as string[])[stepIndex] = section;
 
-      // Process Instrument 1 column - may contain comma-separated instruments
+      // Process Instrument 1 column
       if (instrument1) {
-        const instruments1 = instrument1.split(',').map(s => s.trim()).filter(Boolean);
-        instruments1.forEach(inst => {
-          const instrumentKey = normalizeInstrument(inst);
-          if (stepIndex === 61 || stepIndex === 73) {
-            console.log(`   ✅ Inst1: "${inst}" → "${instrumentKey}" (exists: ${pattern[instrumentKey] !== undefined})`);
-          }
-          if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
-            (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-          }
-        });
+        const instrumentKey = normalizeInstrument(instrument1);
+        if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
+          (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+        }
       }
 
-      // Process Instrument 2 column - may contain comma-separated instruments
+      // Process Instrument 2 column
       if (instrument2) {
-        const instruments2 = instrument2.split(',').map(s => s.trim()).filter(Boolean);
-        instruments2.forEach(inst => {
-          const instrumentKey = normalizeInstrument(inst);
-          if (stepIndex === 61 || stepIndex === 73) {
-            console.log(`   ✅ Inst2: "${inst}" → "${instrumentKey}" (exists: ${pattern[instrumentKey] !== undefined})`);
-          }
-          if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
-            (pattern[instrumentKey] as boolean[])[stepIndex] = true;
-          }
-        });
+        const instrumentKey = normalizeInstrument(instrument2);
+        if (pattern[instrumentKey] !== undefined && Array.isArray(pattern[instrumentKey])) {
+          (pattern[instrumentKey] as boolean[])[stepIndex] = true;
+        }
       }
     }
-
-    console.log(`🎵 Pattern loaded. Step 66 - Tom: ${pattern['Tom'][66]}, HH Open: ${pattern['HH Open'][66]}`);
 
     return pattern;
   };
@@ -705,6 +657,7 @@ export const useCSVPatternLoader = () => {
     
     // Try the advanced beat count format first (supports multiple instruments per step)
     const filesToTry = [
+      'sweet_child_o_mine_drums_16th_beats-3.csv',
       'sweet_child_o_mine_drums_16th_beats-2.csv',
       'sweet_child_o_mine_drums_16th_beats.csv',
       'come_as_you_are_drums_quarter_beats_with_subdivision_type-6.csv',
